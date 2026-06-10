@@ -1,0 +1,19 @@
+# --- Runtime data & secrets — NEVER commit ---
+1xl-data/
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+anthropic_key
+anthropic_key.txt
+uploads/
+
+# --- Dependencies (this app has none, but just in case) ---
+node_modules/
+
+# --- Local tooling / OS junk ---
+.claude/
+*.log
+.DS_Store
+Thumbs.db

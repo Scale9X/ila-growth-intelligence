@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ILAtech Growth Intelligence — Boardroom-ready growth diagnostics</title>
+<meta name="description" content="A consulting-grade growth diagnostic that turns fragmented business information into actionable growth priorities. By ILAtech.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0B1220;--ink-soft:#39435A;--muted:#697587;--line:#E7ECF4;--line-soft:#F0F3F9;
+  --bg:#FFFFFF;--bg-soft:#F6F8FD;--bg-tint:#FAFBFF;
+  --accent:#2F6BFF;--accent-2:#6D5DF6;--accent-ink:#1E4FD0;--accent-soft:#EAF1FF;--violet-soft:#EEEBFE;
+  --grad:linear-gradient(120deg,#2F6BFF 0%,#6D5DF6 100%);
+  --grad-soft:linear-gradient(120deg,#EAF1FF 0%,#EEEBFE 100%);
+  --green:#0E9F6E;--shadow:0 1px 2px rgba(13,20,40,.04),0 12px 34px rgba(13,20,40,.07);
+  --shadow-lg:0 30px 70px rgba(47,107,255,.18);--radius:18px;
+  --dot:radial-gradient(circle at 1px 1px, rgba(47,107,255,.10) 1px, transparent 0);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1140px;margin:0 auto;padding:0 26px}
+h1,h2,h3{letter-spacing:-.025em;font-weight:850;line-height:1.1}
+.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--accent-ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;border:none;border-radius:13px;padding:13px 22px;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;box-shadow:0 10px 24px rgba(47,107,255,.28);transition:transform .12s,box-shadow .12s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(47,107,255,.36)}
+.btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}
+.btn.ghost:hover{background:var(--bg-soft)}
+.btn.sm{padding:9px 16px;font-size:14px;border-radius:11px}
+
+/* header */
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+header .bar{display:flex;align-items:center;justify-content:space-between;height:68px}
+.logo{display:flex;align-items:center;gap:11px}
+.logo .mark{width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;box-shadow:0 6px 16px rgba(47,107,255,.32)}
+.logo .name{font-size:20px;font-weight:850}.logo .name .t{color:var(--accent)}
+.nav{display:flex;align-items:center;gap:24px}
+.nav a.lnk{font-size:14.5px;font-weight:600;color:var(--ink-soft)}
+.nav a.lnk:hover{color:var(--accent)}
+.langsel{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--line);border-radius:999px;padding:6px 10px;font-weight:700;font-size:13px;color:var(--ink-soft);cursor:pointer}
+.langsel select{border:none;background:transparent;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;outline:none;color:var(--ink-soft)}
+@media(max-width:880px){.nav .lnk{display:none}}
+
+/* hero */
+.hero{position:relative;background:var(--bg-tint);background-image:var(--dot);background-size:26px 26px;border-bottom:1px solid var(--line);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-top:74px;padding-bottom:80px}
+.hero .badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;color:var(--accent-ink);box-shadow:var(--shadow)}
+.hero h1{font-size:54px;margin:22px 0 18px}
+.hero p.sub{font-size:18.5px;color:var(--ink-soft);max-width:560px;line-height:1.55}
+.hero .cta{display:flex;gap:13px;margin-top:30px;flex-wrap:wrap}
+.hero .micro{margin-top:18px;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
+@media(max-width:920px){.hero .wrap{grid-template-columns:1fr;gap:36px}.hero h1{font-size:40px}.heromock{display:none}}
+
+/* hero mock report card */
+.heromock{position:relative}
+.heromock .rc{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-lg);overflow:hidden;transform:rotate(.6deg)}
+.heromock .rc-top{background:var(--grad);color:#fff;padding:22px 24px;position:relative;overflow:hidden}
+.heromock .rc-top:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.16) 1px,transparent 0);background-size:18px 18px;opacity:.6}
+.heromock .rc-top>*{position:relative}
+.heromock .rc-k{font-size:10px;letter-spacing:.22em;text-transform:uppercase;opacity:.85;font-weight:700}
+.heromock .rc-h{font-size:22px;font-weight:850;margin-top:6px}
+.heromock .rc-sc{display:flex;gap:10px;margin-top:16px}
+.heromock .rc-sc div{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.22);border-radius:11px;padding:10px 13px;flex:1}
+.heromock .rc-sc .n{font-size:22px;font-weight:850}.heromock .rc-sc .l{font-size:9.5px;text-transform:uppercase;letter-spacing:.06em;opacity:.85;font-weight:700}
+.heromock .rc-body{padding:20px 24px 24px}
+.heromock .sb{margin:11px 0}
+.heromock .sb .t{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
+.heromock .sb .bar{height:8px;border-radius:999px;background:var(--line-soft);overflow:hidden}
+.heromock .sb .bar>i{display:block;height:100%;border-radius:999px;background:var(--grad)}
+.heromock .sb .bar>i.w{background:linear-gradient(120deg,#F59E0B,#E5484D)}
+.heromock .tagfloat{position:absolute;bottom:-16px;left:-20px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);padding:11px 15px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:9px}
+.heromock .tagfloat .ic{width:26px;height:26px;border-radius:8px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:13px}
+
+/* trust band */
+.trust{border-bottom:1px solid var(--line);background:#fff}
+.trust .wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;padding:34px 26px}
+.trust .st .n{font-size:34px;font-weight:900;letter-spacing:-.03em}
+.trust .st .l{font-size:13.5px;color:var(--muted);font-weight:600;margin-top:4px}
+@media(max-width:760px){.trust .wrap{grid-template-columns:1fr 1fr;gap:24px}}
+
+/* sections */
+section.blk{padding:84px 0}
+section.blk.soft{background:var(--bg-soft)}
+.sec-head{max-width:680px;margin-bottom:42px}
+.sec-head h2{font-size:38px;margin:14px 0 14px}
+.sec-head p{font-size:17.5px;color:var(--ink-soft)}
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:880px){.cards{grid-template-columns:1fr}.sec-head h2{font-size:30px}}
+.card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:26px;box-shadow:var(--shadow);transition:transform .14s,box-shadow .14s}
+.card:hover{transform:translateY(-3px);box-shadow:var(--shadow-lg)}
+.card .ic{width:46px;height:46px;border-radius:13px;background:var(--grad-soft);display:grid;place-items:center;font-size:21px;margin-bottom:16px}
+.card h3{font-size:19px;margin-bottom:9px}
+.card p{font-size:15px;color:var(--ink-soft)}
+
+/* solve list */
+.solve{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:880px){.solve{grid-template-columns:1fr}}
+.solve .it{display:flex;gap:13px;align-items:flex-start;background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px 20px}
+.solve .it .x{width:26px;height:26px;border-radius:8px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;flex:0 0 auto;font-size:14px}
+.solve .it b{display:block;font-size:15.5px}.solve .it span{font-size:14px;color:var(--muted)}
+
+/* process steps */
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:s}
+@media(max-width:880px){.steps{grid-template-columns:1fr 1fr}}@media(max-width:520px){.steps{grid-template-columns:1fr}}
+.step{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px;position:relative}
+.step .num{width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;margin-bottom:14px}
+.step h3{font-size:17px;margin-bottom:7px}.step p{font-size:14px;color:var(--ink-soft)}
+
+/* methodology */
+.method{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+@media(max-width:880px){.method{grid-template-columns:1fr}}
+.mcard{background:#fff;border:1px solid var(--line);border-radius:18px;padding:28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.mcard:before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:var(--grad)}
+.mcard .big{font-size:40px;font-weight:900;letter-spacing:-.03em}
+.mcard h3{font-size:18px;margin:6px 0 10px}.mcard p{font-size:14.5px;color:var(--ink-soft)}
+
+/* receive */
+.receive{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+@media(max-width:880px){.receive{grid-template-columns:1fr}}
+.recv-list .r{display:flex;gap:12px;align-items:flex-start;padding:13px 0;border-bottom:1px dashed var(--line)}
+.recv-list .r:last-child{border:none}
+.recv-list .r .c{width:24px;height:24px;border-radius:7px;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800;flex:0 0 auto;margin-top:2px}
+.recv-list .r b{font-size:15.5px}.recv-list .r div span{font-size:14px;color:var(--muted)}
+.recv-mock{background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lg);overflow:hidden}
+.recv-mock .top{background:var(--grad);color:#fff;padding:20px 22px}
+.recv-mock .top .k{font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.85;font-weight:700}
+.recv-mock .top h4{font-size:18px;margin-top:5px;font-weight:850}
+.recv-mock .b{padding:18px 22px}
+.recv-mock .find{border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:11px}
+.recv-mock .find .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
+.recv-mock .find .h b{font-size:13.5px}
+.recv-mock .find .h .sev{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:#FCE8E8;color:#E5484D;padding:3px 8px;border-radius:999px}
+.recv-mock .find .l{font-size:12px;color:var(--muted);margin:3px 0}
+.recv-mock .find .l b{color:var(--ink-soft);font-weight:700}
+
+/* faq */
+.faq details{background:#fff;border:1px solid var(--line);border-radius:14px;padding:0;margin-bottom:12px;overflow:hidden}
+.faq summary{padding:19px 22px;font-weight:700;font-size:16px;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary:after{content:"+";font-size:22px;color:var(--accent);font-weight:400}
+.faq details[open] summary:after{content:"–"}
+.faq details p{padding:0 22px 20px;color:var(--ink-soft);font-size:15px}
+
+/* cta band */
+.ctaband{background:var(--grad);color:#fff;border-radius:24px;padding:56px;text-align:center;position:relative;overflow:hidden}
+.ctaband:before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 1px 1px,rgba(255,255,255,.14) 1px,transparent 0);background-size:24px 24px;opacity:.5}
+.ctaband>*{position:relative}
+.ctaband h2{font-size:38px;color:#fff;margin-bottom:14px}
+.ctaband p{font-size:18px;opacity:.92;max-width:560px;margin:0 auto 26px}
+.ctaband .btn{background:#fff;color:var(--accent-ink)}
+.ctaband .btn.ghost{background:transparent;color:#fff;border-color:rgba(255,255,255,.5)}
+@media(max-width:880px){.ctaband{padding:38px 24px}.ctaband h2{font-size:28px}}
+
+/* footer */
+footer{border-top:1px solid var(--line);padding:40px 0;color:var(--muted);font-size:14px}
+footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:18px;flex-wrap:wrap}
+</style></head>
+<body>
+
+<header><div class="wrap bar">
+  <a href="#" class="logo"><div class="mark">iL</div><div class="name">ILA<span class="t">tech</span></div></a>
+  <nav class="nav">
+    <a class="lnk" href="#why" data-i18n="nav.why">Why</a>
+    <a class="lnk" href="#how" data-i18n="nav.how">How it works</a>
+    <a class="lnk" href="#method" data-i18n="nav.method">Methodology</a>
+    <a class="lnk" href="#faq" data-i18n="nav.faq">FAQ</a>
+    <span class="langsel">🌐 <select onchange="setLang(this.value)" id="langpick"><option value="en">EN</option><option value="id">ID</option></select></span>
+    <a class="btn sm" href="/client/" data-i18n="nav.start">Start your diagnostic</a>
+  </nav>
+</div></header>
+
+<!-- HERO -->
+<div class="hero"><div class="wrap">
+  <div>
+    <span class="badge">◆ <span data-i18n="hero.badge">ILAtech Growth Intelligence</span></span>
+    <h1><span data-i18n="hero.h1a">Turn business complexity into a</span> <span class="grad" data-i18n="hero.h1b">clear growth roadmap.</span></h1>
+    <p class="sub" data-i18n="hero.sub">A consulting-grade growth diagnostic that identifies the 20% of issues holding back 80% of your growth — across sales, marketing, operations, technology and leadership.</p>
+    <div class="cta">
+      <a class="btn" href="/client/" data-i18n="hero.cta1">Start your diagnostic →</a>
+      <a class="btn ghost" href="#how" data-i18n="hero.cta2">See how it works</a>
+    </div>
+    <div class="micro">🔒 <span data-i18n="hero.micro">Confidential · Boardroom-ready growth assessment in days, not months</span></div>
+  </div>
+  <div class="heromock">
+    <div class="rc">
+      <div class="rc-top">
+        <div class="rc-k" data-i18n="hero.mock.k">ILAtech Growth Diagnostic</div>
+        <div class="rc-h" data-i18n="hero.mock.co">Northwind Manufacturing</div>
+        <div class="rc-sc">
+          <div><div class="l" data-i18n="hero.mock.mat">Maturity</div><div class="n">61<span style="font-size:12px;opacity:.7">/100</span></div></div>
+          <div><div class="l" data-i18n="hero.mock.pot">Potential</div><div class="n">78<span style="font-size:12px;opacity:.7">/100</span></div></div>
+        </div>
+      </div>
+      <div class="rc-body">
+        <div class="sb"><div class="t"><span>Sales Excellence</span><span>72</span></div><div class="bar"><i style="width:72%"></i></div></div>
+        <div class="sb"><div class="t"><span>Funnel Performance</span><span>38</span></div><div class="bar"><i class="w" style="width:38%"></i></div></div>
+        <div class="sb"><div class="t"><span>Marketing &amp; Demand</span><span>54</span></div><div class="bar"><i style="width:54%"></i></div></div>
+        <div class="sb"><div class="t"><span>Technology &amp; Data</span><span>45</span></div><div class="bar"><i class="w" style="width:45%"></i></div></div>
+      </div>
+    </div>
+    <div class="tagfloat"><span class="ic">✓</span><span data-i18n="hero.mock.tag">6 priority findings identified</span></div>
+  </div>
+</div></div>
+
+<!-- TRUST BAND -->
+<div class="trust"><div class="wrap">
+  <div class="st"><div class="n grad">50+</div><div class="l" data-i18n="trust.1">Growth indicators assessed</div></div>
+  <div class="st"><div class="n grad">10</div><div class="l" data-i18n="trust.2">Core business dimensions</div></div>
+  <div class="st"><div class="n grad">93</div><div class="l" data-i18n="trust.3">Diagnostic areas analysed</div></div>
+  <div class="st"><div class="n grad">Days</div><div class="l" data-i18n="trust.4">Not months — time to insight</div></div>
+</div></div>
+
+<!-- WHY -->
+<section class="blk" id="why"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow" data-i18n="why.eye">Why businesses use this</div><h2 data-i18n="why.h">Most businesses know their symptoms. Few understand the root cause.</h2><p data-i18n="why.p">ILAtech Growth Intelligence transforms fragmented business information into a prioritised, evidence-based view of what is really holding growth back — and what to do first.</p></div>
+  <div class="cards">
+    <div class="card"><div class="ic">🎯</div><h3 data-i18n="why.c1h">Find the real bottleneck</h3><p data-i18n="why.c1p">Identify growth bottlenecks across sales, marketing, operations, technology and leadership — not just the symptoms you already feel.</p></div>
+    <div class="card"><div class="ic">📊</div><h3 data-i18n="why.c2h">Consulting-grade rigour</h3><p data-i18n="why.c2p">Built around diagnostic frameworks applied by growth teams worldwide, scoring your business across 50+ indicators.</p></div>
+    <div class="card"><div class="ic">🧭</div><h3 data-i18n="why.c3h">A clear place to start</h3><p data-i18n="why.c3p">Discover the 20% of issues preventing 80% of growth, sequenced into a roadmap your leadership team can act on.</p></div>
+  </div>
+</div></section>
+
+<!-- WHAT IT SOLVES -->
+<section class="blk soft"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow" data-i18n="solve.eye">What it solves</div><h2 data-i18n="solve.h">The questions every founder is quietly asking</h2></div>
+  <div class="solve">
+    <div class="it"><span class="x">?</span><div><b data-i18n="solve.1h">"Where is growth actually leaking?"</b><span data-i18n="solve.1p">Pinpoint the funnel stages and functions silently capping revenue.</span></div></div>
+    <div class="it"><span class="x">?</span><div><b data-i18n="solve.2h">"What should we fix first?"</b><span data-i18n="solve.2p">A prioritised list, ranked by impact and effort — not a 50-page wishlist.</span></div></div>
+    <div class="it"><span class="x">?</span><div><b data-i18n="solve.3h">"Are we ready to scale?"</b><span data-i18n="solve.3p">An honest read on whether your team, systems and data can take the next step.</span></div></div>
+    <div class="it"><span class="x">?</span><div><b data-i18n="solve.4h">"Where is the upside?"</b><span data-i18n="solve.4p">The opportunities hiding in your sales, marketing and operations today.</span></div></div>
+  </div>
+</div></section>
+
+<!-- HOW IT WORKS -->
+<section class="blk" id="how"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow" data-i18n="how.eye">How the process works</div><h2 data-i18n="how.h">From conversation to boardroom-ready report</h2></div>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3 data-i18n="how.1h">Guided discovery</h3><p data-i18n="how.1p">A structured business interview — not a form — captures how your business really works.</p></div>
+    <div class="step"><div class="num">2</div><h3 data-i18n="how.2h">Evidence &amp; data</h3><p data-i18n="how.2p">Share supporting documents. Our analysts review your real numbers, confidentially.</p></div>
+    <div class="step"><div class="num">3</div><h3 data-i18n="how.3h">Expert diagnosis</h3><p data-i18n="how.3p">Your business is scored across two scorecards and mapped on the ILAtech Magic Matrix.</p></div>
+    <div class="step"><div class="num">4</div><h3 data-i18n="how.4h">Growth report</h3><p data-i18n="how.4p">You receive a premium diagnostic: findings, priorities, roadmap and KPIs.</p></div>
+  </div>
+</div></section>
+
+<!-- METHODOLOGY -->
+<section class="blk soft" id="method"><div class="wrap">
+  <div class="sec-head"><div class="eyebrow" data-i18n="method.eye">Growth diagnostic methodology</div><h2 data-i18n="method.h">Two scorecards. One Magic Matrix. A clear verdict.</h2><p data-i18n="method.p">Built around consulting-grade diagnostic frameworks, designed for founders, business owners and leadership teams.</p></div>
+  <div class="method">
+    <div class="mcard"><div class="big grad">50</div><h3 data-i18n="method.1h">Growth Maturity</h3><p data-i18n="method.1p">How well-built your business is today — measured across 50 areas spanning sales, marketing, funnel, technology, team and finance.</p></div>
+    <div class="mcard"><div class="big grad">43</div><h3 data-i18n="method.2h">Growth Potential</h3><p data-i18n="method.2p">How much upside is available — 43 areas assessing market, model, demand and scalability.</p></div>
+    <div class="mcard"><div class="big grad">2×2</div><h3 data-i18n="method.3h">The Magic Matrix</h3><p data-i18n="method.3p">Maturity vs. potential, plotted into a single strategic verdict — and the priority moves that follow from it.</p></div>
+  </div>
+</div></section>
+
+<!-- WHAT YOU RECEIVE -->
+<section class="blk"><div class="wrap">
+  <div class="receive">
+    <div>
+      <div class="eyebrow" data-i18n="recv.eye">What you receive</div>
+      <h2 style="font-size:34px;margin:14px 0 22px" data-i18n="recv.h">A deliverable built for the boardroom</h2>
+      <div class="recv-list">
+        <div class="r"><span class="c">1</span><div><b data-i18n="recv.1h">Executive summary</b><div><span data-i18n="recv.1p">Situation, diagnosis, cost of inaction and the prescription — on one page.</span></div></div></div>
+        <div class="r"><span class="c">2</span><div><b data-i18n="recv.2h">Scorecards &amp; Magic Matrix</b><div><span data-i18n="recv.2p">Your maturity and potential scores, visualised area by area.</span></div></div></div>
+        <div class="r"><span class="c">3</span><div><b data-i18n="recv.3h">Prioritised findings</b><div><span data-i18n="recv.3p">Each with observation, root cause, business impact and a recommended action.</span></div></div></div>
+        <div class="r"><span class="c">4</span><div><b data-i18n="recv.4h">Roadmap, budget &amp; KPIs</b><div><span data-i18n="recv.4p">A 90-day plan, 12-month roadmap and the metrics that prove progress.</span></div></div></div>
+      </div>
+      <a class="btn" href="/client/" style="margin-top:24px" data-i18n="recv.cta">Start your diagnostic →</a>
+    </div>
+    <div class="recv-mock">
+      <div class="top"><div class="k" data-i18n="recv.mock.k">ILAtech Growth Diagnostic</div><h4 data-i18n="recv.mock.h">Key Findings</h4></div>
+      <div class="b">
+        <div class="find"><div class="h"><b>Sales Excellence</b><span class="sev" data-i18n="recv.mock.sev">High priority</span></div><div class="l"><b data-i18n="f.obs">Observation:</b> <span data-i18n="recv.mock.obs">Quotes go out with no structured follow-up.</span></div><div class="l"><b data-i18n="f.imp">Impact:</b> <span data-i18n="recv.mock.imp">~21 won jobs/month at a 30% close rate, with leakage on aged quotes.</span></div></div>
+        <div class="find"><div class="h"><b>Customer Concentration</b><span class="sev" data-i18n="recv.mock.sev">High priority</span></div><div class="l"><b data-i18n="f.act">Action:</b> <span data-i18n="recv.mock.act">Stand up a deliberate new-business engine to diversify the base.</span></div></div>
+      </div>
+    </div>
+  </div>
+</div></section>
+
+<!-- FAQ -->
+<section class="blk soft" id="faq"><div class="wrap" style="max-width:840px">
+  <div class="sec-head" style="margin-bottom:30px"><div class="eyebrow" data-i18n="faq.eye">Frequently asked questions</div><h2 data-i18n="faq.h">Good to know</h2></div>
+  <div class="faq">
+    <details open><summary data-i18n="faq.1q">How long does the diagnostic take?</summary><p data-i18n="faq.1a">The guided discovery takes most founders under an hour, and can be completed with your team. Your boardroom-ready report is delivered in days, not months.</p></details>
+    <details><summary data-i18n="faq.2q">Who is it for?</summary><p data-i18n="faq.2a">Designed for founders, business owners and leadership teams who want a clear, evidence-based view of where to focus growth efforts next.</p></details>
+    <details><summary data-i18n="faq.3q">Is my information confidential?</summary><p data-i18n="faq.3a">Yes. Everything you share is strictly confidential and used only to produce your diagnostic. Your data is reviewed by ILAtech analysts under confidentiality.</p></details>
+    <details><summary data-i18n="faq.4q">What do I actually get at the end?</summary><p data-i18n="faq.4a">A premium diagnostic report: executive summary, scorecards, the Magic Matrix, prioritised findings, strategic recommendations, a roadmap, budget guidance and a KPI framework.</p></details>
+  </div>
+</div></section>
+
+<!-- CTA -->
+<section class="blk"><div class="wrap">
+  <div class="ctaband">
+    <h2 data-i18n="cta.h">Get a boardroom-ready growth assessment</h2>
+    <p data-i18n="cta.p">Turn fragmented business information into actionable growth priorities — with ILAtech Growth Intelligence.</p>
+    <div style="display:flex;gap:13px;justify-content:center;flex-wrap:wrap">
+      <a class="btn" href="/client/" data-i18n="cta.b1">Start your diagnostic →</a>
+      <a class="btn ghost" href="https://ilatech.id/en/" target="_blank" rel="noopener" data-i18n="cta.b2">Talk to ILAtech</a>
+    </div>
+  </div>
+</div></section>
+
+<footer><div class="wrap">
+  <div class="logo"><div class="mark">iL</div><div class="name" style="font-size:17px">ILA<span class="t">tech</span> <span style="color:var(--muted);font-weight:600;font-size:14px">Growth Intelligence</span></div></div>
+  <div><a href="/analyst/" style="color:var(--muted);font-weight:600;margin-right:18px" data-i18n="foot.analyst">Analyst workspace</a><span data-i18n="foot.copy">© ILAtech · Confidential</span></div>
+</div></footer>
+
+<script>
+const I18N={
+  en:{}, // English is the source; data-i18n defaults to existing text
+  id:{
+    'nav.why':'Alasan','nav.how':'Cara kerja','nav.method':'Metodologi','nav.faq':'FAQ','nav.start':'Mulai diagnostik',
+    'hero.badge':'ILAtech Growth Intelligence',
+    'hero.h1a':'Ubah kompleksitas bisnis menjadi','hero.h1b':'peta jalan pertumbuhan yang jelas.',
+    'hero.sub':'Diagnostik pertumbuhan setara konsultan yang mengidentifikasi 20% masalah yang menahan 80% pertumbuhan Anda — di seluruh penjualan, pemasaran, operasi, teknologi, dan kepemimpinan.',
+    'hero.cta1':'Mulai diagnostik →','hero.cta2':'Lihat cara kerjanya',
+    'hero.micro':'Rahasia · Penilaian pertumbuhan siap-rapat direksi dalam hitungan hari, bukan bulan',
+    'hero.mock.k':'ILAtech Growth Diagnostic','hero.mock.co':'Northwind Manufacturing','hero.mock.mat':'Kematangan','hero.mock.pot':'Potensi','hero.mock.tag':'6 temuan prioritas teridentifikasi',
+    'trust.1':'Indikator pertumbuhan dinilai','trust.2':'Dimensi bisnis inti','trust.3':'Area diagnostik dianalisis','trust.4':'Bukan bulan — waktu ke wawasan',
+    'why.eye':'Mengapa bisnis menggunakannya','why.h':'Kebanyakan bisnis tahu gejalanya. Sedikit yang paham akar masalahnya.','why.p':'ILAtech Growth Intelligence mengubah informasi bisnis yang terfragmentasi menjadi pandangan berbasis bukti yang terprioritaskan tentang apa yang benar-benar menahan pertumbuhan — dan apa yang harus dilakukan lebih dulu.',
+    'why.c1h':'Temukan hambatan sebenarnya','why.c1p':'Identifikasi hambatan pertumbuhan di penjualan, pemasaran, operasi, teknologi, dan kepemimpinan — bukan hanya gejala yang sudah Anda rasakan.',
+    'why.c2h':'Kerigoran setara konsultan','why.c2p':'Dibangun di atas kerangka diagnostik yang digunakan tim pertumbuhan di seluruh dunia, menilai bisnis Anda pada 50+ indikator.',
+    'why.c3h':'Titik awal yang jelas','why.c3p':'Temukan 20% masalah yang mencegah 80% pertumbuhan, diurutkan menjadi peta jalan yang dapat ditindaklanjuti tim Anda.',
+    'solve.eye':'Apa yang diselesaikan','solve.h':'Pertanyaan yang diam-diam ditanyakan setiap founder',
+    'solve.1h':'"Di mana pertumbuhan sebenarnya bocor?"','solve.1p':'Temukan tahap funnel dan fungsi yang diam-diam membatasi pendapatan.',
+    'solve.2h':'"Apa yang harus diperbaiki lebih dulu?"','solve.2p':'Daftar terprioritaskan, diurutkan berdasarkan dampak dan upaya — bukan daftar keinginan 50 halaman.',
+    'solve.3h':'"Apakah kami siap berkembang?"','solve.3p':'Pandangan jujur apakah tim, sistem, dan data Anda siap untuk langkah berikutnya.',
+    'solve.4h':'"Di mana peluangnya?"','solve.4p':'Peluang yang tersembunyi di penjualan, pemasaran, dan operasi Anda saat ini.',
+    'how.eye':'Bagaimana prosesnya','how.h':'Dari percakapan ke laporan siap-rapat direksi',
+    'how.1h':'Penemuan terpandu','how.1p':'Wawancara bisnis terstruktur — bukan formulir — menangkap cara bisnis Anda benar-benar bekerja.',
+    'how.2h':'Bukti & data','how.2p':'Bagikan dokumen pendukung. Analis kami meninjau angka nyata Anda, secara rahasia.',
+    'how.3h':'Diagnosis ahli','how.3p':'Bisnis Anda dinilai pada dua scorecard dan dipetakan pada ILAtech Magic Matrix.',
+    'how.4h':'Laporan pertumbuhan','how.4p':'Anda menerima diagnostik premium: temuan, prioritas, peta jalan, dan KPI.',
+    'method.eye':'Metodologi diagnostik pertumbuhan','method.h':'Dua scorecard. Satu Magic Matrix. Verdict yang jelas.','method.p':'Dibangun di atas kerangka diagnostik setara konsultan, dirancang untuk founder, pemilik bisnis, dan tim kepemimpinan.',
+    'method.1h':'Kematangan Pertumbuhan','method.1p':'Seberapa baik bisnis Anda dibangun saat ini — diukur pada 50 area mencakup penjualan, pemasaran, funnel, teknologi, tim, dan keuangan.',
+    'method.2h':'Potensi Pertumbuhan','method.2p':'Seberapa besar peluang yang tersedia — 43 area menilai pasar, model, permintaan, dan skalabilitas.',
+    'method.3h':'Magic Matrix','method.3p':'Kematangan vs. potensi, dipetakan menjadi satu verdict strategis — dan langkah prioritas yang mengikutinya.',
+    'recv.eye':'Yang Anda terima','recv.h':'Deliverable yang dibangun untuk ruang direksi',
+    'recv.1h':'Ringkasan eksekutif','recv.1p':'Situasi, diagnosis, biaya jika diabaikan, dan rekomendasi — dalam satu halaman.',
+    'recv.2h':'Scorecard & Magic Matrix','recv.2p':'Skor kematangan dan potensi Anda, divisualisasikan area demi area.',
+    'recv.3h':'Temuan terprioritaskan','recv.3p':'Masing-masing dengan observasi, akar masalah, dampak bisnis, dan tindakan yang disarankan.',
+    'recv.4h':'Peta jalan, anggaran & KPI','recv.4p':'Rencana 90 hari, peta jalan 12 bulan, dan metrik yang membuktikan kemajuan.',
+    'recv.cta':'Mulai diagnostik →','recv.mock.k':'ILAtech Growth Diagnostic','recv.mock.h':'Temuan Utama','recv.mock.sev':'Prioritas tinggi',
+    'recv.mock.obs':'Penawaran keluar tanpa tindak lanjut terstruktur.','recv.mock.imp':'~21 pekerjaan dimenangkan/bulan pada tingkat closing 30%, dengan kebocoran pada penawaran yang menua.','recv.mock.act':'Bangun mesin bisnis baru yang terarah untuk mendiversifikasi basis pelanggan.',
+    'f.obs':'Observasi:','f.imp':'Dampak:','f.act':'Tindakan:',
+    'faq.eye':'Pertanyaan yang sering diajukan','faq.h':'Hal yang perlu diketahui',
+    'faq.1q':'Berapa lama diagnostik berlangsung?','faq.1a':'Penemuan terpandu memakan waktu kurang dari satu jam bagi kebanyakan founder, dan dapat diselesaikan bersama tim Anda. Laporan siap-rapat direksi Anda dikirim dalam hitungan hari, bukan bulan.',
+    'faq.2q':'Untuk siapa ini?','faq.2a':'Dirancang untuk founder, pemilik bisnis, dan tim kepemimpinan yang menginginkan pandangan berbasis bukti yang jelas tentang di mana harus memfokuskan upaya pertumbuhan berikutnya.',
+    'faq.3q':'Apakah informasi saya rahasia?','faq.3a':'Ya. Semua yang Anda bagikan sangat rahasia dan hanya digunakan untuk menghasilkan diagnostik Anda. Data Anda ditinjau oleh analis ILAtech di bawah kerahasiaan.',
+    'faq.4q':'Apa yang saya dapatkan pada akhirnya?','faq.4a':'Laporan diagnostik premium: ringkasan eksekutif, scorecard, Magic Matrix, temuan terprioritaskan, rekomendasi strategis, peta jalan, panduan anggaran, dan kerangka KPI.',
+    'cta.h':'Dapatkan penilaian pertumbuhan siap-rapat direksi','cta.p':'Ubah informasi bisnis yang terfragmentasi menjadi prioritas pertumbuhan yang dapat ditindaklanjuti — dengan ILAtech Growth Intelligence.',
+    'cta.b1':'Mulai diagnostik →','cta.b2':'Hubungi ILAtech',
+    'foot.analyst':'Ruang kerja analis','foot.copy':'© ILAtech · Rahasia'
+  }
+};
+const NODES=[...document.querySelectorAll('[data-i18n]')].map(el=>({el,en:el.textContent}));
+function applyLang(l){
+  document.documentElement.lang=l;
+  NODES.forEach(n=>{ const d=I18N[l]&&I18N[l][n.el.getAttribute('data-i18n')]; n.el.textContent=(l==='id'&&d)?d:n.en; });
+}
+function setLang(l){ l=(l==='id')?'id':'en'; try{localStorage.setItem('ila_lang',l);}catch(e){} document.getElementById('langpick').value=l; applyLang(l); }
+(function(){ let l='en'; try{l=localStorage.getItem('ila_lang')||'en';}catch(e){} setLang(l); })();
+</script>
+</body></html>

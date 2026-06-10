@@ -1,0 +1,24 @@
+# ILAtech Growth Intelligence — Render deployment (one always-on web service + a persistent disk).
+# The persistent disk is REQUIRED: the SQLite database and uploads live on it and must survive redeploys.
+services:
+  - type: web
+    name: ila-growth-intelligence
+    runtime: node
+    plan: starter              # Starter ($7/mo) or higher — the free plan has NO persistent disk
+    region: singapore          # closest to SEA; change if you prefer
+    numInstances: 1            # MUST stay 1 — SQLite is single-writer; do NOT autoscale
+    buildCommand: "echo no build step (zero dependencies)"
+    startCommand: "npm start"  # runs: node --experimental-sqlite server.js
+    healthCheckPath: /
+    autoDeploy: true
+    envVars:
+      - key: XL_DATA_DIR
+        value: /data           # points the DB + uploads at the mounted disk below
+      - key: ANTHROPIC_API_KEY
+        sync: false            # set the secret value in the Render dashboard (not in this file)
+      # - key: AI_MODEL        # optional; defaults to claude-opus-4-8
+      #   value: claude-haiku-4-5
+    disk:
+      name: ila-data
+      mountPath: /data
+      sizeGB: 1
