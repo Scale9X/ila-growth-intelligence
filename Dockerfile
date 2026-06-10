@@ -5,4 +5,4 @@ WORKDIR /app
 COPY . .
 ENV NODE_ENV=production
 # Railway injects PORT (the app reads process.env.PORT). Data dir is set via the XL_DATA_DIR env var.
-CMD ["node", "--experimental-sqlite", "server.js"]
+CMD ["node", "--experimental-sqlite", "bootstrap.js"]
