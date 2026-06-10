@@ -1,0 +1,13 @@
+.git
+node_modules
+1xl-data
+data
+*.db
+*.db-shm
+*.db-wal
+*.db-journal
+anthropic_key
+anthropic_key.txt
+uploads
+*.log
+.claude
