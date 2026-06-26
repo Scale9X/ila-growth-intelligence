@@ -1,4 +1,4 @@
-/* 1XL Platform — shared database (node:sqlite, zero dependencies).
+/* Scale9X Platform — shared database (node:sqlite, zero dependencies).
    One file = one shared DB for both portals. Ports to Postgres/Supabase later (same SQL). */
 const { DatabaseSync } = require('node:sqlite');
 const path = require('path');
@@ -184,9 +184,40 @@ function seed() {
     if (!get('SELECT id FROM roles WHERE key=?', key)) run('INSERT INTO roles(id,key,name,scope) VALUES(?,?,?,?)', uid(), key, name, scope);
   }
   // demo staff so the analyst portal has a login on first run
-  ensureStaff('admin@1xl.co', '1XL Admin', 'super_admin', 'changeme');
+  ensureStaff('admin@1xl.co', 'Scale9X Admin', 'super_admin', 'changeme');
   ensureStaff('analyst@1xl.co', 'Maya Analyst', 'analyst', 'changeme');
   seedScorecards();
+  rebrandFix();
+  debrandDemoClient();
+}
+/* One-time Scale9X rebrand fix for pre-existing (live) databases. Idempotent:
+   runs on every boot but is a no-op once names are corrected. Login emails are
+   intentionally left as-is so existing credentials keep working. */
+function rebrandFix() {
+  run("UPDATE users SET full_name=REPLACE(REPLACE(full_name,'ILAtech','Scale9X'),'1XL','Scale9X') WHERE email IN ('admin@1xl.co','analyst@1xl.co') AND (full_name LIKE '%ILAtech%' OR full_name LIKE '%1XL%')");
+  run("UPDATE scorecards SET name=REPLACE(REPLACE(name,'1XL ','Scale9X '),'ILAtech ','Scale9X ') WHERE name LIKE '1XL %' OR name LIKE 'ILAtech %'");
+}
+/* The seeded DEMO client was named "ILAtech" — confusing now that ILAtech is a
+   separate partner brand. De-brand it to a neutral demo company across all of its
+   content. Idempotent: guarded by the company name, so it runs once then no-ops.
+   Only ever touches the rows belonging to that one demo company. */
+function debrandDemoClient() {
+  const c = get("SELECT id FROM companies WHERE name='ILAtech'");
+  if (!c) return;
+  const cid = c.id;
+  // ILATech (doc-name style) -> Northwind ; ILAtech -> Northwind Solutions ; ilatech -> northwindsolutions
+  const norm = s => `REPLACE(REPLACE(REPLACE(${s},'ILATech','Northwind'),'ILAtech','Northwind Solutions'),'ilatech','northwindsolutions')`;
+  const eng = 'IN (SELECT id FROM engagements WHERE company_id=?)';
+  run(`UPDATE business_profiles SET data=${norm('data')} WHERE company_id=?`, cid);
+  run(`UPDATE prompt_answers SET value_text=${norm('value_text')} WHERE company_id=?`, cid);
+  run(`UPDATE ai_extractions SET extracted_text=${norm('extracted_text')} WHERE response_id IN (SELECT id FROM discovery_responses WHERE company_id=?)`, cid);
+  run(`UPDATE documents SET file_name=${norm('file_name')} WHERE company_id=?`, cid);
+  run(`UPDATE findings SET observation=${norm('observation')}, root_cause=${norm('root_cause')}, business_impact=${norm('business_impact')}, opportunity=${norm('opportunity')}, action=${norm('action')}, evidence=${norm('evidence')} WHERE engagement_id ${eng}`, cid);
+  run(`UPDATE opportunities SET title=${norm('title')}, recommendation=${norm('recommendation')} WHERE engagement_id ${eng}`, cid);
+  run(`UPDATE blueprint_sections SET content=${norm('content')} WHERE blueprint_id IN (SELECT id FROM blueprints WHERE engagement_id ${eng})`, cid);
+  run(`UPDATE report_sections SET content=${norm('content')} WHERE report_id IN (SELECT id FROM reports WHERE engagement_id ${eng})`, cid);
+  // rename the company LAST so the guard above makes this whole pass idempotent
+  run(`UPDATE companies SET name='Northwind Solutions', website=${norm('website')} WHERE id=?`, cid);
 }
 function seedScorecards() {
   const { SCORECARDS } = require('./scoring_seed');

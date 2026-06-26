@@ -1,4 +1,4 @@
-/* 1XL Platform — authentication & sessions (built-in crypto only). */
+/* Scale9X Platform — authentication & sessions (built-in crypto only). */
 const crypto = require('crypto');
 
 function hashPassword(pw) {

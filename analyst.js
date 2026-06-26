@@ -1,4 +1,4 @@
-/* 1XL Platform — Analyst Portal API + status workflow automation (Phase 3).
+/* Scale9X Platform — Analyst Portal API + status workflow automation (Phase 3).
    Reads the SAME shared DB the client writes to — no sync, no copy. */
 const { uid, now, get, all, run } = require('./db');
 const engine = require('./engine');

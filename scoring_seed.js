@@ -1,8 +1,8 @@
-/* 1XL Platform — scorecard configuration (seeded into the shared DB).
+/* Scale9X Platform — scorecard configuration (seeded into the shared DB).
    Each area's `options` array index = points (0..max). Total of each scorecard = 100. */
 const SCORECARDS = [
   {
-    type: 'maturity', name: '1XL Growth Maturity Scorecard', total: 100,
+    type: 'maturity', name: 'Scale9X Growth Maturity Scorecard', total: 100,
     bands: [[90,'A','Growth Leader'],[80,'B','Strong Growth Engine'],[70,'C','Growth Ready'],[60,'D','Growth Constrained'],[50,'E','Growth At Risk'],[0,'F','Growth Intervention Required']],
     categories: [
       { name:'Business Foundation', weight:10, areas:[
@@ -68,7 +68,7 @@ const SCORECARDS = [
     ]
   },
   {
-    type: 'potential', name: '1XL Growth Potential Scorecard', total: 100,
+    type: 'potential', name: 'Scale9X Growth Potential Scorecard', total: 100,
     bands: [[90,'Exceptional Potential','Category Leader Potential'],[80,'High Potential','Scale Candidate'],[70,'Strong Potential','Growth Ready'],[60,'Moderate Potential','Selective Growth'],[50,'Limited Potential','Structural Constraints'],[0,'Low Potential','Major Repositioning Needed']],
     categories: [
       { name:'Market Opportunity', weight:15, areas:[

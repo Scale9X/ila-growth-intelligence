@@ -1,4 +1,4 @@
-/* 1XL Platform — AI-assisted scoring (optional).
+/* Scale9X Platform — AI-assisted scoring (optional).
    Claude reads the client's submission and drafts a first-pass scorecard:
    a rubric level + confidence + evidence note for every area. The analyst
    reviews and edits in the UI before anything is saved — the deterministic
@@ -75,7 +75,7 @@ function buildPrompt(type, cfg, ev) {
 
   const label = type === 'maturity' ? 'Growth Maturity (how built-out the business is today)'
                                     : 'Growth Potential (the upside available)';
-  const system = `You are a senior growth consultant at 1XL scoring a client's ${label} against a FIXED rubric.
+  const system = `You are a senior growth consultant at Scale9X scoring a client's ${label} against a FIXED rubric.
 For every area, choose the integer rubric level (0..max) whose description best matches the evidence.
 Rules:
 - Score ONLY from the evidence provided. Do not assume facts the client did not state.

@@ -1,5 +1,5 @@
 @echo off
-title 1XL Platform
-echo Starting 1XL Platform...
+title Scale9X Platform
+echo Starting Scale9X Platform...
 node --experimental-sqlite server.js
 pause

@@ -1,8 +1,8 @@
-/* 1XL Client Portal — content model. Conversational Business Discovery Interview,
+/* Scale9X Client Portal — content model. Conversational Business Discovery Interview,
    business profile, document vault, and the Smart Discovery extraction map.
    The 10 sections + prompts map behind the scenes to the 117-point coverage model. */
 
-const INTERVIEWER = { name: "Maya", role: "ILAtech Discovery Lead", initial: "M" };
+const INTERVIEWER = { name: "Maya", role: "Scale9X Discovery Lead", initial: "M" };
 
 /* Business Profile — guided, conversational (not a long form) */
 const PROFILE_FIELDS = [

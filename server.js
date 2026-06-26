@@ -1,4 +1,4 @@
-/* 1XL Platform — single server, two portals, one shared DB.
+/* Scale9X Platform — single server, two portals, one shared DB.
    Run: node --experimental-sqlite server.js   (or double-click start.cmd) */
 const http = require('http');
 const fs = require('fs');
@@ -137,7 +137,7 @@ function serveStatic(req, res, pathname) {
   const fp = path.join(PUBLIC, rel);
   if (!fp.startsWith(PUBLIC)) { res.writeHead(403); return res.end('Forbidden'); }
   fs.readFile(fp, (err, data) => {
-    if (err) { res.writeHead(404, { 'Content-Type':'text/html' }); return res.end('<h1>404</h1><p>1XL Platform — file not found.</p>'); }
+    if (err) { res.writeHead(404, { 'Content-Type':'text/html' }); return res.end('<h1>404</h1><p>Scale9X Platform — file not found.</p>'); }
     // No caching: the portals are a single-file SPA per role; always serve the latest HTML/JS/CSS
     // so a browser never runs a stale app.js (which makes buttons look "dead").
     res.writeHead(200, { 'Content-Type': MIME[path.extname(fp)] || 'text/plain', 'Cache-Control': 'no-cache, no-store, must-revalidate', 'Pragma': 'no-cache', 'Expires': '0' });
@@ -154,4 +154,4 @@ const server = http.createServer((req, res) => {
   if (pathname.startsWith('/api/')) return api(req, res, pathname).catch(e => send(res,500,{ error:String(e&&e.message||e) }));
   serveStatic(req, res, pathname);
 });
-server.listen(PORT, () => console.log(`\n  1XL Platform running →  http://localhost:${PORT}\n  Shared DB: data/1xl.db  ·  Staff login: analyst@1xl.co / changeme\n`));
+server.listen(PORT, () => console.log(`\n  Scale9X Platform running →  http://localhost:${PORT}\n  Shared DB: data/1xl.db  ·  Staff login: analyst@1xl.co / changeme\n`));

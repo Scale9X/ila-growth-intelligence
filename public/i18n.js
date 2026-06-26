@@ -1,11 +1,11 @@
-/* ILAtech Growth Intelligence — lightweight dictionary-based i18n (EN / ID).
+/* Scale9X — lightweight dictionary-based i18n (EN / ID).
    Switches UI labels, navigation, buttons and section headings.
    Client-entered content (interview answers, report data) is never translated. */
 (function(){
   const DICT = {
     en: {
       // brand
-      'brand.tag':'Growth Intelligence',
+      'brand.tag':'Growth Leadership',
       // nav
       'nav.dashboard':'Dashboard','nav.profile':'Business Profile','nav.interview':'Discovery Interview',
       'nav.team':'Team & Access','nav.smart':'Smart Discovery','nav.documents':'Document Vault',
@@ -19,12 +19,12 @@
       'auth.signin':'Sign in','auth.createacct':'Create account',
       'auth.haveacct':'Have an account?','auth.signin_link':'Sign in',
       'auth.new':'New here?','auth.create_link':'Create an account',
-      'auth.lead':'A guided discovery of your business — led by ILAtech.',
+      'auth.lead':'A guided discovery of your business — led by Scale9X.',
       'auth.leadsub':'Not a form. A structured conversation that helps us understand your business deeply, before we diagnose your growth.',
       'auth.p1':'50+ growth indicators assessed across 10 business dimensions',
       'auth.p2':'Built on consulting-grade diagnostic frameworks',
       'auth.p3':'A boardroom-ready growth report in days, not months',
-      'auth.confidential':'Confidential · ILAtech Growth Intelligence',
+      'auth.confidential':'Confidential · Scale9X',
       // dashboard
       'db.welcome':'Welcome','db.hello':'Hello','db.continue':'Continue','db.viewstatus':'View status',
       'db.next':'Your next action','db.gonow':'Go now','db.progress':'Discovery progress',
@@ -37,9 +37,9 @@
       'btn.continue':'Continue','btn.savecontinue':'Save & continue','btn.submit':'Submit for Diagnostic',
       'btn.back':'Back',
       // report
-      'r.kicker':'ILAtech Growth Diagnostic','r.delivered':'Delivered','r.confidential':'Strictly Confidential',
+      'r.kicker':'Scale9X Growth Diagnostic','r.delivered':'Delivered','r.confidential':'Strictly Confidential',
       'r.download':'Download / Print PDF','r.reportcenter':'Report Center','r.yourreports':'Your reports',
-      'r.reportsub':'Diagnostic reports delivered by the ILAtech team. Published versions only.',
+      'r.reportsub':'Diagnostic reports delivered by the Scale9X team. Published versions only.',
       'r.open':'Open','r.growthdiag':'Growth Diagnostic',
       'r.exec':'Executive Summary','r.reality':'Business Reality','r.scores':'Diagnostic Scores',
       'r.magic':'Magic Matrix','r.sw':'Strengths & Priority Weaknesses','r.findings':'Key Findings',
@@ -66,7 +66,7 @@
       'r.outcome':'Outcome'
     },
     id: {
-      'brand.tag':'Growth Intelligence',
+      'brand.tag':'Growth Leadership',
       'nav.dashboard':'Dasbor','nav.profile':'Profil Bisnis','nav.interview':'Wawancara Bisnis',
       'nav.team':'Tim & Akses','nav.smart':'Ringkasan Cerdas','nav.documents':'Brankas Dokumen',
       'nav.review':'Tinjau & Kirim','nav.reports':'Laporan','signout':'Keluar','signedin':'Masuk sebagai',
@@ -77,12 +77,12 @@
       'auth.signin':'Masuk','auth.createacct':'Buat akun',
       'auth.haveacct':'Sudah punya akun?','auth.signin_link':'Masuk',
       'auth.new':'Baru di sini?','auth.create_link':'Buat akun',
-      'auth.lead':'Penemuan bisnis Anda yang terpandu — oleh ILAtech.',
+      'auth.lead':'Penemuan bisnis Anda yang terpandu — oleh Scale9X.',
       'auth.leadsub':'Bukan formulir. Sebuah percakapan terstruktur yang membantu kami memahami bisnis Anda secara mendalam, sebelum mendiagnosis pertumbuhan Anda.',
       'auth.p1':'50+ indikator pertumbuhan dinilai pada 10 dimensi bisnis',
       'auth.p2':'Dibangun di atas kerangka diagnostik setara konsultan',
       'auth.p3':'Laporan pertumbuhan siap-rapat direksi dalam hitungan hari, bukan bulan',
-      'auth.confidential':'Rahasia · ILAtech Growth Intelligence',
+      'auth.confidential':'Rahasia · Scale9X',
       'db.welcome':'Selamat Datang','db.hello':'Halo','db.continue':'Lanjutkan','db.viewstatus':'Lihat status',
       'db.next':'Tindakan berikutnya','db.gonow':'Buka sekarang','db.progress':'Kemajuan penemuan',
       'db.inprogress':'Sedang berlangsung','db.submitted':'Terkirim — sedang ditinjau',
@@ -92,9 +92,9 @@
       'db.status':'Status','db.reportcenter':'Pusat Laporan','db.ready':'Diagnostik pertumbuhan Anda sudah siap',
       'btn.continue':'Lanjutkan','btn.savecontinue':'Simpan & lanjutkan','btn.submit':'Kirim untuk Diagnostik',
       'btn.back':'Kembali',
-      'r.kicker':'ILAtech Growth Diagnostic','r.delivered':'Terkirim','r.confidential':'Sangat Rahasia',
+      'r.kicker':'Scale9X Growth Diagnostic','r.delivered':'Terkirim','r.confidential':'Sangat Rahasia',
       'r.download':'Unduh / Cetak PDF','r.reportcenter':'Pusat Laporan','r.yourreports':'Laporan Anda',
-      'r.reportsub':'Laporan diagnostik yang dikirim oleh tim ILAtech. Hanya versi yang diterbitkan.',
+      'r.reportsub':'Laporan diagnostik yang dikirim oleh tim Scale9X. Hanya versi yang diterbitkan.',
       'r.open':'Buka','r.growthdiag':'Diagnostik Pertumbuhan',
       'r.exec':'Ringkasan Eksekutif','r.reality':'Realitas Bisnis','r.scores':'Skor Diagnostik',
       'r.magic':'Magic Matrix','r.sw':'Kekuatan & Kelemahan Prioritas','r.findings':'Temuan Utama',

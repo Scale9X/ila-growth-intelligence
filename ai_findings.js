@@ -1,4 +1,4 @@
-/* 1XL Platform — AI-assisted KEY FINDINGS (optional, analyst-reviewed).
+/* Scale9X Platform — AI-assisted KEY FINDINGS (optional, analyst-reviewed).
    Turns the scorecard + the client's actual discovery answers into specific, quantified,
    consulting-grade findings — the opposite of "Area X scored 0/2". The analyst reviews/edits
    before they reach the report. Reuses the same Claude call + evidence used for scoring/narrative.
@@ -54,7 +54,7 @@ function buildPrompt(company, d, ev) {
     `\n(The facts and numbers above — plus the scorecard scores/weights — are the ONLY data you may use. There is no other information about this business.)`
   ].filter(Boolean).join('\n');
 
-  const system = `You are a senior growth consultant at 1XL writing the KEY FINDINGS of a premium diagnostic. The findings must be consultant-grade AND numerically defensible in front of a founder, CFO, or board member who will check every number.
+  const system = `You are a senior growth consultant at Scale9X writing the KEY FINDINGS of a premium diagnostic. The findings must be consultant-grade AND numerically defensible in front of a founder, CFO, or board member who will check every number.
 
 OUTPUT: Produce EXACTLY 5–6 findings (no more), PRIORITISED by business impact — weight the heaviest weak categories first (a 15-weight Sales gap outranks a 5-weight one). Cover the most important DISTINCT problems.
 

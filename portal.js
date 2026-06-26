@@ -1,4 +1,4 @@
-/* 1XL Platform — Client Portal API (Phase 2). All data persists to the shared DB.
+/* Scale9X Platform — Client Portal API (Phase 2). All data persists to the shared DB.
    handle(pathname, method, body, user) -> { status, data } */
 const { uid, now, get, all, run, DATA_DIR } = require('./db');
 const fs = require('fs');

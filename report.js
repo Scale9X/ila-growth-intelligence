@@ -1,4 +1,4 @@
-/* 1XL Platform — Blueprint + Report Generation Engine (Phase 5).
+/* Scale9X Platform — Blueprint + Report Generation Engine (Phase 5).
    Deterministic: every generated section is composed from real scores, findings,
    evidence and the opportunity matrix. No invented numbers. Analyst edits before publish. */
 const { uid, now, get, all, run } = require('./db');

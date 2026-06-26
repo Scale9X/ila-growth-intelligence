@@ -1,4 +1,4 @@
-/* 1XL Analyst Portal (Phase 3) — queue + submission review + status workflow.
+/* Scale9X Analyst Portal (Phase 3) — queue + submission review + status workflow.
    Reads the same shared DB the client portal writes to. */
 const $=s=>document.getElementById(s);
 const esc=s=>(''+(s==null?'':s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
@@ -27,15 +27,15 @@ function shell(body,title){
     <a class="navitem ${location.hash.includes('queue')||!location.hash?'active':''}" href="#/queue">Engagements</a>
     ${S.isAdmin?`<a class="navitem ${location.hash.includes('admin')?'active':''}" href="#/admin">Team &amp; Admin</a>`:''}
     <div style="margin-top:auto"><div class="small muted">${t('signedin')} · ${esc(S.user?S.user.full_name:'')}</div><a href="#/logout" class="btn ghost" style="margin-top:8px;width:100%;justify-content:center;padding:9px">${t('signout')}</a></div></aside>
-    <div class="main"><div class="topbar"><div style="display:flex;align-items:center;gap:10px"><a onclick="history.back()" title="Back" style="cursor:pointer;font-size:20px;color:var(--muted)">←</a><b>${esc(title||'')}</b></div><div style="display:flex;align-items:center;gap:12px">${langSelect()}<span class="pill accent">${esc(S.user?S.user.full_name:'ILAtech')}${S.isAdmin?' · Admin':' · Analyst'}</span></div></div>
+    <div class="main"><div class="topbar"><div style="display:flex;align-items:center;gap:10px"><a onclick="history.back()" title="Back" style="cursor:pointer;font-size:20px;color:var(--muted)">←</a><b>${esc(title||'')}</b></div><div style="display:flex;align-items:center;gap:12px">${langSelect()}<span class="pill accent">${esc(S.user?S.user.full_name:'Scale9X')}${S.isAdmin?' · Admin':' · Analyst'}</span></div></div>
     <div class="content" style="max-width:1080px">${body}</div></div></div>`;
 }
 
 function vLogin(signup){
   return `<div class="landing"><div class="left"><div>
-   <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">iL</div><div class="logo" style="color:#fff;font-size:17px">ILA<span style="color:#dbe6ff">tech</span></div></div>
+   <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">S9</div><div class="logo" style="color:#fff;font-size:17px">Scale<span style="color:#dbe6ff">9X</span></div></div>
    <div class="tagline">Internal · Analyst Workspace</div>
-   <h1>ILAtech Analyst Workspace</h1><div class="sub">Review client submissions, run the diagnostic, and deliver the growth report — all from the shared platform.</div></div>
+   <h1>Scale9X Analyst Workspace</h1><div class="sub">Review client submissions, run the diagnostic, and deliver the growth report — all from the shared platform.</div></div>
    <div class="small" style="color:rgba(255,255,255,.7)">Confidential · Staff only</div></div>
    <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div><div class="authbox"><div class="ab-mark"><div class="mark">iL</div><div class="logo">ILA<span class="t">tech</span></div></div><h2 style="font-size:23px">${signup?'Create analyst account':'Staff sign in'}</h2>
    ${signup?`<div class="field"><label>Your name</label><input class="input" id="f_name"></div>`:''}
@@ -49,7 +49,7 @@ function vLogin(signup){
 async function doStaffSignup(){ try{ const d=await api('POST','/api/auth/staff-signup',{full_name:document.getElementById('f_name').value.trim(),email:document.getElementById('f_email').value.trim(),password:document.getElementById('f_pass').value}); localStorage.setItem('1xl_staff_tok',d.token); S.user=d.user; go('#/queue'); }catch(e){ document.getElementById('err').textContent=e.message; } }
 async function staffLogin(){
   try{ const d=await api('POST','/api/auth/login',{email:$('f_email').value.trim(),password:$('f_pass').value});
-    if(!d.user.is_staff){ $('err').textContent='This portal is for ILAtech staff only.'; return; }
+    if(!d.user.is_staff){ $('err').textContent='This portal is for Scale9X staff only.'; return; }
     localStorage.setItem('1xl_staff_tok',d.token); S.user=d.user; go('#/queue');
   }catch(e){ $('err').textContent=e.message; }
 }
@@ -160,7 +160,7 @@ async function vScore(id,type){
         <input class="input" id="ev_${ar.id}" placeholder="Evidence note" value="${esc(cur.evidence_note||'')}" style="flex:1;min-width:200px">
       </div></div>`;}).join('')}</div>`).join('');
   return shell(`<a href="#/e/${id}" class="muted small" style="color:var(--accent)">← Engagement</a>
-    <div class="between" style="margin:6px 0 4px"><div><div class="eyebrow">${type==='maturity'?'Growth Maturity':'Growth Potential'} Scorecard</div><h1 class="h-title">Score ${esc(d.config.name.replace('1XL ',''))}</h1></div>
+    <div class="between" style="margin:6px 0 4px"><div><div class="eyebrow">${type==='maturity'?'Growth Maturity':'Growth Potential'} Scorecard</div><h1 class="h-title">Score ${esc(d.config.name.replace(/^(?:1XL|Scale9X)\s+/,''))}</h1></div>
       <div style="display:flex;gap:8px"><button class="btn ghost" id="ai_btn" onclick="suggestScores('${id}','${type}')">✨ Suggest with AI</button><button class="btn" onclick="saveScore('${id}','${type}')">Save scores →</button></div></div>
     <p class="muted">Pick a rubric level per area; add confidence and evidence to keep scoring defensible. Or let AI draft a first pass from the client's answers, then review and edit before saving.</p>
     <div id="ai_banner"></div>

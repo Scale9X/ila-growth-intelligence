@@ -1,4 +1,4 @@
-/* 1XL Platform — Diagnostic Engine (Phase 4).
+/* Scale9X Platform — Diagnostic Engine (Phase 4).
    Scoring (maturity + potential), evidence/confidence, strengths/weaknesses,
    Magic Matrix, and Opportunity Matrix auto-generation. All from the shared DB. */
 const { uid, now, get, all, run } = require('./db');

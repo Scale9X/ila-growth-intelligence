@@ -1,4 +1,4 @@
-/* ILAtech — Industry Intelligence Layer.
+/* Scale9X — Industry Intelligence Layer.
    Maps a business's industry to a growth-opportunity library (Revenue Expansion options,
    Strategic Bets, and "what to ignore" distractions). Qualitative only — NO financial
    projections, NO invented numbers. Used to make the report industry-specific.

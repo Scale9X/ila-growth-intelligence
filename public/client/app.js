@@ -1,4 +1,4 @@
-/* 1XL Client Portal (Phase 2) — talks to the shared DB via the platform API. */
+/* Scale9X Client Portal (Phase 2) — talks to the shared DB via the platform API. */
 const $=s=>document.getElementById(s);
 const esc=s=>(''+(s==null?'':s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const go=h=>location.hash=h;
@@ -364,13 +364,13 @@ function renderReport(d){
     ${sh(t('r.roadmap'),'🗺️')}<div class="timeline">${road.map(q=>`<div class="tl"><div class="tq"><div class="qbadge">${esc(q.quarter)}</div></div><div class="tc"><b>${esc(q.objective)}</b><div class="ti2">${(q.initiatives||[]).map(esc).join(' · ')}</div></div></div>`).join('')}</div>
     ${sh(t('r.kpi'),'📈')}<div class="kpigrid">${kpis.map(k=>`<div class="kpiq2"><div class="kh"><span class="ki">${KPIIC[k.layer]||'📊'}</span><span class="kn">${esc(k.layer)}</span></div><div class="kw">${esc(KPIWHY[k.layer]||'Key metrics to track for this layer.')}</div><div class="km"><span class="kdir">↗</span> ${(k.items||[]).map(esc).join(' · ')}</div></div>`).join('')}</div>
     <div style="margin-top:20px"><div class="tiny" style="margin-bottom:8px">${t('r.budget')} 💰</div><div class="budgetbar">${budget.map(x=>`<div class="bb"><div class="bn">${esc(x.area)}</div><b>${x.pct}%</b><div class="bt"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div></div>
-    <div class="divider"></div><div class="between"><div class="brand" style="padding:0"><div class="mark" style="width:26px;height:26px;font-size:11px">iL</div><div class="logo" style="font-size:14px">ILA<span class="t">tech</span> <span class="muted" style="font-weight:600">Growth Intelligence</span></div></div><div class="muted small">${t('r.confidential')}</div></div>
+    <div class="divider"></div><div class="between"><div class="brand" style="padding:0"><div class="mark" style="width:26px;height:26px;font-size:11px">S9</div><div class="logo" style="font-size:14px">Scale<span class="t">9X</span> <span class="muted" style="font-weight:600">Growth Leadership</span></div></div><div class="muted small">${t('r.confidential')}</div></div>
     </div></div>`;
 }
 function vReport(id){ const d=S.reportSections[id]; if(!d) return shell('reports',`<p class="muted">This report isn't available. <a href="#/reports" style="color:var(--accent)">Back to Report Center</a></p>`,'Report');
   // Name the page so the browser's "Save as PDF" filename = client + report type.
   const company=(d.report&&d.report.company)||(S.company&&S.company.name)||'Client';
-  document.title='ILAtech — '+company+' Growth Diagnostic Report';
+  document.title='Scale9X — '+company+' Growth Diagnostic Report';
   return shell('reports',`<div class="noprint between" style="margin-bottom:12px"><a href="#/reports" class="muted small" style="color:var(--accent)">← ${t('r.reportcenter')}</a><button class="btn ghost" onclick="window.print()">⤓ ${t('r.download')}</button></div>${renderReport(d)}`,t('nav.reports')); }
 function vReports(){ const rs=S.reports||[];
   return shell('reports',`<div class="eyebrow">${t('r.reportcenter')}</div><h1 class="h-title">${t('r.yourreports')}</h1><p class="muted">${t('r.reportsub')}</p>
@@ -387,7 +387,7 @@ function render(){
   if(!TOK()){ $('app').innerHTML = h.includes('signup')?vLogin(true):vLogin(false); return; }
   if(!S.loaded){ $('app').innerHTML='<div style="display:grid;place-items:center;height:100vh" class="muted">Loading…</div>'; loadState().then(render).catch(()=>{$('app').innerHTML=vLogin(false);}); return; }
   let out,m;
-  document.title='ILAtech — Growth Intelligence'; // default; vReport overrides with the client + report name
+  document.title='Scale9X — Growth Leadership'; // default; vReport overrides with the client + report name
   if((m=h.match(/^#\/report\/(.+)$/)))out=vReport(m[1]);
   else if(h.includes('reports'))out=vReports();
   else if(h.includes('notifications'))out=vNotifications();

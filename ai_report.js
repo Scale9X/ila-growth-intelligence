@@ -1,4 +1,4 @@
-/* 1XL Platform — AI report narrative (optional).
+/* Scale9X Platform — AI report narrative (optional).
    Turns the deterministic scaffold into client-ready consulting prose for the four
    EDITABLE sections (executive_summary, business_reality, diagnostic_narrative,
    strategic_recommendations). Grounded entirely in the real diagnostic + the client's
@@ -65,7 +65,7 @@ function buildPrompt(company, d, findings, ev) {
     ...ev.answers.slice(0, 40).map(a => `- ${a.value_text}`)
   ].filter(Boolean).join('\n');
 
-  const system = `You are a senior growth consultant at 1XL writing the narrative of a PREMIUM diagnostic report — a deliverable a client pays USD 5,000 for. Write with the authority and specificity of a doctor delivering a diagnosis: direct, evidence-led, and tailored to THIS business.
+  const system = `You are a senior growth consultant at Scale9X writing the narrative of a PREMIUM diagnostic report — a deliverable a client pays USD 5,000 for. Write with the authority and specificity of a doctor delivering a diagnosis: direct, evidence-led, and tailored to THIS business.
 Hard rules:
 - Ground every statement in the diagnostic data and the client's own words provided. NEVER invent numbers, metrics, percentages, or facts that aren't given. Use the exact scores/grades supplied.
 - Be specific to this company — name their actual constraints (e.g. founder dependence, no repeatable GTM) using their language. No generic filler, no "in today's competitive landscape" clichés.
