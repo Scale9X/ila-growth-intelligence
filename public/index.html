@@ -6,24 +6,26 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#0B1220;--ink-soft:#39435A;--muted:#697587;--line:#E7ECF4;--line-soft:#F0F3F9;
-  --bg:#FFFFFF;--bg-soft:#F6F8FD;--bg-tint:#FAFBFF;
-  --accent:#2F6BFF;--accent-2:#6D5DF6;--accent-ink:#1E4FD0;--accent-soft:#EAF1FF;--violet-soft:#EEEBFE;
-  --grad:linear-gradient(120deg,#2F6BFF 0%,#6D5DF6 100%);
-  --grad-soft:linear-gradient(120deg,#EAF1FF 0%,#EEEBFE 100%);
-  --green:#0E9F6E;--shadow:0 1px 2px rgba(13,20,40,.04),0 12px 34px rgba(13,20,40,.07);
-  --shadow-lg:0 30px 70px rgba(47,107,255,.18);--radius:18px;
-  --dot:radial-gradient(circle at 1px 1px, rgba(47,107,255,.10) 1px, transparent 0);
+  --ink:#001F3F;--ink-soft:#334155;--muted:#64748B;--line:#E6DDD0;--line-soft:#F0E9DF;
+  --bg:#FFFFFF;--bg-soft:#F8F4EF;--bg-tint:#FBF8F3;
+  --accent:#B87333;--accent-2:#2C3E50;--accent-ink:#8A5524;--accent-soft:#F2E7D7;--violet-soft:#EFE7DC;
+  --grad:linear-gradient(135deg,#001F3F 0%,#2C3E50 100%);
+  --grad-brand:linear-gradient(135deg,#001F3F 0%,#B87333 100%);
+  --grad-soft:linear-gradient(135deg,#E8EEF4 0%,#F4E9DB 100%);
+  --green:#3E7C5A;--amber:#92670F;--red:#B0473E;
+  --shadow:0 1px 2px rgba(0,31,63,.04),0 1px 3px rgba(0,31,63,.06);
+  --shadow-lg:0 14px 36px rgba(0,31,63,.12);--radius:14px;
+  --dot:radial-gradient(circle at 1px 1px, rgba(0,31,63,.06) 1px, transparent 0);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6;font-size:16px}
 a{color:inherit;text-decoration:none}
 .wrap{max-width:1140px;margin:0 auto;padding:0 26px}
 h1,h2,h3{letter-spacing:-.025em;font-weight:850;line-height:1.1}
-.grad{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.grad{color:var(--accent);-webkit-text-fill-color:var(--accent)}
 .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:var(--accent-ink)}
-.btn{display:inline-flex;align-items:center;gap:8px;background:var(--grad);color:#fff;border:none;border-radius:13px;padding:13px 22px;font-weight:700;font-size:15px;font-family:inherit;cursor:pointer;box-shadow:0 10px 24px rgba(47,107,255,.28);transition:transform .12s,box-shadow .12s}
-.btn:hover{transform:translateY(-2px);box-shadow:0 16px 32px rgba(47,107,255,.36)}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--accent);color:#fff;border:none;border-radius:9px;padding:12px 22px;font-weight:650;font-size:15px;font-family:inherit;cursor:pointer;box-shadow:0 1px 2px rgba(0,31,63,.10);transition:background .15s,box-shadow .15s,transform .12s}
+.btn:hover{transform:translateY(-1px);background:#a5662c;box-shadow:0 4px 14px rgba(184,115,51,.26)}
 .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--line);box-shadow:none}
 .btn.ghost:hover{background:var(--bg-soft)}
 .btn.sm{padding:9px 16px;font-size:14px;border-radius:11px}
@@ -32,7 +34,7 @@ h1,h2,h3{letter-spacing:-.025em;font-weight:850;line-height:1.1}
 header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
 header .bar{display:flex;align-items:center;justify-content:space-between;height:68px}
 .logo{display:flex;align-items:center;gap:11px}
-.logo .mark{width:34px;height:34px;border-radius:10px;background:var(--grad);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;box-shadow:0 6px 16px rgba(47,107,255,.32)}
+.logo .mark{width:34px;height:34px;border-radius:9px;background:var(--grad-brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;box-shadow:0 2px 6px rgba(0,31,63,.18)}
 .logo .name{font-size:20px;font-weight:850}.logo .name .t{color:var(--accent)}
 .nav{display:flex;align-items:center;gap:24px}
 .nav a.lnk{font-size:14.5px;font-weight:600;color:var(--ink-soft)}
@@ -45,8 +47,8 @@ header .bar{display:flex;align-items:center;justify-content:space-between;height
 .hero{position:relative;background:var(--bg-tint);background-image:var(--dot);background-size:26px 26px;border-bottom:1px solid var(--line);overflow:hidden}
 .hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:48px;align-items:center;padding-top:74px;padding-bottom:80px}
 .hero .badge{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:13px;font-weight:700;color:var(--accent-ink);box-shadow:var(--shadow)}
-.hero h1{font-size:54px;margin:22px 0 18px}
-.hero p.sub{font-size:18.5px;color:var(--ink-soft);max-width:560px;line-height:1.55}
+.hero h1{font-size:58px;margin:24px 0 20px;line-height:1.05}
+.hero p.sub{font-size:19px;color:var(--ink-soft);max-width:560px;line-height:1.6}
 .hero .cta{display:flex;gap:13px;margin-top:30px;flex-wrap:wrap}
 .hero .micro{margin-top:18px;font-size:13.5px;color:var(--muted);display:flex;align-items:center;gap:8px}
 @media(max-width:920px){.hero .wrap{grid-template-columns:1fr;gap:36px}.hero h1{font-size:40px}.heromock{display:none}}
@@ -67,7 +69,7 @@ header .bar{display:flex;align-items:center;justify-content:space-between;height
 .heromock .sb .t{display:flex;justify-content:space-between;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:5px}
 .heromock .sb .bar{height:8px;border-radius:999px;background:var(--line-soft);overflow:hidden}
 .heromock .sb .bar>i{display:block;height:100%;border-radius:999px;background:var(--grad)}
-.heromock .sb .bar>i.w{background:linear-gradient(120deg,#F59E0B,#E5484D)}
+.heromock .sb .bar>i.w{background:var(--red)}
 .heromock .tagfloat{position:absolute;bottom:-16px;left:-20px;background:#fff;border:1px solid var(--line);border-radius:13px;box-shadow:var(--shadow);padding:11px 15px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:9px}
 .heromock .tagfloat .ic{width:26px;height:26px;border-radius:8px;background:var(--green);color:#fff;display:grid;place-items:center;font-size:13px}
 
@@ -79,10 +81,10 @@ header .bar{display:flex;align-items:center;justify-content:space-between;height
 @media(max-width:760px){.trust .wrap{grid-template-columns:1fr 1fr;gap:24px}}
 
 /* sections */
-section.blk{padding:84px 0}
+section.blk{padding:92px 0}
 section.blk.soft{background:var(--bg-soft)}
-.sec-head{max-width:680px;margin-bottom:42px}
-.sec-head h2{font-size:38px;margin:14px 0 14px}
+.sec-head{max-width:680px;margin-bottom:48px}
+.sec-head h2{font-size:40px;margin:16px 0 16px;line-height:1.1}
 .sec-head p{font-size:17.5px;color:var(--ink-soft)}
 .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 @media(max-width:880px){.cards{grid-template-columns:1fr}.sec-head h2{font-size:30px}}
@@ -129,7 +131,7 @@ section.blk.soft{background:var(--bg-soft)}
 .recv-mock .find{border:1px solid var(--line);border-radius:11px;padding:13px;margin-bottom:11px}
 .recv-mock .find .h{display:flex;justify-content:space-between;align-items:center;margin-bottom:7px}
 .recv-mock .find .h b{font-size:13.5px}
-.recv-mock .find .h .sev{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:#FCE8E8;color:#E5484D;padding:3px 8px;border-radius:999px}
+.recv-mock .find .h .sev{font-size:9.5px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;background:#F4E3E1;color:#B0473E;padding:3px 8px;border-radius:999px}
 .recv-mock .find .l{font-size:12px;color:var(--muted);margin:3px 0}
 .recv-mock .find .l b{color:var(--ink-soft);font-weight:700}
 
@@ -164,7 +166,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
     <a class="lnk" href="#how" data-i18n="nav.how">How it works</a>
     <a class="lnk" href="#method" data-i18n="nav.method">Methodology</a>
     <a class="lnk" href="#faq" data-i18n="nav.faq">FAQ</a>
-    <span class="langsel">🌐 <select onchange="setLang(this.value)" id="langpick"><option value="en">EN</option><option value="id">ID</option></select></span>
+    <span class="langsel"><select onchange="setLang(this.value)" id="langpick"><option value="en">EN</option><option value="id">ID</option></select></span>
     <a class="btn sm" href="/client/" data-i18n="nav.start">Start your diagnostic</a>
   </nav>
 </div></header>
@@ -179,7 +181,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
       <a class="btn" href="/client/" data-i18n="hero.cta1">Start your diagnostic →</a>
       <a class="btn ghost" href="#how" data-i18n="hero.cta2">See how it works</a>
     </div>
-    <div class="micro">🔒 <span data-i18n="hero.micro">Confidential · Boardroom-ready growth assessment in days, not months</span></div>
+    <div class="micro"><span data-i18n="hero.micro">Confidential · Boardroom-ready growth assessment in days, not months</span></div>
   </div>
   <div class="heromock">
     <div class="rc">
@@ -214,9 +216,9 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
 <section class="blk" id="why"><div class="wrap">
   <div class="sec-head"><div class="eyebrow" data-i18n="why.eye">Why businesses use this</div><h2 data-i18n="why.h">Most businesses know their symptoms. Few understand the root cause.</h2><p data-i18n="why.p">Scale9X transforms fragmented business information into a prioritised, evidence-based view of what is really holding growth back — and what to do first.</p></div>
   <div class="cards">
-    <div class="card"><div class="ic">🎯</div><h3 data-i18n="why.c1h">Find the real bottleneck</h3><p data-i18n="why.c1p">Identify growth bottlenecks across sales, marketing, operations, technology and leadership — not just the symptoms you already feel.</p></div>
-    <div class="card"><div class="ic">📊</div><h3 data-i18n="why.c2h">Consulting-grade rigour</h3><p data-i18n="why.c2p">Built around diagnostic frameworks applied by growth teams worldwide, scoring your business across 50+ indicators.</p></div>
-    <div class="card"><div class="ic">🧭</div><h3 data-i18n="why.c3h">A clear place to start</h3><p data-i18n="why.c3p">Discover the 20% of issues preventing 80% of growth, sequenced into a roadmap your leadership team can act on.</p></div>
+    <div class="card"><h3 data-i18n="why.c1h">Find the real bottleneck</h3><p data-i18n="why.c1p">Identify growth bottlenecks across sales, marketing, operations, technology and leadership — not just the symptoms you already feel.</p></div>
+    <div class="card"><h3 data-i18n="why.c2h">Consulting-grade rigour</h3><p data-i18n="why.c2p">Built around diagnostic frameworks applied by growth teams worldwide, scoring your business across 50+ indicators.</p></div>
+    <div class="card"><h3 data-i18n="why.c3h">A clear place to start</h3><p data-i18n="why.c3p">Discover the 20% of issues preventing 80% of growth, sequenced into a roadmap your leadership team can act on.</p></div>
   </div>
 </div></section>
 
@@ -237,18 +239,18 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
   <div class="steps">
     <div class="step"><div class="num">1</div><h3 data-i18n="how.1h">Guided discovery</h3><p data-i18n="how.1p">A structured business interview — not a form — captures how your business really works.</p></div>
     <div class="step"><div class="num">2</div><h3 data-i18n="how.2h">Evidence &amp; data</h3><p data-i18n="how.2p">Share supporting documents. Our analysts review your real numbers, confidentially.</p></div>
-    <div class="step"><div class="num">3</div><h3 data-i18n="how.3h">Expert diagnosis</h3><p data-i18n="how.3p">Your business is scored across two scorecards and mapped on the Scale9X Magic Matrix.</p></div>
+    <div class="step"><div class="num">3</div><h3 data-i18n="how.3h">Expert diagnosis</h3><p data-i18n="how.3p">Your business is scored across two scorecards and mapped on the Scale9X Growth Position Matrix.</p></div>
     <div class="step"><div class="num">4</div><h3 data-i18n="how.4h">Growth report</h3><p data-i18n="how.4p">You receive a premium diagnostic: findings, priorities, roadmap and KPIs.</p></div>
   </div>
 </div></section>
 
 <!-- METHODOLOGY -->
 <section class="blk soft" id="method"><div class="wrap">
-  <div class="sec-head"><div class="eyebrow" data-i18n="method.eye">Growth diagnostic methodology</div><h2 data-i18n="method.h">Two scorecards. One Magic Matrix. A clear verdict.</h2><p data-i18n="method.p">Built around consulting-grade diagnostic frameworks, designed for founders, business owners and leadership teams.</p></div>
+  <div class="sec-head"><div class="eyebrow" data-i18n="method.eye">Growth diagnostic methodology</div><h2 data-i18n="method.h">Two scorecards. One Growth Position Matrix. A clear verdict.</h2><p data-i18n="method.p">Built around consulting-grade diagnostic frameworks, designed for founders, business owners and leadership teams.</p></div>
   <div class="method">
     <div class="mcard"><div class="big grad">50</div><h3 data-i18n="method.1h">Growth Maturity</h3><p data-i18n="method.1p">How well-built your business is today — measured across 50 areas spanning sales, marketing, funnel, technology, team and finance.</p></div>
     <div class="mcard"><div class="big grad">43</div><h3 data-i18n="method.2h">Growth Potential</h3><p data-i18n="method.2p">How much upside is available — 43 areas assessing market, model, demand and scalability.</p></div>
-    <div class="mcard"><div class="big grad">2×2</div><h3 data-i18n="method.3h">The Magic Matrix</h3><p data-i18n="method.3p">Maturity vs. potential, plotted into a single strategic verdict — and the priority moves that follow from it.</p></div>
+    <div class="mcard"><div class="big grad">2×2</div><h3 data-i18n="method.3h">The Growth Position Matrix</h3><p data-i18n="method.3p">Maturity vs. potential, plotted into a single strategic verdict — and the priority moves that follow from it.</p></div>
   </div>
 </div></section>
 
@@ -260,7 +262,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
       <h2 style="font-size:34px;margin:14px 0 22px" data-i18n="recv.h">A deliverable built for the boardroom</h2>
       <div class="recv-list">
         <div class="r"><span class="c">1</span><div><b data-i18n="recv.1h">Executive summary</b><div><span data-i18n="recv.1p">Situation, diagnosis, cost of inaction and the prescription — on one page.</span></div></div></div>
-        <div class="r"><span class="c">2</span><div><b data-i18n="recv.2h">Scorecards &amp; Magic Matrix</b><div><span data-i18n="recv.2p">Your maturity and potential scores, visualised area by area.</span></div></div></div>
+        <div class="r"><span class="c">2</span><div><b data-i18n="recv.2h">Scorecards &amp; Growth Position Matrix</b><div><span data-i18n="recv.2p">Your maturity and potential scores, visualised area by area.</span></div></div></div>
         <div class="r"><span class="c">3</span><div><b data-i18n="recv.3h">Prioritised findings</b><div><span data-i18n="recv.3p">Each with observation, root cause, business impact and a recommended action.</span></div></div></div>
         <div class="r"><span class="c">4</span><div><b data-i18n="recv.4h">Roadmap, budget &amp; KPIs</b><div><span data-i18n="recv.4p">A 90-day plan, 12-month roadmap and the metrics that prove progress.</span></div></div></div>
       </div>
@@ -283,7 +285,7 @@ footer .wrap{display:flex;justify-content:space-between;align-items:center;gap:1
     <details open><summary data-i18n="faq.1q">How long does the diagnostic take?</summary><p data-i18n="faq.1a">The guided discovery takes most founders under an hour, and can be completed with your team. Your boardroom-ready report is delivered in days, not months.</p></details>
     <details><summary data-i18n="faq.2q">Who is it for?</summary><p data-i18n="faq.2a">Designed for founders, business owners and leadership teams who want a clear, evidence-based view of where to focus growth efforts next.</p></details>
     <details><summary data-i18n="faq.3q">Is my information confidential?</summary><p data-i18n="faq.3a">Yes. Everything you share is strictly confidential and used only to produce your diagnostic. Your data is reviewed by Scale9X analysts under confidentiality.</p></details>
-    <details><summary data-i18n="faq.4q">What do I actually get at the end?</summary><p data-i18n="faq.4a">A premium diagnostic report: executive summary, scorecards, the Magic Matrix, prioritised findings, strategic recommendations, a roadmap, budget guidance and a KPI framework.</p></details>
+    <details><summary data-i18n="faq.4q">What do I actually get at the end?</summary><p data-i18n="faq.4a">A premium diagnostic report: executive summary, scorecards, the Growth Position Matrix, prioritised findings, strategic recommendations, a roadmap, budget guidance and a KPI framework.</p></details>
   </div>
 </div></section>
 
@@ -328,15 +330,15 @@ const I18N={
     'how.eye':'Bagaimana prosesnya','how.h':'Dari percakapan ke laporan siap-rapat direksi',
     'how.1h':'Penemuan terpandu','how.1p':'Wawancara bisnis terstruktur — bukan formulir — menangkap cara bisnis Anda benar-benar bekerja.',
     'how.2h':'Bukti & data','how.2p':'Bagikan dokumen pendukung. Analis kami meninjau angka nyata Anda, secara rahasia.',
-    'how.3h':'Diagnosis ahli','how.3p':'Bisnis Anda dinilai pada dua scorecard dan dipetakan pada Scale9X Magic Matrix.',
+    'how.3h':'Diagnosis ahli','how.3p':'Bisnis Anda dinilai pada dua scorecard dan dipetakan pada Scale9X Growth Position Matrix.',
     'how.4h':'Laporan pertumbuhan','how.4p':'Anda menerima diagnostik premium: temuan, prioritas, peta jalan, dan KPI.',
-    'method.eye':'Metodologi diagnostik pertumbuhan','method.h':'Dua scorecard. Satu Magic Matrix. Verdict yang jelas.','method.p':'Dibangun di atas kerangka diagnostik setara konsultan, dirancang untuk founder, pemilik bisnis, dan tim kepemimpinan.',
+    'method.eye':'Metodologi diagnostik pertumbuhan','method.h':'Dua scorecard. Satu Growth Position Matrix. Verdict yang jelas.','method.p':'Dibangun di atas kerangka diagnostik setara konsultan, dirancang untuk founder, pemilik bisnis, dan tim kepemimpinan.',
     'method.1h':'Kematangan Pertumbuhan','method.1p':'Seberapa baik bisnis Anda dibangun saat ini — diukur pada 50 area mencakup penjualan, pemasaran, funnel, teknologi, tim, dan keuangan.',
     'method.2h':'Potensi Pertumbuhan','method.2p':'Seberapa besar peluang yang tersedia — 43 area menilai pasar, model, permintaan, dan skalabilitas.',
-    'method.3h':'Magic Matrix','method.3p':'Kematangan vs. potensi, dipetakan menjadi satu verdict strategis — dan langkah prioritas yang mengikutinya.',
+    'method.3h':'Growth Position Matrix','method.3p':'Kematangan vs. potensi, dipetakan menjadi satu verdict strategis — dan langkah prioritas yang mengikutinya.',
     'recv.eye':'Yang Anda terima','recv.h':'Deliverable yang dibangun untuk ruang direksi',
     'recv.1h':'Ringkasan eksekutif','recv.1p':'Situasi, diagnosis, biaya jika diabaikan, dan rekomendasi — dalam satu halaman.',
-    'recv.2h':'Scorecard & Magic Matrix','recv.2p':'Skor kematangan dan potensi Anda, divisualisasikan area demi area.',
+    'recv.2h':'Scorecard & Growth Position Matrix','recv.2p':'Skor kematangan dan potensi Anda, divisualisasikan area demi area.',
     'recv.3h':'Temuan terprioritaskan','recv.3p':'Masing-masing dengan observasi, akar masalah, dampak bisnis, dan tindakan yang disarankan.',
     'recv.4h':'Peta jalan, anggaran & KPI','recv.4p':'Rencana 90 hari, peta jalan 12 bulan, dan metrik yang membuktikan kemajuan.',
     'recv.cta':'Mulai diagnostik →','recv.mock.k':'Scale9X Growth Diagnostic','recv.mock.h':'Temuan Utama','recv.mock.sev':'Prioritas tinggi',
@@ -346,7 +348,7 @@ const I18N={
     'faq.1q':'Berapa lama diagnostik berlangsung?','faq.1a':'Penemuan terpandu memakan waktu kurang dari satu jam bagi kebanyakan founder, dan dapat diselesaikan bersama tim Anda. Laporan siap-rapat direksi Anda dikirim dalam hitungan hari, bukan bulan.',
     'faq.2q':'Untuk siapa ini?','faq.2a':'Dirancang untuk founder, pemilik bisnis, dan tim kepemimpinan yang menginginkan pandangan berbasis bukti yang jelas tentang di mana harus memfokuskan upaya pertumbuhan berikutnya.',
     'faq.3q':'Apakah informasi saya rahasia?','faq.3a':'Ya. Semua yang Anda bagikan sangat rahasia dan hanya digunakan untuk menghasilkan diagnostik Anda. Data Anda ditinjau oleh analis Scale9X di bawah kerahasiaan.',
-    'faq.4q':'Apa yang saya dapatkan pada akhirnya?','faq.4a':'Laporan diagnostik premium: ringkasan eksekutif, scorecard, Magic Matrix, temuan terprioritaskan, rekomendasi strategis, peta jalan, panduan anggaran, dan kerangka KPI.',
+    'faq.4q':'Apa yang saya dapatkan pada akhirnya?','faq.4a':'Laporan diagnostik premium: ringkasan eksekutif, scorecard, Growth Position Matrix, temuan terprioritaskan, rekomendasi strategis, peta jalan, panduan anggaran, dan kerangka KPI.',
     'cta.h':'Dapatkan penilaian pertumbuhan siap-rapat direksi','cta.p':'Ubah informasi bisnis yang terfragmentasi menjadi prioritas pertumbuhan yang dapat ditindaklanjuti — dengan Scale9X.',
     'cta.b1':'Mulai diagnostik →','cta.b2':'Hubungi Scale9X',
     'foot.analyst':'Ruang kerja analis','foot.copy':'© Scale9X · Rahasia'

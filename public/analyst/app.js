@@ -20,10 +20,10 @@ async function downloadDoc(id,name){
     if(!r.ok) throw new Error('Download failed ('+r.status+')');
     const blob=await r.blob(); const u=URL.createObjectURL(blob);
     const a=document.createElement('a'); a.href=u; a.download=name||'document'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u);
-  }catch(e){ alert(e.message); }
+  }catch(e){ toast(e.message); }
 }
 function shell(body,title){
-  return `<div class="app"><aside class="rail"><div class="brand"><div class="mark">iL</div><div><div class="logo">ILA<span class="t">tech</span></div><span>Analyst Workspace</span></div></div>
+  return `<div class="app"><aside class="rail"><div class="brand"><div class="mark">S9</div><div><div class="logo">Scale<span class="t">9X</span></div><span>Analyst Workspace</span></div></div>
     <a class="navitem ${location.hash.includes('queue')||!location.hash?'active':''}" href="#/queue">Engagements</a>
     ${S.isAdmin?`<a class="navitem ${location.hash.includes('admin')?'active':''}" href="#/admin">Team &amp; Admin</a>`:''}
     <div style="margin-top:auto"><div class="small muted">${t('signedin')} · ${esc(S.user?S.user.full_name:'')}</div><a href="#/logout" class="btn ghost" style="margin-top:8px;width:100%;justify-content:center;padding:9px">${t('signout')}</a></div></aside>
@@ -37,7 +37,7 @@ function vLogin(signup){
    <div class="tagline">Internal · Analyst Workspace</div>
    <h1>Scale9X Analyst Workspace</h1><div class="sub">Review client submissions, run the diagnostic, and deliver the growth report — all from the shared platform.</div></div>
    <div class="small" style="color:rgba(255,255,255,.7)">Confidential · Staff only</div></div>
-   <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div><div class="authbox"><div class="ab-mark"><div class="mark">iL</div><div class="logo">ILA<span class="t">tech</span></div></div><h2 style="font-size:23px">${signup?'Create analyst account':'Staff sign in'}</h2>
+   <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div><div class="authbox"><div class="ab-mark"><div class="mark">S9</div><div class="logo">Scale<span class="t">9X</span></div></div><h2 style="font-size:23px">${signup?'Create analyst account':'Staff sign in'}</h2>
    ${signup?`<div class="field"><label>Your name</label><input class="input" id="f_name"></div>`:''}
    <div class="field"><label>Email</label><input class="input" id="f_email" ${signup?'':'value="analyst@1xl.co"'}></div>
    <div class="field"><label>Password</label><input class="input" type="password" id="f_pass" ${signup?'':'value="changeme"'}></div>
@@ -102,7 +102,7 @@ async function vEngagement(id){
   const profile=d.profile||{};
   const profRows=[['Industry',profile.industry],['Revenue',profile.revenue],['Team',profile.team],['Website',profile.website],['Markets',profile.markets],['Offerings',profile.offerings]].filter(r=>r[1]);
   const smart=d.smart;
-  const smartHtml=smart?`<div class="card pad" style="margin-bottom:12px"><b>Smart Discovery ${smart.confirmed?'<span class="pill green">client-confirmed</span>':''}</b>
+  const smartHtml=smart?`<div class="card pad" style="margin-bottom:12px"><b>Discovery Summary ${smart.confirmed?'<span class="pill green">client-confirmed</span>':''}</b>
     <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:8px">
       ${[['Ideal Customer','icp'],['Challenges','challenges'],['Objectives','objectives'],['Opportunities','opps']].map(c=>`<div><div class="tiny" style="color:var(--accent)">${c[0]}</div><div class="small">${esc(smart[c[1]]||'—')}</div></div>`).join('')}
     </div></div>`:'';
@@ -142,8 +142,8 @@ async function setStatus(id,status){
   try{ await api('POST','/api/analyst/engagement/'+id+'/status',{status}); render(); }
   catch(e){
     // 'delivered' is reached only by publishing the report — surface that instead of failing silently.
-    if(status==='delivered'){ alert('To deliver this engagement, publish its report — delivery happens automatically when you publish.\n\nPath: Score Maturity (50) + Potential (43) → Generate report → Approve → Publish.\n\n('+e.message+')'); }
-    else alert(e.message);
+    if(status==='delivered'){ toast('To deliver this engagement, publish its report — delivery happens automatically when you publish.\n\nPath: Score Maturity (50) + Potential (43) → Generate report → Approve → Publish.\n\n('+e.message+')'); }
+    else toast(e.message);
   }
 }
 
@@ -161,7 +161,7 @@ async function vScore(id,type){
       </div></div>`;}).join('')}</div>`).join('');
   return shell(`<a href="#/e/${id}" class="muted small" style="color:var(--accent)">← Engagement</a>
     <div class="between" style="margin:6px 0 4px"><div><div class="eyebrow">${type==='maturity'?'Growth Maturity':'Growth Potential'} Scorecard</div><h1 class="h-title">Score ${esc(d.config.name.replace(/^(?:1XL|Scale9X)\s+/,''))}</h1></div>
-      <div style="display:flex;gap:8px"><button class="btn ghost" id="ai_btn" onclick="suggestScores('${id}','${type}')">✨ Suggest with AI</button><button class="btn" onclick="saveScore('${id}','${type}')">Save scores →</button></div></div>
+      <div style="display:flex;gap:8px"><button class="btn ghost" id="ai_btn" onclick="suggestScores('${id}','${type}')">Suggest with AI</button><button class="btn" onclick="saveScore('${id}','${type}')">Save scores →</button></div></div>
     <p class="muted">Pick a rubric level per area; add confidence and evidence to keep scoring defensible. Or let AI draft a first pass from the client's answers, then review and edit before saving.</p>
     <div id="ai_banner"></div>
     ${cats}<button class="btn lg" onclick="saveScore('${id}','${type}')">Save scores →</button>`,'Score · '+type);
@@ -187,7 +187,7 @@ async function suggestScores(id,type){
   const model=await aiPick((type==='maturity'?'Maturity':'Potential')+' scoring'); if(!model)return;
   const fast=model.includes('haiku');
   const btn=document.getElementById('ai_btn'); const bn=document.getElementById('ai_banner');
-  if(btn){btn.disabled=true;btn.textContent='✨ Scoring… ('+(fast?'~20s':'up to ~2 min')+')';}
+  if(btn){btn.disabled=true;btn.textContent='Scoring… ('+(fast?'~20s':'up to ~2 min')+')';}
   try{
     const d=await api('POST','/api/analyst/engagement/'+id+'/scores/'+type+'/suggest',{model});
     if(d.available===false){ if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid #FCD34D;background:#FEF3C7;color:#92400E;margin-bottom:12px">'+esc(d.error||'AI scoring is not configured.')+'</div>'; return; }
@@ -199,26 +199,26 @@ async function suggestScores(id,type){
       const cf=document.getElementById('cf_'+s.area_id); if(cf) cf.value=s.confidence;
       const ev=document.getElementById('ev_'+s.area_id); if(ev) ev.value=s.evidence_note||'';
     });
-    if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--accent);background:#EEF2FF;margin-bottom:12px"><b>✨ AI drafted '+applied+' of '+d.total+' scores</b> from the client’s submission ('+esc(d.model)+'). Nothing is saved yet — review every area, adjust anything that’s off, then click <b>Save scores</b>.</div>';
+    if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--accent);background:#F4E9DB;margin-bottom:12px"><b>AI drafted '+applied+' of '+d.total+' scores</b> from the client’s submission ('+esc(d.model)+'). Nothing is saved yet — review every area, adjust anything that’s off, then click <b>Save scores</b>.</div>';
     window.scrollTo(0,0);
   }catch(e){ if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--red);margin-bottom:12px">AI scoring failed: '+esc(e.message)+'</div>'; }
-  finally{ if(btn){btn.disabled=false;btn.textContent='✨ Suggest with AI';} }
+  finally{ if(btn){btn.disabled=false;btn.textContent='Suggest with AI';} }
 }
 async function saveScore(id,type){
   if(_busy)return; _busy=true;
   const scores=[...document.querySelectorAll('.scinp')].map(el=>{const area=el.dataset.area;const raw=el.value;if(raw==='')return null;return {area_id:area,raw_score:raw,confidence:(document.getElementById('cf_'+area)||{}).value||null,evidence_note:(document.getElementById('ev_'+area)||{}).value||null};}).filter(Boolean);
   try{ await api('POST','/api/analyst/engagement/'+id+'/scores/'+type,{scores}); go('#/e/'+id+'/results'); }
-  catch(e){ alert(e.message); }finally{_busy=false;}
+  catch(e){ toast(e.message); }finally{_busy=false;}
 }
 function miniMatrix(mx){
-  if(mx.quadrant==null) return `<div class="muted">Score both Maturity and Potential to place on the Magic Matrix.</div>`;
+  if(mx.quadrant==null) return `<div class="muted">Score both Maturity and Potential to place on the Growth Position Matrix.</div>`;
   return `<div style="display:flex;gap:12px;align-items:stretch"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;color:var(--muted);font-weight:600;text-align:center">GROWTH MATURITY →</div>
     <div style="flex:1"><div style="position:relative;width:100%;max-width:440px;aspect-ratio:1;border:1px solid var(--line);border-radius:14px;background:#fafafa">
       <div style="position:absolute;left:60%;top:0;bottom:0;border-left:1px dashed var(--line)"></div><div style="position:absolute;top:40%;left:0;right:0;border-top:1px dashed var(--line)"></div>
-      <div style="position:absolute;top:8px;left:10px;font-size:11px;color:var(--muted);font-weight:700">Mature Business</div>
-      <div style="position:absolute;top:8px;right:10px;font-size:11px;color:var(--accent);font-weight:700">Scale Client</div>
-      <div style="position:absolute;bottom:8px;left:10px;font-size:11px;color:var(--muted);font-weight:700">High Risk</div>
-      <div style="position:absolute;bottom:8px;right:10px;font-size:11px;color:var(--accent);font-weight:700">Best Client</div>
+      <div style="position:absolute;top:8px;left:10px;font-size:10.5px;color:var(--muted);font-weight:700">Mature · Limited</div>
+      <div style="position:absolute;top:8px;right:10px;font-size:10.5px;color:var(--accent);font-weight:700">Scale Ready</div>
+      <div style="position:absolute;bottom:8px;left:10px;font-size:10.5px;color:var(--muted);font-weight:700">Reposition</div>
+      <div style="position:absolute;bottom:8px;right:10px;font-size:10.5px;color:var(--accent);font-weight:700">High Potential</div>
       <div style="position:absolute;left:${mx.potential}%;bottom:${mx.maturity}%;transform:translate(-50%,calc(50% - 26px));font-size:12px;font-weight:700;background:var(--ink);color:#fff;padding:3px 8px;border-radius:7px;white-space:nowrap">${esc(mx.quadrant)}</div>
       <div style="position:absolute;left:${mx.potential}%;bottom:${mx.maturity}%;width:18px;height:18px;border-radius:50%;background:var(--accent);border:3px solid #fff;box-shadow:var(--shadow-lg);transform:translate(-50%,50%)"></div>
     </div><div style="text-align:center;font-size:11px;color:var(--muted);font-weight:600;margin-top:6px">GROWTH POTENTIAL →</div></div></div>`;
@@ -236,7 +236,7 @@ async function vResults(id){
     <div class="eyebrow" style="margin-top:6px">Diagnostic Results</div><h1 class="h-title">Diagnostic</h1>
     <div class="row wrap" style="margin-top:12px">${scoreCard(d.maturity,'Growth Maturity')}${scoreCard(d.potential,'Growth Potential')}</div>
     <div class="row wrap" style="margin-top:14px"><div class="card pad" style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">Strengths</div>${list(d.strengths)}</div><div class="card pad" style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">Priority weaknesses</div>${list(d.weaknesses)}</div></div>
-    <h2 style="font-size:18px;margin:22px 0 8px">Magic Matrix</h2><div class="card pad">${miniMatrix(d.matrix)}</div>
+    <h2 style="font-size:18px;margin:22px 0 8px">Growth Position Matrix</h2><div class="card pad">${miniMatrix(d.matrix)}</div>
     <h2 style="font-size:18px;margin:22px 0 8px">Opportunity Matrix <span class="muted" style="font-size:13px;font-weight:400">· auto-generated from weak areas</span></h2>
     <div class="grid" style="grid-template-columns:1fr 1fr">${quad('Quick Wins','var(--green)',oq.quick_win)}${quad('Strategic Initiatives','var(--accent)',oq.strategic)}${quad('Long-Term','var(--amber)',oq.long_term)}${quad('Transformation','#0E7490',oq.transformation)}</div>`,'Diagnostic Results');
 }
@@ -264,10 +264,10 @@ async function vFindings(id){
   const fld=(id2,label,ph)=>`<div class="field"><label>${label}</label><input class="input" id="${id2}" placeholder="${ph||''}"></div>`;
   return shell(`<a href="#/e/${id}" class="muted small" style="color:var(--accent)">← Engagement</a>
     <div class="between" style="margin:6px 0;flex-wrap:wrap;gap:8px"><div><div class="eyebrow">Findings Builder</div><h1 class="h-title">Findings</h1></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="fd_ai_btn" onclick="draftFindingsAI('${id}')">✨ Draft findings with AI</button><button class="btn ghost" onclick="genDrafts('${id}')">⚙ Quick drafts (no AI)</button></div></div>
-    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#EEF2FF;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="fd_ai_btn" onclick="draftFindingsAI('${id}')">Draft findings with AI</button><button class="btn ghost" onclick="genDrafts('${id}')">Quick drafts (no AI)</button></div></div>
+    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#F4E9DB;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
     ${list}
-    ${fs.length?`<div class="card pad" style="margin-top:14px;background:var(--grad-soft);border-color:#dfe6ff;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><div><b>✓ ${fs.length} finding${fs.length>1?'s':''} saved automatically.</b><div class="muted small" style="margin-top:3px">Review them above — remove any with ✕, or add your own below. When you're happy, build the report.</div></div><a class="btn lg" href="#/e/${id}/report">Continue → Build Report →</a></div>`:''}
+    ${fs.length?`<div class="card pad" style="margin-top:14px;background:var(--grad-soft);border-color:#E2D5C3;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><div><b>✓ ${fs.length} finding${fs.length>1?'s':''} saved automatically.</b><div class="muted small" style="margin-top:3px">Review them above — remove any with ✕, or add your own below. When you're happy, build the report.</div></div><a class="btn lg" href="#/e/${id}/report">Continue → Build Report →</a></div>`:''}
     <div class="card pad" style="margin-top:14px"><b>Add a finding</b>
       ${fld('fd_area','Area','e.g. Sales Excellence')}
       <div class="field"><label>Observation</label><textarea class="ta" id="fd_obs" style="min-height:60px"></textarea></div>
@@ -278,22 +278,22 @@ async function vFindings(id){
 }
 async function addFinding(id){
   const f={area:$('fd_area').value.trim(),observation:$('fd_obs').value.trim(),root_cause:$('fd_cause').value.trim(),business_impact:$('fd_impact').value.trim(),opportunity:$('fd_opp').value.trim(),action:$('fd_action').value.trim(),severity:$('fd_sev').value,evidence:$('fd_ev').value.split(',').map(s=>s.trim()).filter(Boolean)};
-  if(!f.area||!f.observation){alert('Area and Observation are required.');return;}
+  if(!f.area||!f.observation){toast('Area and Observation are required.');return;}
   await api('POST','/api/analyst/engagement/'+id+'/findings',f); render();
 }
-async function genDrafts(id){ if(_busy)return; _busy=true; try{ await api('POST','/api/analyst/engagement/'+id+'/findings/generate'); render(); }catch(e){ alert(e.message); }finally{_busy=false;} }
+async function genDrafts(id){ if(_busy)return; _busy=true; try{ await api('POST','/api/analyst/engagement/'+id+'/findings/generate'); render(); }catch(e){ toast(e.message); }finally{_busy=false;} }
 async function draftFindingsAI(id){
   const model=await aiPick('Findings'); if(!model)return;
   const fast=model.includes('haiku');
-  const btn=document.getElementById('fd_ai_btn'); if(btn){btn.disabled=true;btn.textContent='✨ Reading the answers… ('+(fast?'~20s':'up to ~2 min')+')';}
+  const btn=document.getElementById('fd_ai_btn'); if(btn){btn.disabled=true;btn.textContent='Reading the answers… ('+(fast?'~20s':'up to ~2 min')+')';}
   try{
     const d=await api('POST','/api/analyst/engagement/'+id+'/findings/draft-ai',{model});
-    if(d.available===false){ alert(d.error||'AI is not configured.'); return; }
-    if(d.error){ alert('AI findings failed: '+d.error); return; }
-    S.aiMsg='✨ AI drafted '+d.count+' findings ('+(d.model||'')+') grounded in the client’s answers, and saved them automatically. Review below — remove any with ✕ or add your own — then click “Continue → Build Report”.';
+    if(d.available===false){ toast(d.error||'AI is not configured.'); return; }
+    if(d.error){ toast('AI findings failed: '+d.error); return; }
+    S.aiMsg='AI drafted '+d.count+' findings ('+(d.model||'')+') grounded in the client’s answers, and saved them automatically. Review below — remove any with ✕ or add your own — then click “Continue → Build Report”.';
     render();
-  }catch(e){ alert('AI findings failed: '+e.message); }
-  finally{ if(btn){btn.disabled=false;btn.textContent='✨ Draft findings with AI';} }
+  }catch(e){ toast('AI findings failed: '+e.message); }
+  finally{ if(btn){btn.disabled=false;btn.textContent='Draft findings with AI';} }
 }
 async function delFinding(id,fid){ await api('DELETE','/api/analyst/finding/'+fid); render(); }
 
@@ -321,7 +321,7 @@ async function vReport(id){
         ? '<span class="pill green">✓ Approved — ready to publish</span>'
         : '<span class="pill amber">Draft — not visible to client</span>');
   const actions = locked ? '' : (
-    `<button class="btn ghost" id="ai_rep_btn" onclick="narrateReport('${id}')">✨ Rewrite with AI</button>`
+    `<button class="btn ghost" id="ai_rep_btn" onclick="narrateReport('${id}')">Rewrite with AI</button>`
     + `<button class="btn ghost" onclick="genReport('${id}')">Regenerate</button>`
     + (st==='approved'
         ? `<button class="btn ghost" disabled style="opacity:.55;cursor:default">✓ Approved</button><button class="btn" onclick="publishReport('${id}')">Publish → Deliver</button>`
@@ -333,7 +333,7 @@ async function vReport(id){
   return shell(`<a href="#/e/${id}" class="muted small" style="color:var(--accent)">← Engagement</a>
     <div class="eyebrow" style="margin-top:6px">Diagnostic Report</div><h1 class="h-title">Report</h1>
     ${ctrl}
-    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#EEF2FF;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
+    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#F4E9DB;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
     <div class="card pad" style="margin-bottom:12px"><b>Executive Summary</b> ${ed('executive_summary')?'<span class="muted small">(editable)</span>':''}
       ${['situation','diagnosis','impact','opportunity'].map(k=>`<div class="field"><label>${k[0].toUpperCase()+k.slice(1)}</label><textarea class="ta" id="ex_${k}" style="min-height:54px" ${ed('executive_summary')?'':'readonly'}>${esc(ex[k]||'')}</textarea></div>`).join('')}
       <div class="field"><label>Prescription (one per line)</label><textarea class="ta" id="ex_presc" style="min-height:60px" ${ed('executive_summary')?'':'readonly'}>${esc((ex.prescription||[]).join('\n'))}</textarea></div>
@@ -342,7 +342,7 @@ async function vReport(id){
     <div class="card pad" style="margin-bottom:12px"><b>Diagnostic Scores</b> <span class="muted small">(auto from scores)</span>
       <div class="row wrap" style="margin-top:6px"><div style="flex:1"><div class="tiny">Maturity ${s.diagnostic_scores.content.maturity.total}/100 · ${esc(s.diagnostic_scores.content.maturity.grade)}</div><table>${cat(s.diagnostic_scores.content.maturity.categories)}</table></div>
       <div style="flex:1"><div class="tiny">Potential ${s.diagnostic_scores.content.potential.total}/100 · ${esc(s.diagnostic_scores.content.potential.grade)}</div><table>${cat(s.diagnostic_scores.content.potential.categories)}</table></div></div>
-      <div class="muted small" style="margin-top:8px">Magic Matrix: <b>${esc(s.magic_matrix.content.quadrant||'pending')}</b></div></div>
+      <div class="muted small" style="margin-top:8px">Growth Position Matrix: <b>${esc(s.magic_matrix.content.quadrant||'pending')}</b></div></div>
     <div class="card pad" style="margin-bottom:12px"><b>Key Findings</b> <span class="muted small">(from Findings Builder)</span>${findings.length?findings.map(f=>`<div class="qa"><b>${esc(f.area)}</b> <span class="pill ${f.severity==='high'?'amber':''}">${esc(f.severity)}</span><div class="small">${esc(f.observation)}</div><div class="muted small">Impact: ${esc(f.business_impact||'')}</div></div>`).join(''):'<div class="muted small">No findings — add them in the Findings Builder.</div>'}</div>
     <div class="card pad" style="margin-bottom:12px"><b>Strategic Recommendations</b> ${ed('strategic_recommendations')?'<span class="muted small">(editable, one per line)</span>':''}<textarea class="ta" id="recs" style="min-height:90px;margin-top:8px" ${ed('strategic_recommendations')?'':'readonly'}>${esc(recs.join('\n'))}</textarea>${ed('strategic_recommendations')?`<button class="btn ghost" onclick="saveSection('strategic_recommendations',document.getElementById('recs').value.split('\\n').map(x=>x.trim()).filter(Boolean))">Save</button>`:''}</div>
     <div class="card pad" style="margin-bottom:12px"><b>Opportunity Matrix</b><div class="grid" style="grid-template-columns:1fr 1fr;margin-top:8px">${oq('Quick Wins',opp.quick_win)}${oq('Strategic',opp.strategic)}${oq('Long-Term',opp.long_term)}${oq('Transformation',opp.transformation)}</div></div>
@@ -352,24 +352,24 @@ async function vReport(id){
     <div class="card pad" style="flex:1;min-width:240px"><b>Budget Allocation</b>${budget.map(x=>`<div class="between small" style="margin-top:4px"><span>${esc(x.area)}</span><b>${x.pct}%</b></div>`).join('')}</div></div>`,'Report');
 }
 let _busy=false; // prevents double-click on mutating actions
-async function genReport(id){ if(_busy)return; _busy=true; try{ await api('POST','/api/analyst/engagement/'+id+'/report/generate'); render(); }catch(e){ alert(e.message); }finally{_busy=false;} }
+async function genReport(id){ if(_busy)return; _busy=true; try{ await api('POST','/api/analyst/engagement/'+id+'/report/generate'); render(); }catch(e){ toast(e.message); }finally{_busy=false;} }
 async function narrateReport(id){
   const model=await aiPick('Report narrative'); if(!model)return;
   const fast=model.includes('haiku');
-  const btn=document.getElementById('ai_rep_btn'); if(btn){btn.disabled=true;btn.textContent='✨ Writing… ('+(fast?'~30s':'up to ~2 min')+')';}
+  const btn=document.getElementById('ai_rep_btn'); if(btn){btn.disabled=true;btn.textContent='Writing… ('+(fast?'~30s':'up to ~2 min')+')';}
   try{
     const d=await api('POST','/api/analyst/engagement/'+id+'/report/narrate',{model});
-    if(d.available===false){ alert(d.error||'AI is not configured.'); return; }
-    if(d.error){ alert('AI rewrite failed: '+d.error); return; }
-    S.aiMsg='✨ AI rewrote the narrative sections ('+(d.model||'')+'). Review and edit each section below, then Approve / Publish when you’re happy.';
+    if(d.available===false){ toast(d.error||'AI is not configured.'); return; }
+    if(d.error){ toast('AI rewrite failed: '+d.error); return; }
+    S.aiMsg='AI rewrote the narrative sections ('+(d.model||'')+'). Review and edit each section below, then Approve / Publish when you’re happy.';
     render();
-  }catch(e){ alert('AI rewrite failed: '+e.message); }
-  finally{ if(btn){btn.disabled=false;btn.textContent='✨ Rewrite with AI';} }
+  }catch(e){ toast('AI rewrite failed: '+e.message); }
+  finally{ if(btn){btn.disabled=false;btn.textContent='Rewrite with AI';} }
 }
 async function saveSection(key,content){ await api('POST','/api/analyst/report/'+S.report.id+'/section',{key,content}); render(); }
 async function saveExec(){ const c={situation:$('ex_situation').value,diagnosis:$('ex_diagnosis').value,impact:$('ex_impact').value,opportunity:$('ex_opportunity').value,prescription:$('ex_presc').value.split('\n').map(x=>x.trim()).filter(Boolean)}; await saveSection('executive_summary',c); }
-async function approveReport(){ if(_busy)return; _busy=true; try{ await api('POST','/api/analyst/report/'+S.report.id+'/approve'); render(); }catch(e){ alert(e.message); }finally{_busy=false;} }
-async function publishReport(id){ if(_busy)return; if(!confirm('Publish and deliver to the client? This locks the report and notifies the client.'))return; _busy=true; try{ await api('POST','/api/analyst/report/'+S.report.id+'/publish'); render(); }catch(e){ alert(e.message); }finally{_busy=false;} }
+async function approveReport(){ if(_busy)return; _busy=true; try{ await api('POST','/api/analyst/report/'+S.report.id+'/approve'); render(); }catch(e){ toast(e.message); }finally{_busy=false;} }
+async function publishReport(id){ if(_busy)return; if(!confirm('Publish and deliver to the client? This locks the report and notifies the client.'))return; _busy=true; try{ await api('POST','/api/analyst/report/'+S.report.id+'/publish'); render(); }catch(e){ toast(e.message); }finally{_busy=false;} }
 
 function render(){
   let h=location.hash||'';

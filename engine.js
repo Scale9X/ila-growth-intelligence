@@ -1,6 +1,6 @@
 /* Scale9X Platform — Diagnostic Engine (Phase 4).
    Scoring (maturity + potential), evidence/confidence, strengths/weaknesses,
-   Magic Matrix, and Opportunity Matrix auto-generation. All from the shared DB. */
+   Growth Position Matrix, and Opportunity Matrix auto-generation. All from the shared DB. */
 const { uid, now, get, all, run } = require('./db');
 const { STRUCTURAL } = require('./scoring_seed');
 
@@ -129,7 +129,7 @@ function genOpportunities(engagementId) {
 function diagnostic(engagementId) {
   const maturity = computeBreakdown(engagementId, 'maturity');
   const potential = computeBreakdown(engagementId, 'potential');
-  const scoredM = maturity.complete;   // Magic Matrix only when fully scored — no verdict on partial data
+  const scoredM = maturity.complete;   // Growth Position Matrix only when fully scored — no verdict on partial data
   const scoredP = potential.complete;
   // NOTE: opportunities are regenerated in saveScores (on write), NOT here — diagnostic() is read-only.
   const rank = b => [...b.categories].filter(c=>c.areas.some(a=>a.score!=null)).sort((x,y)=>x.pct-y.pct);
@@ -142,7 +142,7 @@ function diagnostic(engagementId) {
   let quadrant = null;
   if (scoredM && scoredP) {
     const hiM = maturity.total >= TH, hiP = potential.total >= TH;
-    quadrant = hiM && hiP ? 'Scale Client' : !hiM && hiP ? 'Best Client (Huge Opportunity)' : hiM && !hiP ? 'Mature Business' : 'High Risk Client';
+    quadrant = hiM && hiP ? 'Scale Ready' : !hiM && hiP ? 'High Growth Potential' : hiM && !hiP ? 'Mature — Limited Headroom' : 'Reposition Required';
   }
   const opps = all('SELECT title,impact,effort,quadrant,recommendation,status FROM opportunities WHERE engagement_id=?', engagementId);
   const oppByQuad = { quick_win:[], strategic:[], long_term:[], transformation:[] };

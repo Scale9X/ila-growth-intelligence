@@ -54,7 +54,7 @@ function buildPrompt(company, d, findings, ev) {
     `\nDIAGNOSTIC RESULT (use these exact numbers — do not invent others):`,
     `Growth Maturity: ${d.maturity.total}/100 (Grade ${d.maturity.grade} — ${d.maturity.label})`,
     `Growth Potential: ${d.potential.total}/100 (${d.potential.grade} — ${d.potential.label})`,
-    `Magic Matrix verdict: ${d.matrix.quadrant || 'pending'}`,
+    `Growth Position Matrix verdict: ${d.matrix.quadrant || 'pending'}`,
     `Relative strengths: ${strengths}`,
     `Priority weaknesses: ${weaknesses}`,
     `Opportunities (Impact×Effort): ${opps || '—'}`,
@@ -71,7 +71,7 @@ Hard rules:
 - Be specific to this company — name their actual constraints (e.g. founder dependence, no repeatable GTM) using their language. No generic filler, no "in today's competitive landscape" clichés.
 - Confident and concrete, not hedgy. Short, punchy sentences over long ones.
 Write these four sections:
-1) executive_summary: situation (where they stand, citing the real grades and what they're strong/weak at), diagnosis (the ROOT constraints on growth), impact (what it costs them to leave this unfixed), opportunity (the upside — tie to the Magic Matrix verdict and quick wins), prescription (3–5 crisp, imperative next-step bullets).
+1) executive_summary: situation (where they stand, citing the real grades and what they're strong/weak at), diagnosis (the ROOT constraints on growth), impact (what it costs them to leave this unfixed), opportunity (the upside — tie to the Growth Position Matrix verdict and quick wins), prescription (3–5 crisp, imperative next-step bullets).
 2) business_reality: ONE rich paragraph (5–7 sentences) — the honest picture of where the business is strong vs where it leaks, in plain language the founder will recognise.
 3) diagnostic_narrative: one object per major weakness/finding (aim for 5–8). Each: observation (what the data shows), root_cause (why), business_impact (the cost), opportunity (the upside of fixing), action (the concrete move). Full sentences, specific.
 4) strategic_recommendations: 5–7 prioritised, specific recommendation lines (most impactful first).`;

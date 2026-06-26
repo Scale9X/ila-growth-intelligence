@@ -8,7 +8,7 @@
       'brand.tag':'Growth Leadership',
       // nav
       'nav.dashboard':'Dashboard','nav.profile':'Business Profile','nav.interview':'Discovery Interview',
-      'nav.team':'Team & Access','nav.smart':'Smart Discovery','nav.documents':'Document Vault',
+      'nav.team':'Team & Access','nav.smart':'Discovery Summary','nav.documents':'Supporting Documents',
       'nav.review':'Review & Submit','nav.reports':'Reports','signout':'Sign out','signedin':'Signed in',
       // status
       'status.delivered':'Delivered','status.review':'Under review','status.complete':'complete',
@@ -31,7 +31,7 @@
       'db.inprogress':'In progress','db.submitted':'Submitted — under review',
       'db.intro':"Let's understand your business. The more you share, the sharper your growth diagnostic.",
       'db.yourdiag':'Your Diagnostic','db.maturity':'Growth Maturity','db.potential':'Growth Potential',
-      'db.matrix':'Magic Matrix','db.openreport':'Open full report','db.priorities':'Top growth priorities',
+      'db.matrix':'Growth Position','db.openreport':'Open full report','db.priorities':'Top growth priorities',
       'db.status':'Status','db.reportcenter':'Report Center','db.ready':'Your growth diagnostic is ready',
       // buttons
       'btn.continue':'Continue','btn.savecontinue':'Save & continue','btn.submit':'Submit for Diagnostic',
@@ -42,7 +42,7 @@
       'r.reportsub':'Diagnostic reports delivered by the Scale9X team. Published versions only.',
       'r.open':'Open','r.growthdiag':'Growth Diagnostic',
       'r.exec':'Executive Summary','r.reality':'Business Reality','r.scores':'Diagnostic Scores',
-      'r.magic':'Magic Matrix','r.sw':'Strengths & Priority Weaknesses','r.findings':'Key Findings',
+      'r.magic':'Growth Position Matrix','r.sw':'Strengths & Priority Weaknesses','r.findings':'Key Findings',
       'r.narrative':'Diagnostic Narrative','r.opp':'Opportunity Matrix','r.rec':'Strategic Recommendations',
       'r.plan':'90-Day Plan','r.roadmap':'12-Month Roadmap','r.kpi':'KPI Framework','r.budget':'Budget Allocation',
       'r.takeaways':'Key Takeaways','r.situation':'Situation','r.diagnosis':'Diagnosis',
@@ -68,7 +68,7 @@
     id: {
       'brand.tag':'Growth Leadership',
       'nav.dashboard':'Dasbor','nav.profile':'Profil Bisnis','nav.interview':'Wawancara Bisnis',
-      'nav.team':'Tim & Akses','nav.smart':'Ringkasan Cerdas','nav.documents':'Brankas Dokumen',
+      'nav.team':'Tim & Akses','nav.smart':'Ringkasan Penemuan','nav.documents':'Dokumen Pendukung',
       'nav.review':'Tinjau & Kirim','nav.reports':'Laporan','signout':'Keluar','signedin':'Masuk sebagai',
       'status.delivered':'Terkirim','status.review':'Sedang ditinjau','status.complete':'selesai',
       'auth.welcome':'Selamat datang kembali','auth.create':'Buat akun Anda',
@@ -88,7 +88,7 @@
       'db.inprogress':'Sedang berlangsung','db.submitted':'Terkirim — sedang ditinjau',
       'db.intro':'Mari pahami bisnis Anda. Semakin banyak yang Anda bagikan, semakin tajam diagnostik pertumbuhan Anda.',
       'db.yourdiag':'Diagnostik Anda','db.maturity':'Kematangan Pertumbuhan','db.potential':'Potensi Pertumbuhan',
-      'db.matrix':'Magic Matrix','db.openreport':'Buka laporan lengkap','db.priorities':'Prioritas pertumbuhan utama',
+      'db.matrix':'Posisi Pertumbuhan','db.openreport':'Buka laporan lengkap','db.priorities':'Prioritas pertumbuhan utama',
       'db.status':'Status','db.reportcenter':'Pusat Laporan','db.ready':'Diagnostik pertumbuhan Anda sudah siap',
       'btn.continue':'Lanjutkan','btn.savecontinue':'Simpan & lanjutkan','btn.submit':'Kirim untuk Diagnostik',
       'btn.back':'Kembali',
@@ -97,7 +97,7 @@
       'r.reportsub':'Laporan diagnostik yang dikirim oleh tim Scale9X. Hanya versi yang diterbitkan.',
       'r.open':'Buka','r.growthdiag':'Diagnostik Pertumbuhan',
       'r.exec':'Ringkasan Eksekutif','r.reality':'Realitas Bisnis','r.scores':'Skor Diagnostik',
-      'r.magic':'Magic Matrix','r.sw':'Kekuatan & Kelemahan Prioritas','r.findings':'Temuan Utama',
+      'r.magic':'Growth Position Matrix','r.sw':'Kekuatan & Kelemahan Prioritas','r.findings':'Temuan Utama',
       'r.narrative':'Narasi Diagnostik','r.opp':'Matriks Peluang','r.rec':'Rekomendasi Strategis',
       'r.plan':'Rencana 90 Hari','r.roadmap':'Peta Jalan 12 Bulan','r.kpi':'Kerangka KPI','r.budget':'Alokasi Anggaran',
       'r.takeaways':'Poin Utama','r.situation':'Situasi','r.diagnosis':'Diagnosis',
@@ -160,11 +160,22 @@
     const L = window.LANG || 'en';
     const arr = (window.INSIGHTS[L] && window.INSIGHTS[L].length) ? window.INSIGHTS[L] : window.INSIGHTS.en;
     const i = Math.floor(Math.random() * arr.length);
-    return '<div class="insight'+(dark?' dark':'')+'"><span class="ico">💡</span><span class="tx">'+arr[i]+'</span></div>';
+    return '<div class="insight'+(dark?' dark':'')+'"><span class="tx">'+arr[i]+'</span></div>';
   };
   window.langSelect = function(){
-    return '<span class="langsel"><span class="globe">🌐</span><select onchange="setLang(this.value)">'
+    return '<span class="langsel"><select onchange="setLang(this.value)">'
       + '<option value="en"'+(window.LANG==='en'?' selected':'')+'>EN</option>'
       + '<option value="id"'+(window.LANG==='id'?' selected':'')+'>ID</option></select></span>';
+  };
+  // Branded, non-blocking notification — replaces native alert(). type: 'success' for the calm variant.
+  window.toast = function(msg, type){
+    try{
+      var el=document.createElement('div');
+      el.className='toast'+(type==='success'?' ok':'');
+      el.textContent=msg;
+      document.body.appendChild(el);
+      requestAnimationFrame(function(){ el.classList.add('show'); });
+      setTimeout(function(){ el.classList.remove('show'); setTimeout(function(){ el.remove(); }, 250); }, 4400);
+    }catch(e){}
   };
 })();

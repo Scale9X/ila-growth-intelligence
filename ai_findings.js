@@ -44,7 +44,7 @@ function buildPrompt(company, d, ev) {
     ev.markets ? `Markets: ${ev.markets}` : '',
     ev.offerings ? `Offerings: ${ev.offerings}` : '',
     `\nDIAGNOSTIC RESULT (use these exact numbers; invent none):`,
-    `Growth Maturity ${d.maturity.total}/100 (Grade ${d.maturity.grade || 'pending'}); Growth Potential ${d.potential.total}/100; Magic Matrix: ${d.matrix.quadrant || 'pending'}.`,
+    `Growth Maturity ${d.maturity.total}/100 (Grade ${d.maturity.grade || 'pending'}); Growth Potential ${d.potential.total}/100; Growth Position Matrix: ${d.matrix.quadrant || 'pending'}.`,
     `\nWEAK CATEGORIES (ordered by business weight — prioritise the heaviest):`,
     ...weakCats.map(c => `- ${c.name} (weight ${c.weight}/100, scored ${c.pct}%): weak areas — ${c.weakAreas.join('; ')}`),
     `\nSMART DISCOVERY (client-confirmed):`,

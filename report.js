@@ -117,7 +117,7 @@ function genExecSummary(d, company) {
     situation: `${company} scores ${d.maturity.total}/100 (Grade ${d.maturity.grade}) on Growth Maturity and ${d.potential.total}/100 (${d.potential.grade}) on Growth Potential. Its relative strengths are ${st}.`,
     diagnosis: `Growth is constrained by under-developed ${wk}. These are the categories scoring lowest against their weight in the diagnostic.`,
     impact: `${totalOps} priority gaps were identified across the diagnostic. Left unaddressed, the lowest-scoring areas (${wk}) will continue to cap conversion and scalability.`,
-    opportunity: `Magic Matrix verdict: ${d.matrix.quadrant || 'pending both scores'}. ${quick} quick wins are available to recover value quickly, alongside longer-term initiatives.`,
+    opportunity: `Growth position: ${d.matrix.quadrant || 'pending both scores'}. ${quick} quick wins are available to recover value quickly, alongside longer-term initiatives.`,
     prescription: (d.opportunities.quick_win||[]).slice(0,3).map(o=>o.title)
   };
 }

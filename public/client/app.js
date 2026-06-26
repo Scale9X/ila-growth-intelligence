@@ -52,7 +52,7 @@ function overall(){ return Math.round(100*(profileDone()*.15+ivFraction()*.45+(s
 /* shell */
 function rail(active){
   const item=(h,label,done)=>`<a class="navitem ${active===h?'active':''}" href="#/${h}">${label}${done?'<span class="tick">✓</span>':''}</a>`;
-  return `<aside class="rail"><div class="brand"><div class="mark">iL</div><div><div class="logo">ILA<span class="t">tech</span></div><span>${t('brand.tag')}</span></div></div>
+  return `<aside class="rail"><div class="brand"><div class="mark">S9</div><div><div class="logo">Scale<span class="t">9X</span></div><span>${t('brand.tag')}</span></div></div>
     ${item('dashboard',t('nav.dashboard'),false)}${item('profile',t('nav.profile'),profileDone())}${item('interview',t('nav.interview'),ivDone())}
     ${item('team',t('nav.team'),(S.members&&S.members.length>1))}${item('smart',t('nav.smart'),smartDone())}${item('documents',t('nav.documents'),docCats()>0)}${item('review',t('nav.review'),S.submitted)}${item('reports',t('nav.reports'),!!S.report)}
     <div style="margin-top:auto"><div class="small muted">${t('signedin')} · ${esc(S.company?S.company.name:'')}</div><a href="#/logout" class="btn ghost" style="margin-top:8px;width:100%;justify-content:center;padding:9px">${t('signout')}</a></div></aside>`;
@@ -65,7 +65,7 @@ function ring(pct){const r=52,c=2*Math.PI*r,off=c*(1-pct/100);return `<div class
 /* auth */
 function vLogin(signup){return `<div class="landing"><div class="left">
   <div>
-    <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">iL</div><div class="logo" style="color:#fff;font-size:17px">ILA<span style="color:#dbe6ff">tech</span></div></div>
+    <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">S9</div><div class="logo" style="color:#fff;font-size:17px">Scale<span style="color:#C9A77E">9X</span></div></div>
     <div class="tagline">Research · Audit · Diagnose · Grow</div>
     <h1>${t('auth.lead')}</h1><div class="sub">${t('auth.leadsub')}</div>
     <div class="proof">
@@ -83,7 +83,7 @@ function vLogin(signup){return `<div class="landing"><div class="left">
   <div class="small" style="color:rgba(255,255,255,.7)">${t('auth.confidential')}</div></div>
   <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div>
   <div class="authbox">
-  <div class="ab-mark"><div class="mark">iL</div><div class="logo">ILA<span class="t">tech</span></div></div>
+  <div class="ab-mark"><div class="mark">S9</div><div class="logo">Scale<span class="t">9X</span></div></div>
   <h2 style="font-size:23px">${signup?t('auth.create'):t('auth.welcome')}</h2>
   <div class="muted small" style="margin-top:4px">${signup?t('auth.signup_sub'):t('auth.signin_sub')}</div>
   ${signup?`<div class="field"><label>${t('auth.name')}</label><input class="input" id="f_name"></div><div class="field"><label>${t('auth.company')}</label><input class="input" id="f_company"></div>`:''}
@@ -100,13 +100,13 @@ function vDashboard(){
   if(S.report && S.reportData) return vDeliveredDashboard();
   const next=!profileDone()?['Complete your business profile','#/profile']:!ivDone()?[`Continue your discovery interview (${answeredCount()}/${PROMPTS.length})`,'#/interview']:!smartDone()?['Confirm what we heard','#/smart']:docCats()<3?['Add supporting documents','#/documents']:!S.submitted?['Review and submit','#/review']:['Your diagnostic is under review','#/review'];
   const mod=(l,s,d,h)=>`<a href="#/${h}" class="card modcard ${d?'done':''}"><div class="modicon">${d?'✓':'•'}</div><div style="flex:1"><b>${l}</b><div class="muted small">${s}</div></div><span class="muted">›</span></a>`;
-  return shell('dashboard',`<div class="eyebrow">${t('db.welcome')}</div><h1 class="h-title">${t('db.hello')} ${esc((S.profile&&S.profile.company)||'there')} 👋</h1>
+  return shell('dashboard',`<div class="eyebrow">${t('db.welcome')}</div><h1 class="h-title">${t('db.hello')} ${esc((S.profile&&S.profile.company)||'there')}</h1>
    <p class="muted">${t('db.intro')}</p>
    ${insightHTML()}
    <div class="row wrap" style="margin-top:14px;align-items:center">
      <div class="card pad" style="display:flex;gap:20px;align-items:center;flex:1;min-width:300px">${ring(overall())}<div><div class="tiny">${t('db.progress')}</div><div style="font-size:18px;font-weight:700;margin:4px 0">${S.submitted?t('db.submitted'):t('db.inprogress')}</div><a class="btn" href="${next[1]}">${S.submitted?t('db.viewstatus'):t('db.continue')} →</a></div></div>
      <div class="card pad" style="flex:1;min-width:260px"><div class="tiny">${t('db.next')}</div><div style="font-size:16px;font-weight:600;margin:8px 0">${next[0]}</div><a href="${next[1]}" class="muted small" style="color:var(--accent)">${t('db.gonow')} →</a></div></div>
-   <div class="card pad" style="margin-top:18px"><div class="tiny">Engagement readiness</div><div class="progbreak" style="margin-top:14px">${[['Business Profile',Math.round(100*['company','industry','revenue','team'].filter(k=>S.profile&&S.profile[k]).length/4)],['Discovery Interview',Math.round(ivFraction()*100)],['Smart Discovery',smartDone()?100:0],['Supporting Documents',Math.round(docFraction()*100)]].map(r=>`<div class="pbrow"><div class="pbh"><span>${r[0]}</span><b>${r[1]}%</b></div><div class="pbt"><i class="${r[1]>=100?'done':''}" style="width:${r[1]}%"></i></div></div>`).join('')}</div></div>
+   <div class="card pad" style="margin-top:18px"><div class="tiny">Engagement readiness</div><div class="progbreak" style="margin-top:14px">${[['Business Profile',Math.round(100*['company','industry','revenue','team'].filter(k=>S.profile&&S.profile[k]).length/4)],['Discovery Interview',Math.round(ivFraction()*100)],['Discovery Summary',smartDone()?100:0],['Supporting Documents',Math.round(docFraction()*100)]].map(r=>`<div class="pbrow"><div class="pbh"><span>${r[0]}</span><b>${r[1]}%</b></div><div class="pbt"><i class="${r[1]>=100?'done':''}" style="width:${r[1]}%"></i></div></div>`).join('')}</div></div>
    <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:18px">${mod(t('nav.profile'),'Company basics & context',profileDone(),'profile')}${mod(t('nav.interview'),`${answeredCount()} of ${PROMPTS.length} answered`,ivDone(),'interview')}${mod(t('nav.smart'),'Confirm what we heard',smartDone(),'smart')}${mod(t('nav.documents'),`${docCats()} categories with files`,docCats()>0,'documents')}</div>`,t('nav.dashboard'));
 }
 
@@ -116,7 +116,7 @@ function vProfile(){
   return shell('profile',`<div class="eyebrow">Business Profile</div><h1 class="h-title">A few basics about your company</h1><p class="muted">Quick context so your discovery feels tailored.</p>
    <div class="card pad" style="margin-top:14px;max-width:620px">${PROFILE_FIELDS.map(f).join('')}<button class="btn" onclick="saveProfile()">Save & continue →</button></div>`,'Business Profile');
 }
-async function saveProfile(){ const b={}; PROFILE_FIELDS.forEach(fl=>b[fl.id]=$('p_'+fl.id).value.trim()); if(!['company','industry','revenue','team'].every(k=>b[k])){alert('Please complete the required fields (*).');return;} await api('PATCH','/api/portal/profile',b); S.profile=Object.assign(S.profile||{},b); if(S.company)S.company.name=b.company; go('#/interview'); }
+async function saveProfile(){ const b={}; PROFILE_FIELDS.forEach(fl=>b[fl.id]=$('p_'+fl.id).value.trim()); if(!['company','industry','revenue','team'].every(k=>b[k])){toast('Please complete the required fields (*).');return;} await api('PATCH','/api/portal/profile',b); S.profile=Object.assign(S.profile||{},b); if(S.company)S.company.name=b.company; go('#/interview'); }
 
 /* interview */
 function sectionOf(i){return SECTIONS.find(s=>s.key===PROMPTS[i].sec);}
@@ -130,7 +130,7 @@ function vInterview(){
   const cur=PROMPTS[S.idx];const curSec=cur?sectionOf(S.idx):null;let composer='';
   if(cur){ if(cur.type==='scale'){composer=`<div class="scale">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button onclick="ivScale(${n})">${n}</button>`).join('')}</div>`;}
     else{const draft=esc(S.drafts[cur.id]||S.answers[cur.id]||'');composer=`<textarea class="ta" id="iv_input" placeholder="${esc(cur.ph||'Type your answer…')}" oninput="ivDraft('${cur.id}',this.value)" onblur="ivFlush()">${draft}</textarea>
-      <div class="between" style="margin-top:10px"><div class="whyline">💡 <b onclick="document.getElementById('why_${cur.id}').style.display='inline'">Why we ask</b> <span id="why_${cur.id}" style="display:none">— ${esc(cur.why)}</span></div>
+      <div class="between" style="margin-top:10px"><div class="whyline"><b onclick="document.getElementById('why_${cur.id}').style.display='inline'">Why we ask</b> <span id="why_${cur.id}" style="display:none">— ${esc(cur.why)}</span></div>
       <div style="display:flex;gap:8px;align-items:center"><span id="iv_save" class="muted small" style="min-width:64px;text-align:right">${(S.answers[cur.id]!=null&&S.answers[cur.id]!=='')?'✓ Saved':''}</span><button class="btn" onclick="ivContinue()">Continue →</button></div></div>
       <div class="muted small" style="margin-top:8px">Every question needs an answer before you can submit. Not sure? Write what you can — even “not sure yet” counts. Please don’t leave it blank.</div>`;}}
   const pct=Math.round(ivFraction()*100),part=cur?SECTIONS.findIndex(s=>s.key===cur.sec)+1:10;
@@ -161,17 +161,17 @@ function ivFlush(){ clearTimeout(_ivTimer); const el=$('iv_input'); const cur=PR
 async function ivContinue(){
   clearTimeout(_ivTimer);
   const p=PROMPTS[S.idx];const el=$('iv_input');const v=el?el.value.trim():'';
-  if(!v){alert('Please type an answer before continuing. If you’re unsure, write what you can — even “not sure yet”. Questions can’t be left blank.');return;}
+  if(!v){toast('Please type an answer before continuing. If you’re unsure, write what you can — even “not sure yet”. Questions can’t be left blank.');return;}
   const by=($('iv_as')||{}).value||S.activeMember||S.ownerId;
   const ind=$('iv_save'); if(ind){ind.textContent='Saving…';ind.style.color='';}
   // Save to the SERVER first; only advance once it's persisted (prevents silent answer loss).
   try{ await api('PUT','/api/portal/answer',{code:p.id,section:p.sec,value:v,by}); }
-  catch(e){ S.drafts[p.id]=v; saveUI({drafts:S.drafts}); alert('Could not save your answer — the server was unreachable. Your text is kept; please click Continue again in a moment.'); return; }
+  catch(e){ S.drafts[p.id]=v; saveUI({drafts:S.drafts}); toast('Could not save your answer — the server was unreachable. Your text is kept; please click Continue again in a moment.'); return; }
   S.answers[p.id]=v;S.answeredBy[p.id]=by;delete S.drafts[p.id];S.idx++;saveUI({idx:S.idx,drafts:S.drafts});render();window.scrollTo(0,document.body.scrollHeight);
 }
 async function ivScale(n){const p=PROMPTS[S.idx];const by=($('iv_as')||{}).value||S.activeMember||S.ownerId;
   try{ await api('PUT','/api/portal/answer',{code:p.id,section:p.sec,value:String(n),by}); }
-  catch(e){ alert('Could not save — server unreachable. Please try again.'); return; }
+  catch(e){ toast('Could not save — server unreachable. Please try again.'); return; }
   S.answers[p.id]=String(n);S.answeredBy[p.id]=by;S.idx++;saveUI({idx:S.idx});render();window.scrollTo(0,document.body.scrollHeight);}
 function ivEdit(i){S.idx=i;saveUI({idx:i});render();}
 function setActiveMember(id){S.activeMember=id;saveUI({activeMember:id});}
@@ -188,39 +188,39 @@ function vTeam(){
    <h2 style="font-size:18px;margin:24px 0 8px">Who's completing what</h2><div class="card pad">${SECTIONS.map(s=>`<div class="checkrow"><div style="flex:1"><b>${esc(s.sub)}</b><div class="muted small" style="margin-top:3px">Answered by: ${esc(secWho(s.key))}</div></div><select class="sel" style="width:180px;padding:6px 9px;margin-right:14px" onchange="assignSection('${s.key}',this.value)"><option value="">Unassigned</option>${ml.map(m=>`<option value="${m.id}" ${S.assign[s.key]===m.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select><span class="kpi" style="width:52px;text-align:right">${secProg(s.key)}</span></div>`).join('')}</div>`,'Team');
 }
 let _busy=false; // prevents double-click on mutating client actions
-async function inviteMember(){if(_busy)return;const n=$('tm_name').value.trim();if(!n){alert('Enter a name.');return;}_busy=true;try{const secs=[...document.querySelectorAll('.tm_sec:checked')].map(c=>c.value);const d=await api('POST','/api/portal/team',{name:n,email:$('tm_email').value.trim(),role:$('tm_role').value,sections:secs});applyState(d);render();}catch(e){alert(e.message);}finally{_busy=false;}}
+async function inviteMember(){if(_busy)return;const n=$('tm_name').value.trim();if(!n){toast('Enter a name.');return;}_busy=true;try{const secs=[...document.querySelectorAll('.tm_sec:checked')].map(c=>c.value);const d=await api('POST','/api/portal/team',{name:n,email:$('tm_email').value.trim(),role:$('tm_role').value,sections:secs});applyState(d);render();}catch(e){toast(e.message);}finally{_busy=false;}}
 async function assignSection(key,mid){const d=await api('POST','/api/portal/assign',{section:key,member_id:mid});applyState(d);render();}
 function applyState(d){S.members=d.members;S.assign={};(S.members||[]).forEach(m=>(m.sections||[]).forEach(sec=>S.assign[sec]=m.id));if(d.answeredBy)S.answeredBy=d.answeredBy;}
 
 /* smart */
 function smartText(card){if(S.smart&&S.smart[card.key]!=null&&S.smart[card.key]!=='')return S.smart[card.key];return card.from.map(id=>S.answers[id]).filter(Boolean).join('\n\n');}
 function vSmart(){
-  if(!ivDone())return shell('smart',`<div class="eyebrow">Smart Discovery</div><h1 class="h-title">Finish your interview first</h1><p class="muted">Complete the discovery interview and we'll show what we understood.</p><a class="btn" href="#/interview">Go to interview →</a>`,'Smart Discovery');
-  return shell('smart',`<div class="eyebrow">Smart Discovery</div><h1 class="h-title">Here's what we heard about your business</h1><p class="muted">We've distilled your interview into the essentials. Edit anything we got wrong.</p>
+  if(!ivDone())return shell('smart',`<div class="eyebrow">Discovery Summary</div><h1 class="h-title">Finish your interview first</h1><p class="muted">Complete the discovery interview and we'll show what we understood.</p><a class="btn" href="#/interview">Go to interview →</a>`,'Discovery Summary');
+  return shell('smart',`<div class="eyebrow">Discovery Summary</div><h1 class="h-title">Here's what we heard about your business</h1><p class="muted">We've distilled your interview into the essentials. Edit anything we got wrong.</p>
    <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">${SMART_MAP.map(c=>`<div class="card smartcard"><div class="tiny" style="color:var(--accent)">${esc(c.title)}</div><textarea class="ta" id="sm_${c.key}" style="min-height:120px">${esc(smartText(c))}</textarea></div>`).join('')}</div>
-   <div class="between" style="margin-top:18px"><div class="muted small">${smartDone()?'✓ Confirmed':'Review and confirm to continue.'}</div><button class="btn lg" onclick="smartConfirm()">This is accurate — confirm →</button></div>`,'Smart Discovery');
+   <div class="between" style="margin-top:18px"><div class="muted small">${smartDone()?'✓ Confirmed':'Review and confirm to continue.'}</div><button class="btn lg" onclick="smartConfirm()">This is accurate — confirm →</button></div>`,'Discovery Summary');
 }
 async function smartConfirm(){const b={confirmed:true};SMART_MAP.forEach(c=>b[c.key]=$('sm_'+c.key).value.trim());await api('POST','/api/portal/smart',b);S.smart=Object.assign({},b);go('#/documents');}
 
 /* documents */
 function vDocuments(){
-  return shell('documents',`<div class="eyebrow">Document Vault</div><h1 class="h-title">Share supporting evidence</h1><p class="muted">Our analysts review your real data as part of the audit. Upload what you have — it makes your diagnostic far more accurate.</p>
-   <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">${DOC_CATS.map(cat=>{const files=(S.docs&&S.docs[cat.key])||[];return `<div class="card pad"><div class="between"><b>${esc(cat.title)}</b><div style="display:flex;gap:8px;align-items:center">${files.length?'<span class="pill green">✓ '+files.length+'</span>':'<span class="pill amber">Recommended</span>'}<label class="addbtn">+ Add files<input type="file" multiple style="display:none" onchange="docAdd('${cat.key}',this)"></label></div></div><div class="muted small" style="margin:8px 0 0">${cat.recs.map(r=>esc(r)).join(' · ')}</div>${files.length?`<div class="droom">${files.map(f=>{const x=(f.name.split('.').pop()||'FILE').toUpperCase().slice(0,4);const col={PDF:'#E5484D',XLS:'#0E9F6E',XLSX:'#0E9F6E',CSV:'#0E9F6E',DOC:'#2F6BFF',DOCX:'#2F6BFF',PPT:'#D97706',PPTX:'#D97706',PNG:'#6D5DF6',JPG:'#6D5DF6',JPEG:'#6D5DF6',ZIP:'#697587'}[x]||'#697587';return `<div class="drow"><div class="dext" style="background:${col}">${x}</div><div class="dmeta" style="cursor:pointer" title="Download ${esc(f.name)}" onclick="downloadDoc('${f.id}','${esc(f.name).replace(/'/g,"\\'")}')"><div class="dname">${esc(f.name)}</div><div class="dsub">${x} file · click to download</div></div><span class="dstatus">✓ Uploaded</span><span style="cursor:pointer;color:var(--muted);font-size:13px" title="Remove" onclick="docRemove('${f.id}')">✕</span></div>`;}).join('')}</div>`:''}</div>`;}).join('')}</div>
-   <button class="btn lg" style="margin-top:18px" onclick="go('#/review')">Continue to review →</button>`,'Document Vault');
+  return shell('documents',`<div class="eyebrow">Supporting Documents</div><h1 class="h-title">Share supporting evidence</h1><p class="muted">Our analysts review your real data as part of the audit. Upload what you have — it makes your diagnostic far more accurate.</p>
+   <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">${DOC_CATS.map(cat=>{const files=(S.docs&&S.docs[cat.key])||[];return `<div class="card pad"><div class="between"><b>${esc(cat.title)}</b><div style="display:flex;gap:8px;align-items:center">${files.length?'<span class="pill green">✓ '+files.length+'</span>':'<span class="pill amber">Recommended</span>'}<label class="addbtn">+ Add files<input type="file" multiple style="display:none" onchange="docAdd('${cat.key}',this)"></label></div></div><div class="muted small" style="margin:8px 0 0">${cat.recs.map(r=>esc(r)).join(' · ')}</div>${files.length?`<div class="droom">${files.map(f=>{const x=(f.name.split('.').pop()||'FILE').toUpperCase().slice(0,4);const col={PDF:'#B87333',XLS:'#2C3E50',XLSX:'#2C3E50',CSV:'#2C3E50',DOC:'#001F3F',DOCX:'#001F3F',PPT:'#A86A2E',PPTX:'#A86A2E',PNG:'#64748B',JPG:'#64748B',JPEG:'#64748B',ZIP:'#94A3B8'}[x]||'#94A3B8';return `<div class="drow"><div class="dext" style="background:${col}">${x}</div><div class="dmeta" style="cursor:pointer" title="Download ${esc(f.name)}" onclick="downloadDoc('${f.id}','${esc(f.name).replace(/'/g,"\\'")}')"><div class="dname">${esc(f.name)}</div><div class="dsub">${x} file · click to download</div></div><span class="dstatus">✓ Uploaded</span><span style="cursor:pointer;color:var(--muted);font-size:13px" title="Remove" onclick="docRemove('${f.id}')">✕</span></div>`;}).join('')}</div>`:''}</div>`;}).join('')}</div>
+   <button class="btn lg" style="margin-top:18px" onclick="go('#/review')">Continue to review →</button>`,'Supporting Documents');
 }
 function readAsBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.onerror=()=>rej(new Error('Could not read file')); r.readAsDataURL(file); }); }
 async function docAdd(cat,input){
   for(const f of [...input.files]){
-    if(f.size>10*1024*1024){ alert('"'+f.name+'" is larger than 10MB and was skipped.'); continue; }
+    if(f.size>10*1024*1024){ toast('"'+f.name+'" is larger than 10MB and was skipped.'); continue; }
     try{
       const data=await readAsBase64(f);
       const d=await api('POST','/api/portal/document',{category:cat,name:f.name,mime:f.type||'application/octet-stream',data});
       S.docs[cat]=S.docs[cat]||[]; S.docs[cat].push({id:d.id,name:f.name});
-    }catch(e){ alert('Upload failed for "'+f.name+'": '+e.message); }
+    }catch(e){ toast('Upload failed for "'+f.name+'": '+e.message); }
   }
   input.value=''; render();
 }
-async function docRemove(id){ try{ await api('DELETE','/api/portal/document/'+id); }catch(e){ alert(e.message); return; } Object.keys(S.docs).forEach(k=>S.docs[k]=S.docs[k].filter(f=>f.id!==id)); render(); }
+async function docRemove(id){ try{ await api('DELETE','/api/portal/document/'+id); }catch(e){ toast(e.message); return; } Object.keys(S.docs).forEach(k=>S.docs[k]=S.docs[k].filter(f=>f.id!==id)); render(); }
 // Download via authenticated fetch → blob (a plain link wouldn't carry the Bearer token).
 async function downloadDoc(id,name){
   try{
@@ -228,61 +228,82 @@ async function downloadDoc(id,name){
     if(!r.ok) throw new Error('Download failed ('+r.status+')');
     const blob=await r.blob(); const u=URL.createObjectURL(blob);
     const a=document.createElement('a'); a.href=u; a.download=name||'document'; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(u);
-  }catch(e){ alert(e.message); }
+  }catch(e){ toast(e.message); }
 }
 
 /* review */
 function vReview(){
-  if(S.submitted)return shell('review',`<div class="eyebrow">Submitted</div><h1 class="h-title">Your diagnostic is underway 🎯</h1><p class="muted">Thank you. Our analyst team has everything they need to begin your growth diagnostic.</p><div class="card pad" style="margin-top:14px;max-width:560px"><div class="tiny">Current status</div><div style="font-size:18px;font-weight:700;margin:6px 0">Submitted · Under review</div><div class="muted small">You'll be notified when your diagnostic and growth blueprint are ready.</div></div>`,'Review & Submit');
-  const rows=[['Business Profile',profileDone(),'#/profile'],['Discovery Interview',ivDone(),'#/interview'],['Smart Discovery confirmed',smartDone(),'#/smart'],['Supporting documents',docCats()>0,'#/documents']];const ready=profileDone()&&ivDone()&&smartDone();
+  if(S.submitted)return shell('review',`<div class="eyebrow">Submitted</div><h1 class="h-title">Your diagnostic is underway</h1><p class="muted">Thank you. Our analyst team has everything they need to begin your growth diagnostic.</p><div class="card pad" style="margin-top:14px;max-width:560px"><div class="tiny">Current status</div><div style="font-size:18px;font-weight:700;margin:6px 0">Submitted · Under review</div><div class="muted small">You'll be notified when your diagnostic and growth blueprint are ready.</div></div>`,'Review & Submit');
+  const rows=[['Business Profile',profileDone(),'#/profile'],['Discovery Interview',ivDone(),'#/interview'],['Discovery Summary confirmed',smartDone(),'#/smart'],['Supporting documents',docCats()>0,'#/documents']];const ready=profileDone()&&ivDone()&&smartDone();
   return shell('review',`<div class="eyebrow">Review & Submit</div><h1 class="h-title">You're almost ready for diagnosis</h1><p class="muted">A quick check before our analysts begin. Documents are recommended but optional.</p>
    <div class="card pad" style="margin-top:14px;max-width:620px">${rows.map(r=>`<div class="checkrow"><div style="display:flex;align-items:center;gap:12px"><span class="checkmark ${r[1]?'on':'off'}">${r[1]?'✓':''}</span><b>${r[0]}</b></div>${r[1]?'<span class="pill green">Complete</span>':`<a href="${r[2]}" class="muted small" style="color:var(--accent)">Complete →</a>`}</div>`).join('')}
-   <div class="divider"></div><div class="between"><div><div class="tiny">Completion</div><div style="font-size:22px;font-weight:750">${overall()}%</div></div><button class="btn lg" ${ready?'':'disabled'} onclick="submitDiagnostic()">Submit for Diagnostic →</button></div>${ready?'':'<div class="muted small" style="margin-top:8px">Complete Profile, Interview and Smart Discovery to submit.</div>'}</div>`,'Review & Submit');
+   <div class="divider"></div><div class="between"><div><div class="tiny">Completion</div><div style="font-size:22px;font-weight:750">${overall()}%</div></div><button class="btn lg" ${ready?'':'disabled'} onclick="submitDiagnostic()">Submit for Diagnostic →</button></div>${ready?'':'<div class="muted small" style="margin-top:8px">Complete Profile, Interview and Discovery Summary to submit.</div>'}</div>`,'Review & Submit');
 }
-async function submitDiagnostic(){ if(_busy)return; _busy=true; try{ await api('POST','/api/portal/submit'); S.submitted=true; render(); window.scrollTo(0,0); }catch(e){ alert(e.message); }finally{_busy=false;} }
+async function submitDiagnostic(){ if(_busy)return; _busy=true; try{ await api('POST','/api/portal/submit'); S.submitted=true; render(); window.scrollTo(0,0); }catch(e){ toast(e.message); }finally{_busy=false;} }
 
 /* ---- Phase 6: delivered dashboard, report center, viewer, notifications ---- */
 function vDeliveredDashboard(){
   const sec=S.reportData.sections||{}, ds=sec.diagnostic_scores||{}, mx=sec.magic_matrix||{}, ex=sec.executive_summary||{};
-  return shell('dashboard',`<div class="eyebrow">${t('db.yourdiag')}</div><h1 class="h-title">${t('db.hello')} ${esc((S.profile&&S.profile.company)||'there')} 👋</h1>
-   <p class="muted">${t('db.ready')} — ${t('r.delivered').toLowerCase()} ${esc((S.report.published_at||'').slice(0,10))}.</p>
-   ${insightHTML()}
-   <div class="row wrap" style="margin-top:14px">
-     <div class="card feature pad" style="flex:1;min-width:190px"><div class="tiny">${t('db.maturity')}</div><div style="font-size:36px;font-weight:850;letter-spacing:-.02em">${ds.maturity?ds.maturity.total:'—'}<span class="muted" style="font-size:15px;font-weight:600">/100</span></div><span class="pill accent">${ds.maturity?esc(ds.maturity.grade):''}</span></div>
-     <div class="card feature pad" style="flex:1;min-width:190px"><div class="tiny">${t('db.potential')}</div><div style="font-size:36px;font-weight:850;letter-spacing:-.02em">${ds.potential?ds.potential.total:'—'}<span class="muted" style="font-size:15px;font-weight:600">/100</span></div><span class="pill accent">${ds.potential?esc(ds.potential.grade):''}</span></div>
-     <div class="card grad pad" style="flex:1.3;min-width:220px"><div class="tiny" style="color:var(--accent-ink)">${t('db.matrix')}</div><div style="font-size:18px;font-weight:800;margin:6px 0">${esc(mx.quadrant||'—')}</div><a class="btn" href="#/report/${S.report.id}">${t('db.openreport')} →</a></div>
+  const company=esc((S.profile&&S.profile.company)||'your business');
+  const date=esc((S.report.published_at||'').slice(0,10));
+  const pos=mx.quadrant||'—';
+  const POSSUB={
+    'High Growth Potential':'Strong market opportunity, currently constrained by organisational maturity.',
+    'Scale Ready':'Built and positioned to scale; the priority is disciplined acceleration.',
+    'Mature — Limited Headroom':'Well-run, with limited upside in the current model; growth requires new vectors.',
+    'Reposition Required':'Both market position and organisational maturity need rebuilding before scaling.'};
+  const mat=ds.maturity?ds.maturity.total:'—', pot=ds.potential?ds.potential.total:'—';
+  const prio=(ex.prescription&&ex.prescription.length)||(sec.key_findings&&sec.key_findings.length)||0;
+  const num=(v,suf)=>`<div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:9px">${v}${suf?`<span style="font-size:14px;color:var(--muted);font-weight:400">${suf}</span>`:''}</div>`;
+  const jstep=(mark,markStyle,title,titleColor,body,link)=>`<div style="position:relative;display:flex;gap:15px;padding-bottom:20px"><div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;z-index:1;font-size:13px;font-weight:700;${markStyle}">${mark}</div><div style="padding-top:3px"><div style="font-size:14px;font-weight:600;color:${titleColor}">${title}</div><div class="muted small" style="margin-top:2px;line-height:1.5">${body}</div>${link||''}</div></div>`;
+  return shell('dashboard',`
+   <div class="eyebrow">${t('db.yourdiag')} · ${date}</div>
+   <h1 class="h-title" style="margin-top:8px">${company}</h1>
+   <div style="margin-top:26px"><div class="tiny">Current growth position</div><div style="font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.025em;margin-top:7px">${esc(pos)}</div><div class="muted" style="margin-top:9px;max-width:540px;line-height:1.6">${esc(POSSUB[pos]||'')}</div></div>
+   <div style="display:flex;margin-top:30px;flex-wrap:wrap;gap:18px 0">
+     <div style="flex:1;min-width:120px"><div class="tiny">Growth maturity</div>${num(mat,' / 100')}</div>
+     <div style="flex:1;min-width:120px;border-left:0.5px solid var(--line);padding-left:26px"><div class="tiny">Growth potential</div>${num(pot,' / 100')}</div>
+     <div style="flex:1;min-width:120px;border-left:0.5px solid var(--line);padding-left:26px"><div class="tiny">Priorities</div>${num(prio,'')}</div>
    </div>
-   <div class="card pad" style="margin-top:16px"><div class="tiny">${t('db.priorities')}</div><ol style="margin:8px 0 0;padding-left:18px">${(ex.prescription||[]).map(p=>`<li style="margin:3px 0">${esc(p)}</li>`).join('')||'<li>See full report</li>'}</ol></div>
-   <div class="card pad" style="margin-top:16px"><div class="between"><div><div class="tiny">${t('db.status')}</div><b>${t('status.delivered')}</b></div><a class="btn ghost" href="#/reports">${t('db.reportcenter')} →</a></div></div>`,t('nav.dashboard'));
+   <div style="margin-top:32px"><a class="btn lg" href="#/report/${S.report.id}" style="padding:14px 30px">Open your diagnostic report →</a><div class="muted small" style="margin-top:12px">Executive summary · priorities · 12-month direction</div></div>
+   <div class="divider" style="margin:36px 0 0"></div>
+   <div class="tiny" style="margin:26px 0 18px">Your growth journey</div>
+   <div style="position:relative">
+     <div style="position:absolute;left:13px;top:16px;bottom:22px;width:1.5px;background:var(--line)"></div>
+     ${jstep('✓','background:var(--green-soft);color:var(--green)','Diagnostic complete','var(--ink-soft)','Delivered '+date,'')}
+     ${jstep('1','background:var(--accent);color:#fff','Review findings <span class="pill accent" style="margin-left:8px">You\'re here</span>','var(--ink)','Read the full diagnostic and the priorities behind your scores.','')}
+     ${jstep('2','background:#fff;border:1.5px solid var(--line);color:var(--ink-soft)','Review session with Scale9X','var(--ink)','Discuss your results and priorities with your Scale9X growth lead.','<a href="#" onclick="toast(\'Your Scale9X growth lead will reach out to schedule your review session.\',\'success\');return false;" class="small" style="color:var(--accent-ink);font-weight:600;display:inline-block;margin-top:6px">Schedule a review session →</a>')}
+     ${jstep('3','background:#fff;border:1.5px solid var(--line-soft);color:var(--muted)','Recommended next engagement','var(--ink-soft)','Based on your findings — discussed in your review session.','')}
+   </div>`,t('nav.dashboard'));
 }
 function miniMatrix(mx){
   if(!mx||mx.quadrant==null) return `<div class="muted">Matrix pending.</div>`;
   const x=Math.max(0,Math.min(100,mx.potential)), y=Math.max(0,Math.min(100,mx.maturity));
-  const active = x>=60 ? (y>=60?'Scale Client':'Best Client') : (y>=60?'Mature Business':'High Risk');
+  const active = x>=60 ? (y>=60?'Scale Ready':'High Growth Potential') : (y>=60?'Mature — Limited Headroom':'Reposition Required');
   const QDESC={
-    'Best Client':'high growth potential held back by under-built maturity — the biggest-upside profile. Fix the execution gaps and the potential converts fast.',
-    'Scale Client':'strong maturity and strong potential — built to scale. Press the advantage and expand with confidence.',
-    'Mature Business':'well-built, but limited upside in the current market — defend the core and open new growth vectors.',
-    'High Risk':'both maturity and potential are low today — reposition or rethink the model before scaling.'};
+    'High Growth Potential':'significant market opportunity, currently constrained by organisational maturity — the highest-upside position. Build the execution capability and the potential converts quickly.',
+    'Scale Ready':'strong maturity and strong potential — built and positioned to scale. Press the advantage and expand with discipline.',
+    'Mature — Limited Headroom':'well-run, but limited upside in the current model — defend the core and open new growth vectors.',
+    'Reposition Required':'both maturity and potential are low today — reposition the model before scaling.'};
   const q=(name,sub,pos)=>{const on=name===active;return `<div style="position:absolute;${pos};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;padding:10px;${on?'background:var(--grad-soft);':''}">
     <div style="font-size:12.5px;font-weight:800;color:${on?'var(--accent-ink)':'var(--ink-soft)'}">${name}</div>
-    <div style="font-size:10px;color:${on?'#5B4BD6':'#aab2c2'};font-weight:600;text-transform:uppercase;letter-spacing:.04em">${sub}</div></div>`;};
+    <div style="font-size:10px;color:${on?'#2C3E50':'#aab2c2'};font-weight:600;text-transform:uppercase;letter-spacing:.04em">${sub}</div></div>`;};
   return `<div style="display:flex;gap:14px;align-items:stretch">
     <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;display:flex;align-items:center;justify-content:center">GROWTH MATURITY →</div>
     <div style="flex:1;max-width:440px">
       <div style="position:relative;width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff">
-        ${q('Mature Business','Solid, less upside','top:0;left:0;width:60%;height:40%;border-right:1.5px dashed #c3cce0;border-bottom:1.5px dashed #c3cce0')}
-        ${q('Scale Client','Strong all-round','top:0;left:60%;width:40%;height:40%;border-bottom:1.5px dashed #c3cce0')}
-        ${q('High Risk','Needs repositioning','top:40%;left:0;width:60%;height:60%;border-right:1.5px dashed #c3cce0')}
-        ${q('Best Client','Huge opportunity','top:40%;left:60%;width:40%;height:60%')}
-        <div style="position:absolute;left:${x}%;bottom:${y}%;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;transform:translate(-50%,50%);box-shadow:0 2px 10px rgba(47,107,255,.55);z-index:3"></div>
+        ${q('Mature — Limited Headroom','Solid, less upside','top:0;left:0;width:60%;height:40%;border-right:1.5px dashed #E6DDD0;border-bottom:1.5px dashed #E6DDD0')}
+        ${q('Scale Ready','Strong all-round','top:0;left:60%;width:40%;height:40%;border-bottom:1.5px dashed #E6DDD0')}
+        ${q('Reposition Required','Reposition first','top:40%;left:0;width:60%;height:60%;border-right:1.5px dashed #E6DDD0')}
+        ${q('High Growth Potential','Highest upside','top:40%;left:60%;width:40%;height:60%')}
+        <div style="position:absolute;left:${x}%;bottom:${y}%;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;transform:translate(-50%,50%);box-shadow:0 2px 10px rgba(184,115,51,.55);z-index:3"></div>
       </div>
       <div style="text-align:center;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;margin-top:8px">GROWTH POTENTIAL →</div>
-      <div class="callout" style="margin-top:12px"><div class="ttl">Magic Matrix verdict</div><p><b>● ${esc(mx.quadrant)}</b> — ${QDESC[active]||'plotted on maturity vs. potential to set the strategic priority.'}</p></div>
+      <div class="callout" style="margin-top:12px"><div class="ttl">Current growth position</div><p><b>${esc(mx.quadrant)}</b> — ${QDESC[active]||'plotted on maturity vs. potential to set the strategic priority.'}</p></div>
     </div></div>`;
 }
 function donut(val){const v=Math.max(0,Math.min(100,Math.round(val||0)));const r=40,c=2*Math.PI*r,off=c*(1-v/100);
-  return `<div class="donut"><svg width="96" height="96"><circle cx="48" cy="48" r="${r}" fill="none" stroke="#eef0f4" stroke-width="9"/><circle cx="48" cy="48" r="${r}" fill="none" stroke="#2F6BFF" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><div class="dv">${val==null?'—':v}</div></div>`;}
+  return `<div class="donut"><svg width="96" height="96"><circle cx="48" cy="48" r="${r}" fill="none" stroke="#eef0f4" stroke-width="9"/><circle cx="48" cy="48" r="${r}" fill="none" stroke="#B87333" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><div class="dv">${val==null?'—':v}</div></div>`;}
 function scoreCol(label,total,grade,cats){
   return `<div style="flex:1;min-width:268px">
     <div class="row" style="align-items:center;gap:16px"><div>${donut(total)}</div><div><div class="tiny">${label}</div><div class="scorehead"><span class="big">${total==null?'—':total}<small>/100</small></span></div><span class="pill accent">${esc(grade||'—')}</span></div></div>
@@ -301,15 +322,15 @@ function radarChart(cats){
     const nm=c.name.length>15?c.name.slice(0,14)+'…':c.name;
     labels+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" font-size="8.5" font-weight="600" fill="#697587" text-anchor="${anchor}" dominant-baseline="middle">${esc(nm)}</text>`; });
   const dpts=cats.map((c,i)=>{const p=Math.max(0,Math.min(1,c.score/c.weight));return pt(i,R*p).map(n=>n.toFixed(1)).join(',');}).join(' ');
-  const dots=cats.map((c,i)=>{const p=Math.max(0,Math.min(1,c.score/c.weight));const[x,y]=pt(i,R*p);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="#2F6BFF"/>`;}).join('');
-  return `<svg class="radar" viewBox="-80 -8 440 296" style="width:330px;max-width:100%;height:auto">${rings}${axes}<polygon points="${dpts}" fill="rgba(47,107,255,.16)" stroke="#2F6BFF" stroke-width="2"/>${dots}${labels}</svg>`;
+  const dots=cats.map((c,i)=>{const p=Math.max(0,Math.min(1,c.score/c.weight));const[x,y]=pt(i,R*p);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="#B87333"/>`;}).join('');
+  return `<svg class="radar" viewBox="-80 -8 440 296" style="width:330px;max-width:100%;height:auto">${rings}${axes}<polygon points="${dpts}" fill="rgba(184,115,51,.16)" stroke="#B87333" stroke-width="2"/>${dots}${labels}</svg>`;
 }
 function renderReport(d){
   const s=d.sections||{}, ex=s.executive_summary||{}, ds=s.diagnostic_scores||{}, sw=s.strengths_weaknesses||{}, kf=s.key_findings||[], nar=s.diagnostic_narrative||[], recs=s.strategic_recommendations||[], plan=s.ninety_day_plan||[], road=s.twelve_month_roadmap||[], kpis=s.kpi_framework||[], budget=s.budget_allocation||[];
   const bp=s.growth_blueprint||{}, oppV2=s.opportunity_matrix_v2||{}, rev=s.revenue_expansion||{}, bets=s.strategic_bets||{}, fi=s.focus_ignore||{};
   const company=esc((d.report&&d.report.company)||(S.company&&S.company.name)||'');
   const date=esc(((d.report&&d.report.published_at)||'').slice(0,10));
-  let _sn=0; const sh=(title,ic)=>`<h2><span class="h2num">${String(++_sn).padStart(2,'0')}</span>${title}${ic?` <span class="h2ic">${ic}</span>`:''}</h2>`;
+  let _sn=0; const sh=(title)=>`<h2><span class="h2num">${String(++_sn).padStart(2,'0')}</span>${title}</h2>`;
   const KPIWHY={Business:'The headline numbers that prove the business is growing.',Marketing:'Whether demand generation is efficient and attributable.',Sales:'How reliably pipeline converts into revenue.',Customer:'Whether customers stay, expand and refer.',Operations:'Whether delivery keeps pace with growth.',Finance:'Whether growth is profitable and well-funded.'};
   const KPIIC={Business:'🏢',Marketing:'📣',Sales:'💼',Customer:'🤝',Operations:'⚙️',Finance:'💰'};
   const findings=kf.map((f,i)=>Object.assign({},nar[i]||{},f));
@@ -318,7 +339,7 @@ function renderReport(d){
   const bphase=(badge,label,sub,items)=>`<div class="bp-phase"><div class="bph"><span class="bpt">${badge}</span><div><div class="bpl">${esc(label)}</div><div class="bps">${esc(sub)}</div></div></div><div class="bp-body">${(items||[]).map(it=>`<div class="bp-item"><div class="bia">${esc(it.action||'')}</div><div class="bio"><b>${t('r.outcome')}:</b> ${esc(it.outcome||'')}</div>${it.impact?`<span class="biz">${esc(it.impact)}</span>`:''}</div>`).join('')||'<div class="muted small" style="padding:8px 0">—</div>'}</div></div>`;
   return `<div class="report">
     <div class="rcover">
-      <div class="rc-brand"><div class="mark">iL</div><div class="logo" style="color:#fff;font-weight:800;font-size:15px">ILA<span style="color:#dbe6ff">tech</span></div></div>
+      <div class="rc-brand"><div class="mark">S9</div><div class="logo" style="color:#fff;font-weight:800;font-size:15px">Scale<span style="color:#C9A77E">9X</span></div></div>
       <div class="rc-kicker">${t('r.kicker')}</div>
       <h1>${company}</h1>
       <div style="font-size:16px;color:rgba(255,255,255,.92);font-weight:600;margin-top:2px">${t('r.growthdiag')}</div>
@@ -332,13 +353,12 @@ function renderReport(d){
     <div class="report-body">
     ${(ex.prescription&&ex.prescription.length)?`<div class="card grad pad" style="margin:6px 0 4px"><div class="tiny" style="color:var(--accent-ink)">${t('r.takeaways')}</div><div style="margin-top:8px">${ex.prescription.slice(0,3).map((p,i)=>`<div class="takeaway"><span class="ti">${i+1}</span><div>${esc(p)}</div></div>`).join('')}</div></div>`:''}
     ${sh(t('r.exec'),'🎯')}<div class="stratgrid">
-      <div class="strat"><div class="sh"><span class="si">📍</span><span class="sl">${t('r.situation')}</span></div><p>${esc(ex.situation||'')}</p></div>
-      <div class="strat"><div class="sh"><span class="si">🔬</span><span class="sl">${t('r.diagnosis')}</span></div><p>${esc(ex.diagnosis||'')}</p></div>
-      <div class="strat hot"><div class="sh"><span class="si">⚠️</span><span class="sl">${t('r.costinaction')}</span></div><p>${esc(ex.impact||'')}</p></div>
-      <div class="strat win"><div class="sh"><span class="si">🚀</span><span class="sl">${t('r.opportunity')}</span></div><p>${esc(ex.opportunity||'')}</p></div>
-      <div class="strat full"><div class="sh"><span class="si">🎯</span><span class="sl">${t('r.prescription')}</span></div><ol style="margin:6px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.75">${(ex.prescription||[]).map(p=>`<li style="margin:3px 0">${esc(p)}</li>`).join('')}</ol></div>
+      <div class="strat"><div class="sh"><span class="sl">${t('r.situation')}</span></div><p>${esc(ex.situation||'')}</p></div>
+      <div class="strat"><div class="sh"><span class="sl">${t('r.diagnosis')}</span></div><p>${esc(ex.diagnosis||'')}</p></div>
+      <div class="strat hot"><div class="sh"><span class="sl">${t('r.costinaction')}</span></div><p>${esc(ex.impact||'')}</p></div>
+      <div class="strat win"><div class="sh"><span class="sl">${t('r.opportunity')}</span></div><p>${esc(ex.opportunity||'')}</p></div>
+      <div class="strat full"><div class="sh"><span class="sl">${t('r.prescription')}</span></div><ol style="margin:6px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.75">${(ex.prescription||[]).map(p=>`<li style="margin:3px 0">${esc(p)}</li>`).join('')}</ol></div>
     </div>
-    ${sh(t('r.blueprint'),'🧭')}<div class="muted small" style="margin:-6px 0 6px">${t('r.blueprintsub')}</div><div class="blueprint">${bphase(t('r.next30'),t('r.bp30'),t('r.bp30sub'),bp.d30)}${bphase(t('r.next90'),t('r.bp90'),t('r.bp90sub'),bp.d90)}${bphase(t('r.next12'),t('r.bp12'),t('r.bp12sub'),bp.m12)}</div>
     ${s.business_reality?`<div class="callout"><div class="ttl">${t('r.reality')}</div><p>${esc(s.business_reality)}</p></div>`:''}
     ${sh(t('r.scores'),'📊')}<div class="row wrap" style="gap:30px">${scoreCol(t('db.maturity'),ds.maturity?ds.maturity.total:null,ds.maturity&&ds.maturity.grade,ds.maturity&&ds.maturity.categories)}${scoreCol(t('db.potential'),ds.potential?ds.potential.total:null,ds.potential&&ds.potential.grade,ds.potential&&ds.potential.categories)}</div>
     <div class="radarwrap">
@@ -358,12 +378,11 @@ function renderReport(d){
     ${sh(t('r.revexp'),'💰')}<div class="muted small" style="margin:-6px 0 8px">${t('r.revexpsub')}${rev.industry?` · <b style="color:var(--accent-ink)">${esc(rev.industry)}</b>`:''}</div>${(rev.items||[]).map(r=>`<div class="revrow"><div class="rvmeta"><div class="rvn">${esc(r.name)}</div><div class="rvw">${esc(r.why)}</div></div><div class="rvtags"><span class="tag ${String(r.difficulty||'').toLowerCase()}"><span class="tl">${t('r.difficulty')}</span>${esc(r.difficulty)}</span><span class="tag impact"><span class="tl">${t('r.impact2')}</span>${esc(r.impact)}</span><span class="tag time"><span class="tl">${t('r.timeline')}</span>${esc(r.timeline)}</span></div></div>`).join('')}
     ${sh(t('r.bets'),'🚀')}<div class="muted small" style="margin:-6px 0 8px">${t('r.betssub')}</div><div class="bets">${(bets.items||[]).map(b=>`<div class="bet"><span class="bx">★</span><div><div class="bn">${esc(b.name)}</div><div class="bw">${esc(b.why)}</div></div></div>`).join('')}</div>
     ${sh(t('r.focusignore'),'🎯')}<div class="fi"><div class="fi-col focus"><div class="fih">✓ ${t('r.focus')}</div>${(fi.focus||[]).map(f=>`<div class="fi-item"><span class="fic">→</span><div><div class="fii">${esc(f.item)}</div>${f.why?`<div class="fiw">${esc(f.why)}</div>`:''}</div></div>`).join('')||'<div class="muted small">—</div>'}</div><div class="fi-col ignore"><div class="fih">⏸ ${t('r.ignore')}</div>${(fi.ignore||[]).map(x=>`<div class="fi-item"><span class="fic">✕</span><div class="fii">${esc(x)}</div></div>`).join('')||'<div class="muted small">—</div>'}</div></div>
-    ${insightHTML()}
     ${sh(t('r.rec'),'✅')}<div class="reclist">${recs.map((r,i)=>{const m=String(r).split(/ — (.+)/s);const area=m.length>1?m[0]:(t('r.rec')+' '+(i+1));const txt=m.length>1?m[1]:String(r);const sev=(findings[i]&&findings[i].severity)||'medium';return `<div class="initiative"><span class="inum">${i+1}</span><div class="ibody"><div class="ihead"><span class="iarea">${esc(area)}</span><span class="prio ${sev}">${t('f.priority')}: ${t('sev.'+sev)}</span></div><div class="itext">${esc(txt)}</div></div></div>`;}).join('')||'<div class="muted small">—</div>'}</div>
     ${sh(t('r.plan'),'⚡')}<div class="planblocks">${plan.map(p=>`<div class="planblock"><div class="pw">${esc(p.weeks)}</div><ul>${(p.items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div>
     ${sh(t('r.roadmap'),'🗺️')}<div class="timeline">${road.map(q=>`<div class="tl"><div class="tq"><div class="qbadge">${esc(q.quarter)}</div></div><div class="tc"><b>${esc(q.objective)}</b><div class="ti2">${(q.initiatives||[]).map(esc).join(' · ')}</div></div></div>`).join('')}</div>
-    ${sh(t('r.kpi'),'📈')}<div class="kpigrid">${kpis.map(k=>`<div class="kpiq2"><div class="kh"><span class="ki">${KPIIC[k.layer]||'📊'}</span><span class="kn">${esc(k.layer)}</span></div><div class="kw">${esc(KPIWHY[k.layer]||'Key metrics to track for this layer.')}</div><div class="km"><span class="kdir">↗</span> ${(k.items||[]).map(esc).join(' · ')}</div></div>`).join('')}</div>
-    <div style="margin-top:20px"><div class="tiny" style="margin-bottom:8px">${t('r.budget')} 💰</div><div class="budgetbar">${budget.map(x=>`<div class="bb"><div class="bn">${esc(x.area)}</div><b>${x.pct}%</b><div class="bt"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div></div>
+    ${sh(t('r.kpi'),'📈')}<div class="kpigrid">${kpis.map(k=>`<div class="kpiq2"><div class="kh"><span class="kn">${esc(k.layer)}</span></div><div class="kw">${esc(KPIWHY[k.layer]||'Key metrics to track for this layer.')}</div><div class="km"><span class="kdir">↗</span> ${(k.items||[]).map(esc).join(' · ')}</div></div>`).join('')}</div>
+    <div style="margin-top:20px"><div class="tiny" style="margin-bottom:8px">${t('r.budget')}</div><div class="budgetbar">${budget.map(x=>`<div class="bb"><div class="bn">${esc(x.area)}</div><b>${x.pct}%</b><div class="bt"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div></div>
     <div class="divider"></div><div class="between"><div class="brand" style="padding:0"><div class="mark" style="width:26px;height:26px;font-size:11px">S9</div><div class="logo" style="font-size:14px">Scale<span class="t">9X</span> <span class="muted" style="font-weight:600">Growth Leadership</span></div></div><div class="muted small">${t('r.confidential')}</div></div>
     </div></div>`;
 }
