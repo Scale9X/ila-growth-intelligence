@@ -1,5 +1,5 @@
 /* Scale9X Client Portal — content model. Conversational Business Discovery Interview,
-   business profile, document vault, and the Smart Discovery extraction map.
+   business profile, supporting documents, and the Discovery Summary extraction map.
    The 10 sections + prompts map behind the scenes to the 117-point coverage model. */
 
 const INTERVIEWER = { name: "Maya", role: "Scale9X Discovery Lead", initial: "M" };
@@ -77,7 +77,7 @@ const PROMPTS = [
 /* warm acknowledgments rotated between answers (feels interviewed, not surveyed) */
 const ACKS = ["Thank you — that's really helpful.","Got it.","That makes sense.","Great — noted.","Understood.","Helpful context, thank you.","Perfect.","That's useful to know."];
 
-/* Smart Discovery — which prompts feed each extracted card */
+/* Discovery Summary — which prompts feed each extracted card */
 const SMART_MAP = [
   { key:"icp",        title:"Your Ideal Customer",   from:["cust_icp","cust_why"] },
   { key:"challenges", title:"Top Challenges",        from:["biz_blocker","fun_leak","team_break"] },
@@ -85,7 +85,7 @@ const SMART_MAP = [
   { key:"opps",       title:"Opportunities We See",  from:["mkt_describe","comp_ahead","mktg_roi"] }
 ];
 
-/* Document Vault — categories + recommended evidence */
+/* Supporting Documents — categories + recommended evidence */
 const DOC_CATS = [
   { key:"sales",      title:"Sales",      recs:["CRM export / pipeline","Sales report or MIS"] },
   { key:"marketing",  title:"Marketing",  recs:["Campaign / channel report","Ad account or media report"] },

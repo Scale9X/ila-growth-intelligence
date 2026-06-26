@@ -375,7 +375,7 @@ function render(){
   let h=location.hash||'';
   if(h==='#/logout'){logout();return;}
   if(!TOK()){ $('app').innerHTML=vLogin(h.includes('signup')); return; }
-  $('app').innerHTML='<div style="display:grid;place-items:center;height:100vh" class="muted">Loading…</div>';
+  $('app').innerHTML='<div style="display:grid;place-items:center;height:100vh;gap:14px"><div class="s9load"></div><div class="muted small">Loading…</div></div>';
   let m; const fail=e=>$('app').innerHTML=shell('<div class="muted">'+esc(e.message)+'</div>','Error');
   if((m=h.match(/^#\/e\/([^/]+)\/score\/(maturity|potential)$/))){ vScore(m[1],m[2]).then(html=>$('app').innerHTML=html).catch(fail); return; }
   if((m=h.match(/^#\/e\/([^/]+)\/results$/))){ vResults(m[1]).then(html=>$('app').innerHTML=html).catch(fail); return; }

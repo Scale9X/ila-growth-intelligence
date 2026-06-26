@@ -65,7 +65,7 @@ function rail(active){
     <div style="margin-top:auto"><div class="small muted">${t('signedin')} · ${esc(S.company?S.company.name:'')}</div><a href="#/logout" class="btn ghost" style="margin-top:8px;width:100%;justify-content:center;padding:9px">${t('signout')}</a></div></aside>`;
 }
 function shell(active,body,title){ return `<div class="app">${rail(active)}<div class="main">
-  <div class="topbar"><div style="display:flex;align-items:center;gap:10px"><a onclick="history.back()" title="Back" style="cursor:pointer;font-size:20px;color:var(--muted);text-decoration:none">←</a><b>${esc(title||'')}</b></div><div style="display:flex;gap:14px;align-items:center">${langSelect()}<a href="#/notifications" class="muted" style="position:relative;text-decoration:none;font-size:18px">🔔${S.unread?`<span style="position:absolute;top:-7px;right:-9px;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:1px 5px">${S.unread}</span>`:''}</a>${S.submitted?`<span class="pill ${S.report?'green':'amber'}">${S.report?t('status.delivered'):t('status.review')}</span>`:`<span class="pill accent">${overall()}% ${t('status.complete')}</span>`}</div></div>
+  <div class="topbar"><div style="display:flex;align-items:center;gap:10px"><a onclick="history.back()" title="Back" style="cursor:pointer;font-size:20px;color:var(--muted);text-decoration:none">←</a><b>${esc(title||'')}</b></div><div style="display:flex;gap:14px;align-items:center">${langSelect()}<a href="#/notifications" class="muted" title="Updates" style="position:relative;text-decoration:none;display:inline-flex;align-items:center"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg>${S.unread?`<span style="position:absolute;top:-7px;right:-9px;background:var(--red);color:#fff;font-size:10px;font-weight:700;border-radius:999px;padding:1px 5px">${S.unread}</span>`:''}</a>${S.submitted?'':`<span class="pill accent">${overall()}% ${t('status.complete')}</span>`}</div></div>
   <div class="content">${body}</div></div></div>`; }
 function ring(pct){const r=52,c=2*Math.PI*r,off=c*(1-pct/100);return `<div class="ring"><svg width="120" height="120"><circle cx="60" cy="60" r="${r}" fill="none" stroke="#eee" stroke-width="10"/><circle cx="60" cy="60" r="${r}" fill="none" stroke="var(--accent)" stroke-width="10" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><div class="val">${pct}%</div></div>`;}
 
@@ -105,16 +105,28 @@ function logout(){ localStorage.removeItem('1xl_tok'); S={loaded:false}; go('#/l
 /* dashboard */
 function vDashboard(){
   if(S.report && S.reportData) return vDeliveredDashboard();
-  const next=!profileDone()?['Complete your business profile','#/profile']:!ivDone()?[`Continue your discovery interview (${answeredCount()}/${PROMPTS.length})`,'#/interview']:!smartDone()?['Confirm what we heard','#/smart']:docCats()<3?['Add supporting documents','#/documents']:!S.submitted?['Review and submit','#/review']:['Your diagnostic is under review','#/review'];
-  const mod=(l,s,d,h)=>`<a href="#/${h}" class="card modcard ${d?'done':''}"><div class="modicon">${d?'✓':'•'}</div><div style="flex:1"><b>${l}</b><div class="muted small">${s}</div></div><span class="muted">›</span></a>`;
-  return shell('dashboard',`<div class="eyebrow">${t('db.welcome')}</div><h1 class="h-title">${t('db.hello')} ${esc((S.profile&&S.profile.company)||'there')}</h1>
-   <p class="muted">${t('db.intro')}</p>
-   ${insightHTML()}
-   <div class="row wrap" style="margin-top:14px;align-items:center">
-     <div class="card pad" style="display:flex;gap:20px;align-items:center;flex:1;min-width:300px">${ring(overall())}<div><div class="tiny">${t('db.progress')}</div><div style="font-size:18px;font-weight:700;margin:4px 0">${S.submitted?t('db.submitted'):t('db.inprogress')}</div><a class="btn" href="${next[1]}">${S.submitted?t('db.viewstatus'):t('db.continue')} →</a></div></div>
-     <div class="card pad" style="flex:1;min-width:260px"><div class="tiny">${t('db.next')}</div><div style="font-size:16px;font-weight:600;margin:8px 0">${next[0]}</div><a href="${next[1]}" class="muted small" style="color:var(--accent)">${t('db.gonow')} →</a></div></div>
-   <div class="card pad" style="margin-top:18px"><div class="tiny">Engagement readiness</div><div class="progbreak" style="margin-top:14px">${[['Business Profile',Math.round(100*['company','industry','revenue','team'].filter(k=>S.profile&&S.profile[k]).length/4)],['Discovery Interview',Math.round(ivFraction()*100)],['Discovery Summary',smartDone()?100:0],['Supporting Documents',Math.round(docFraction()*100)]].map(r=>`<div class="pbrow"><div class="pbh"><span>${r[0]}</span><b>${r[1]}%</b></div><div class="pbt"><i class="${r[1]>=100?'done':''}" style="width:${r[1]}%"></i></div></div>`).join('')}</div></div>
-   <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:18px">${mod(t('nav.profile'),'Company basics & context',profileDone(),'profile')}${mod(t('nav.interview'),`${answeredCount()} of ${PROMPTS.length} answered`,ivDone(),'interview')}${mod(t('nav.smart'),'Confirm what we heard',smartDone(),'smart')}${mod(t('nav.documents'),`${docCats()} categories with files`,docCats()>0,'documents')}</div>`,t('nav.dashboard'));
+  const company=esc((S.profile&&S.profile.company)||'your business');
+  const pct=overall();
+  const next=!profileDone()?['Complete your business profile','#/profile']:!ivDone()?['Continue your discovery interview ('+answeredCount()+'/'+PROMPTS.length+')','#/interview']:!smartDone()?['Confirm your discovery summary','#/smart']:docCats()<3?['Add supporting documents','#/documents']:!S.submitted?['Review and submit','#/review']:['Your diagnostic is under review','#/review'];
+  const stages=[['Business profile',profileDone()],['Discovery interview',ivDone()],['Discovery summary',smartDone()],['Supporting documents',docCats()>0],['Review & submit',!!S.submitted]];
+  let cur=stages.findIndex(x=>!x[1]); if(cur<0)cur=stages.length-1;
+  const jrail=`<div style="position:relative">
+     <div style="position:absolute;left:13px;top:16px;bottom:18px;width:1.5px;background:var(--line)"></div>
+     ${stages.map((st,i)=>{const done=st[1],active=i===cur&&!done;const bg=done?'background:var(--green-soft);color:var(--green)':active?'background:var(--accent);color:#fff':'background:#fff;border:1.5px solid var(--line-soft);color:var(--muted)';const tc=done?'var(--ink-soft)':active?'var(--ink)':'var(--muted)';return `<div style="position:relative;display:flex;gap:15px;padding-bottom:18px;align-items:center"><div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;z-index:1;font-size:13px;font-weight:700;${bg}">${done?'✓':String(i+1)}</div><div style="font-size:14px;font-weight:${active?600:500};color:${tc}">${st[0]}${active?' <span class="pill accent" style="margin-left:8px">In progress</span>':''}</div></div>`;}).join('')}
+   </div>`;
+  return shell('dashboard',`
+   <div class="eyebrow">Growth diagnostic</div>
+   <h1 class="h-title" style="margin-top:8px">${company}</h1>
+   <div class="muted" style="margin-top:8px;max-width:520px;line-height:1.6">You're ${pct}% of the way to a board-ready growth diagnostic.</div>
+   <div style="background:var(--card);border:0.5px solid var(--line);border-radius:14px;padding:24px 26px;margin-top:26px;display:flex;align-items:center;justify-content:space-between;gap:22px;flex-wrap:wrap">
+     <div style="flex:1;min-width:240px"><div class="tiny">Step ${Math.min(cur+1,5)} of 5 · ${esc(stages[cur][0])}</div><div style="font-size:19px;font-weight:700;color:var(--ink);margin:9px 0 4px;letter-spacing:-.01em">${esc(next[0])}</div><div class="muted small">${pct}% complete</div><div style="height:6px;border-radius:999px;background:var(--bg-soft);margin-top:16px;overflow:hidden;max-width:360px"><div style="width:${pct}%;height:100%;background:var(--accent);border-radius:999px"></div></div></div>
+     <a class="btn lg" href="${next[1]}" style="padding:14px 28px">${S.submitted?'View status':'Continue'} →</a>
+   </div>
+   <div class="divider" style="margin:34px 0 0"></div>
+   <div class="tiny" style="margin:26px 0 16px">Your readiness</div>
+   ${jrail}
+   <div style="margin-top:14px;color:var(--muted);font-size:12.5px">Confidential · reviewed only by your Scale9X analyst team</div>
+   `,t('nav.dashboard'));
 }
 
 /* profile */
@@ -141,7 +153,7 @@ function vInterview(){
       <div style="display:flex;gap:8px;align-items:center"><span id="iv_save" class="muted small" style="min-width:64px;text-align:right">${(S.answers[cur.id]!=null&&S.answers[cur.id]!=='')?'✓ Saved':''}</span><button class="btn" onclick="ivContinue()">Continue →</button></div></div>
       <div class="muted small" style="margin-top:8px">Every question needs an answer before you can submit. Not sure? Write what you can — even “not sure yet” counts. Please don’t leave it blank.</div>`;}}
   const pct=Math.round(ivFraction()*100),part=cur?SECTIONS.findIndex(s=>s.key===cur.sec)+1:10;
-  return shell('interview',`${insightHTML()}<div class="iv-head"><div class="between"><div><div class="eyebrow">Business Discovery Interview</div><div class="muted small">Part ${part} of 10 · with ${INTERVIEWER.name}, ${INTERVIEWER.role}</div></div><span class="pill">${answeredCount()}/${PROMPTS.length}</span></div>
+  return shell('interview',`<div class="iv-head"><div class="between"><div><div class="eyebrow">Business Discovery Interview</div><div class="muted small">Part ${part} of 10 · with ${INTERVIEWER.name}, ${INTERVIEWER.role}</div></div><span class="pill">${answeredCount()}/${PROMPTS.length}</span></div>
     <div class="iv-progress"><i style="width:${pct}%"></i></div>
     ${cur?`<div class="between" style="margin-top:10px"><div class="muted small">${curSec&&S.assign[curSec.key]?('This part is assigned to <b style="color:var(--accent)">'+esc(memberName(S.assign[curSec.key]))+'</b>'):'Invite teammates to help'} · <a href="#/team" style="color:var(--accent)">Manage team</a></div>
     <div class="small">Answering as <select id="iv_as" class="sel" style="display:inline-block;width:auto;padding:5px 9px;margin-left:4px" onchange="setActiveMember(this.value)">${members().map(m=>`<option value="${m.id}" ${((curSec&&S.assign[curSec.key])||S.activeMember||S.ownerId)===m.id?'selected':''}>${esc(m.name)}</option>`).join('')}</select></div></div>`:''}
@@ -203,7 +215,7 @@ function applyState(d){S.members=d.members;S.assign={};(S.members||[]).forEach(m
 function smartText(card){if(S.smart&&S.smart[card.key]!=null&&S.smart[card.key]!=='')return S.smart[card.key];return card.from.map(id=>S.answers[id]).filter(Boolean).join('\n\n');}
 function vSmart(){
   if(!ivDone())return shell('smart',`<div class="eyebrow">Discovery Summary</div><h1 class="h-title">Finish your interview first</h1><p class="muted">Complete the discovery interview and we'll show what we understood.</p><a class="btn" href="#/interview">Go to interview →</a>`,'Discovery Summary');
-  return shell('smart',`<div class="eyebrow">Discovery Summary</div><h1 class="h-title">Here's what we heard about your business</h1><p class="muted">We've distilled your interview into the essentials. Edit anything we got wrong.</p>
+  return shell('smart',`<div class="eyebrow">Discovery Summary</div><h1 class="h-title">What we understood about your business</h1><p class="muted">A structured summary of your interview. Refine anything that needs adjusting.</p>
    <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">${SMART_MAP.map(c=>`<div class="card smartcard"><div class="tiny" style="color:var(--accent)">${esc(c.title)}</div><textarea class="ta" id="sm_${c.key}" style="min-height:120px">${esc(smartText(c))}</textarea></div>`).join('')}</div>
    <div class="between" style="margin-top:18px"><div class="muted small">${smartDone()?'✓ Confirmed':'Review and confirm to continue.'}</div><button class="btn lg" onclick="smartConfirm()">This is accurate — confirm →</button></div>`,'Discovery Summary');
 }
@@ -280,7 +292,7 @@ function vDeliveredDashboard(){
      ${jstep('✓','background:var(--green-soft);color:var(--green)','Diagnostic complete','var(--ink-soft)','Delivered '+date,'')}
      ${jstep('1','background:var(--accent);color:#fff','Review findings <span class="pill accent" style="margin-left:8px">You\'re here</span>','var(--ink)','Read the full diagnostic and the priorities behind your scores.','')}
      ${jstep('2','background:#fff;border:1.5px solid var(--line);color:var(--ink-soft)','Review session with Scale9X','var(--ink)','Discuss your results and priorities with your Scale9X growth lead.','<a href="#" onclick="toast(\'Your Scale9X growth lead will reach out to schedule your review session.\',\'success\');return false;" class="small" style="color:var(--accent-ink);font-weight:600;display:inline-block;margin-top:6px">Schedule a review session →</a>')}
-     ${jstep('3','background:#fff;border:1.5px solid var(--line-soft);color:var(--muted)','Recommended next engagement','var(--ink-soft)','Based on your findings — discussed in your review session.','')}
+     ${jstep('3','background:#fff;border:1.5px solid var(--line-soft);color:var(--muted)','Recommended next engagement','var(--ink-soft)','Recommended from your findings and discussed in your review session.','')}
    </div>`,t('nav.dashboard'));
 }
 function miniMatrix(mx){
@@ -370,7 +382,7 @@ function renderReport(d){
       ${ex.opportunity?`<div class="es-outcome"><div class="tiny" style="color:var(--accent-ink)">Expected outcome</div><p style="margin-top:7px;color:var(--ink-soft);line-height:1.65">${esc(ex.opportunity)}</p></div>`:''}
     </div>
 
-    ${sh('Current growth position')}<div class="row wrap" style="gap:30px">${scoreCol(t('db.maturity'),ds.maturity?ds.maturity.total:null,ds.maturity&&ds.maturity.grade,ds.maturity&&ds.maturity.categories)}${scoreCol(t('db.potential'),ds.potential?ds.potential.total:null,ds.potential&&ds.potential.grade,ds.potential&&ds.potential.categories)}</div>
+    ${sh('Current growth position')}<div class="row wrap" style="gap:30px">${scoreCol(t('db.maturity'),ds.maturity?ds.maturity.total:null,ds.maturity&&ds.maturity.label,ds.maturity&&ds.maturity.categories)}${scoreCol(t('db.potential'),ds.potential?ds.potential.total:null,ds.potential&&ds.potential.label,ds.potential&&ds.potential.categories)}</div>
     <div class="radarwrap">
       <div style="text-align:center"><div class="tiny" style="margin-bottom:2px">${t('db.maturity')} · category profile</div>${radarChart(ds.maturity&&ds.maturity.categories)}</div>
       <div style="text-align:center"><div class="tiny" style="margin-bottom:2px">${t('db.potential')} · category profile</div>${radarChart(ds.potential&&ds.potential.categories)}</div>
@@ -387,9 +399,8 @@ function renderReport(d){
 
     ${sh('Strategic priorities')}<div class="reclist">${recs.map((r,i)=>{const m=String(r).split(/ — (.+)/s);const area=m.length>1?m[0]:(t('r.rec')+' '+(i+1));const txt=m.length>1?m[1]:String(r);const sev=(findings[i]&&findings[i].severity)||'medium';return `<div class="initiative"><span class="inum">${i+1}</span><div class="ibody"><div class="ihead"><span class="iarea">${esc(area)}</span><span class="prio ${sev}">${t('f.priority')}: ${t('sev.'+sev)}</span></div><div class="itext">${esc(txt)}</div></div></div>`;}).join('')||'<div class="muted small">—</div>'}</div>
 
-    ${sh('Growth opportunities')}<div class="oppgrid">${oqV2('qw',t('r.quickwins'),t('r.qwsub'),oppV2.quick_win)}${oqV2('si',t('r.strategic'),t('r.sisub'),oppV2.strategic)}${oqV2('lt',t('r.longterm'),t('r.ltsub'),oppV2.long_term)}${oqV2('tr',t('r.transformation'),t('r.trsub'),oppV2.transformation)}</div>
-    <div class="muted small" style="margin:16px 0 8px">${t('r.revexpsub')}${rev.industry?` · <b style="color:var(--accent-ink)">${esc(rev.industry)}</b>`:''}</div>${(rev.items||[]).map(r=>`<div class="revrow"><div class="rvmeta"><div class="rvn">${esc(r.name)}</div><div class="rvw">${esc(r.why)}</div></div><div class="rvtags"><span class="tag ${String(r.difficulty||'').toLowerCase()}"><span class="tl">${t('r.difficulty')}</span>${esc(r.difficulty)}</span><span class="tag impact"><span class="tl">${t('r.impact2')}</span>${esc(r.impact)}</span><span class="tag time"><span class="tl">${t('r.timeline')}</span>${esc(r.timeline)}</span></div></div>`).join('')}
-    ${(bets.items&&bets.items.length)?`<div class="tiny" style="margin:18px 0 8px">${t('r.bets')}</div><div class="bets">${bets.items.map(b=>`<div class="bet"><span class="bx">★</span><div><div class="bn">${esc(b.name)}</div><div class="bw">${esc(b.why)}</div></div></div>`).join('')}</div>`:''}
+    ${sh('Growth opportunities')}<div class="muted small" style="margin:8px 0 8px">${t('r.revexpsub')}${rev.industry?` · <b style="color:var(--accent-ink)">${esc(rev.industry)}</b>`:''}</div>${(rev.items||[]).map(r=>`<div class="revrow"><div class="rvmeta"><div class="rvn">${esc(r.name)}</div><div class="rvw">${esc(r.why)}</div></div><div class="rvtags"><span class="tag ${String(r.difficulty||'').toLowerCase()}"><span class="tl">${t('r.difficulty')}</span>${esc(r.difficulty)}</span><span class="tag impact"><span class="tl">${t('r.impact2')}</span>${esc(r.impact)}</span><span class="tag time"><span class="tl">${t('r.timeline')}</span>${esc(r.timeline)}</span></div></div>`).join('')}
+    ${(bets.items&&bets.items.length)?`<div class="tiny" style="margin:18px 0 8px">${t('r.bets')}</div><div class="bets">${bets.items.map(b=>`<div class="bet"><div><div class="bn">${esc(b.name)}</div><div class="bw">${esc(b.why)}</div></div></div>`).join('')}</div>`:''}
     <div class="fi">${(fi.focus&&fi.focus.length)?`<div class="fi-col focus"><div class="fih">${t('r.focus')}</div>${fi.focus.map(f=>`<div class="fi-item"><span class="fic">→</span><div><div class="fii">${esc(f.item)}</div>${f.why?`<div class="fiw">${esc(f.why)}</div>`:''}</div></div>`).join('')}</div>`:''}${(fi.ignore&&fi.ignore.length)?`<div class="fi-col ignore"><div class="fih">${t('r.ignore')}</div>${fi.ignore.map(x=>`<div class="fi-item"><span class="fic">—</span><div class="fii">${esc(x)}</div></div>`).join('')}</div>`:''}</div>
 
     ${sh('The next 12 months')}<div class="tiny" style="margin-bottom:8px">${t('r.plan')}</div><div class="planblocks">${plan.map(p=>`<div class="planblock"><div class="pw">${esc(p.weeks)}</div><ul>${(p.items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div>
@@ -421,7 +432,7 @@ function render(){
   let h=location.hash||'';
   if(h==='#/logout'){logout();return;}
   if(!TOK()){ $('app').innerHTML = h.includes('signup')?vLogin(true):vLogin(false); return; }
-  if(!S.loaded){ $('app').innerHTML='<div style="display:grid;place-items:center;height:100vh" class="muted">Loading…</div>'; loadState().then(render).catch(()=>{$('app').innerHTML=vLogin(false);}); return; }
+  if(!S.loaded){ $('app').innerHTML='<div style="display:grid;place-items:center;height:100vh;gap:14px"><div class="s9load"></div><div class="muted small">Loading…</div></div>'; loadState().then(render).catch(()=>{$('app').innerHTML=vLogin(false);}); return; }
   let out,m;
   document.title='Scale9X — Growth Leadership'; // default; vReport overrides with the client + report name
   if((m=h.match(/^#\/report\/(.+)$/)))out=vReport(m[1]);
