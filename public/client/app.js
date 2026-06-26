@@ -1,6 +1,13 @@
 /* Scale9X Client Portal (Phase 2) — talks to the shared DB via the platform API. */
 const $=s=>document.getElementById(s);
 const esc=s=>(''+(s==null?'':s)).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+// Normalise growth-position labels (maps legacy stored quadrants to the current names).
+function normPos(q){ q=String(q||'');
+  if(/best client|high growth potential/i.test(q)) return 'High Growth Potential';
+  if(/scale/i.test(q)) return 'Scale Ready';
+  if(/mature/i.test(q)) return 'Mature — Limited Headroom';
+  if(/high risk|reposition/i.test(q)) return 'Reposition Required';
+  return q||'—'; }
 const go=h=>location.hash=h;
 const TOK=()=>localStorage.getItem('1xl_tok');
 const UI=()=>{try{return JSON.parse(localStorage.getItem('1xl_ui'))||{}}catch(e){return{}}};
@@ -246,7 +253,7 @@ function vDeliveredDashboard(){
   const sec=S.reportData.sections||{}, ds=sec.diagnostic_scores||{}, mx=sec.magic_matrix||{}, ex=sec.executive_summary||{};
   const company=esc((S.profile&&S.profile.company)||'your business');
   const date=esc((S.report.published_at||'').slice(0,10));
-  const pos=mx.quadrant||'—';
+  const pos=normPos(mx.quadrant);
   const POSSUB={
     'High Growth Potential':'Strong market opportunity, currently constrained by organisational maturity.',
     'Scale Ready':'Built and positioned to scale; the priority is disciplined acceleration.',
@@ -299,7 +306,7 @@ function miniMatrix(mx){
         <div style="position:absolute;left:${x}%;bottom:${y}%;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;transform:translate(-50%,50%);box-shadow:0 2px 10px rgba(184,115,51,.55);z-index:3"></div>
       </div>
       <div style="text-align:center;font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;margin-top:8px">GROWTH POTENTIAL →</div>
-      <div class="callout" style="margin-top:12px"><div class="ttl">Current growth position</div><p><b>${esc(mx.quadrant)}</b> — ${QDESC[active]||'plotted on maturity vs. potential to set the strategic priority.'}</p></div>
+      <div class="callout" style="margin-top:12px"><div class="ttl">Current growth position</div><p><b>${esc(normPos(mx.quadrant))}</b> — ${QDESC[active]||'plotted on maturity vs. potential to set the strategic priority.'}</p></div>
     </div></div>`;
 }
 function donut(val){const v=Math.max(0,Math.min(100,Math.round(val||0)));const r=40,c=2*Math.PI*r,off=c*(1-v/100);
@@ -327,16 +334,17 @@ function radarChart(cats){
 }
 function renderReport(d){
   const s=d.sections||{}, ex=s.executive_summary||{}, ds=s.diagnostic_scores||{}, sw=s.strengths_weaknesses||{}, kf=s.key_findings||[], nar=s.diagnostic_narrative||[], recs=s.strategic_recommendations||[], plan=s.ninety_day_plan||[], road=s.twelve_month_roadmap||[], kpis=s.kpi_framework||[], budget=s.budget_allocation||[];
-  const bp=s.growth_blueprint||{}, oppV2=s.opportunity_matrix_v2||{}, rev=s.revenue_expansion||{}, bets=s.strategic_bets||{}, fi=s.focus_ignore||{};
+  const oppV2=s.opportunity_matrix_v2||{}, rev=s.revenue_expansion||{}, bets=s.strategic_bets||{}, fi=s.focus_ignore||{};
   const company=esc((d.report&&d.report.company)||(S.company&&S.company.name)||'');
   const date=esc(((d.report&&d.report.published_at)||'').slice(0,10));
   let _sn=0; const sh=(title)=>`<h2><span class="h2num">${String(++_sn).padStart(2,'0')}</span>${title}</h2>`;
   const KPIWHY={Business:'The headline numbers that prove the business is growing.',Marketing:'Whether demand generation is efficient and attributable.',Sales:'How reliably pipeline converts into revenue.',Customer:'Whether customers stay, expand and refer.',Operations:'Whether delivery keeps pace with growth.',Finance:'Whether growth is profitable and well-funded.'};
-  const KPIIC={Business:'🏢',Marketing:'📣',Sales:'💼',Customer:'🤝',Operations:'⚙️',Finance:'💰'};
   const findings=kf.map((f,i)=>Object.assign({},nar[i]||{},f));
-  const recHtml=r=>{const m=String(r).split(/ — (.+)/s);return m.length>1?`<b>${esc(m[0])}</b> — ${esc(m[1])}`:esc(r);};
   const oqV2=(cls,label,sub,items)=>`<div class="oppq ${cls}"><div class="oh"><span class="od"></span>${label}</div><div class="small muted" style="margin:-2px 0 7px">${sub}</div>${(items&&items.length)?items.map(o=>`<div class="oi">• ${esc(o.title)}</div>`).join(''):'<div class="oi muted">—</div>'}</div>`;
-  const bphase=(badge,label,sub,items)=>`<div class="bp-phase"><div class="bph"><span class="bpt">${badge}</span><div><div class="bpl">${esc(label)}</div><div class="bps">${esc(sub)}</div></div></div><div class="bp-body">${(items||[]).map(it=>`<div class="bp-item"><div class="bia">${esc(it.action||'')}</div><div class="bio"><b>${t('r.outcome')}:</b> ${esc(it.outcome||'')}</div>${it.impact?`<span class="biz">${esc(it.impact)}</span>`:''}</div>`).join('')||'<div class="muted small" style="padding:8px 0">—</div>'}</div></div>`;
+  const quad=normPos((s.magic_matrix||{}).quadrant);
+  const POSSUB={'High Growth Potential':'Strong market opportunity, currently constrained by organisational maturity.','Scale Ready':'Built and positioned to scale; the priority is disciplined acceleration.','Mature — Limited Headroom':'Well-run, with limited upside in the current model; growth requires new vectors.','Reposition Required':'Both market position and organisational maturity need rebuilding before scaling.'};
+  const BP=85, bench=(v)=>{v=Math.max(0,Math.min(100,v||0));return `<div style="position:relative;height:7px;background:#EDE7DD;border-radius:999px;margin-top:12px"><div style="position:absolute;left:0;top:0;bottom:0;width:${v}%;background:var(--navy);border-radius:999px"></div><div style="position:absolute;left:${BP}%;top:-3px;bottom:-3px;width:1.5px;background:var(--copper)"></div></div><div style="font-size:11.5px;margin-top:8px;color:var(--muted)">Best practice <span style="color:var(--accent-ink)">${BP}</span> · Gap ${Math.max(0,BP-v)}</div>`;};
+  const esNum=(label,val)=>`<div style="flex:1;min-width:150px"><div class="tiny">${label}</div><div style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.03em;margin-top:6px;line-height:1">${val==null?'—':val}<span style="font-size:14px;color:var(--muted);font-weight:400"> / 100</span></div>${bench(val)}</div>`;
   return `<div class="report">
     <div class="rcover">
       <div class="rc-brand"><div class="mark">S9</div><div class="logo" style="color:#fff;font-weight:800;font-size:15px">Scale<span style="color:#C9A77E">9X</span></div></div>
@@ -344,45 +352,54 @@ function renderReport(d){
       <h1>${company}</h1>
       <div style="font-size:16px;color:rgba(255,255,255,.92);font-weight:600;margin-top:2px">${t('r.growthdiag')}</div>
       <div class="rc-meta">${t('r.delivered')} ${date}<span class="dot">•</span>${t('r.confidential')}</div>
-      <div class="rc-scores">
-        <div class="rc-score"><div class="lab">${t('db.maturity')}</div><div class="v">${ds.maturity?ds.maturity.total:'—'}<small>/100</small></div><div class="g">${ds.maturity?esc(ds.maturity.grade):''}</div></div>
-        <div class="rc-score"><div class="lab">${t('db.potential')}</div><div class="v">${ds.potential?ds.potential.total:'—'}<small>/100</small></div><div class="g">${ds.potential?esc(ds.potential.grade):''}</div></div>
-        <div class="rc-score"><div class="lab">${t('db.matrix')}</div><div class="v" style="font-size:17px;margin-top:12px;line-height:1.2">${esc((s.magic_matrix||{}).quadrant||'—')}</div></div>
-      </div>
     </div>
     <div class="report-body">
-    ${(ex.prescription&&ex.prescription.length)?`<div class="card grad pad" style="margin:6px 0 4px"><div class="tiny" style="color:var(--accent-ink)">${t('r.takeaways')}</div><div style="margin-top:8px">${ex.prescription.slice(0,3).map((p,i)=>`<div class="takeaway"><span class="ti">${i+1}</span><div>${esc(p)}</div></div>`).join('')}</div></div>`:''}
-    ${sh(t('r.exec'),'🎯')}<div class="stratgrid">
-      <div class="strat"><div class="sh"><span class="sl">${t('r.situation')}</span></div><p>${esc(ex.situation||'')}</p></div>
-      <div class="strat"><div class="sh"><span class="sl">${t('r.diagnosis')}</span></div><p>${esc(ex.diagnosis||'')}</p></div>
-      <div class="strat hot"><div class="sh"><span class="sl">${t('r.costinaction')}</span></div><p>${esc(ex.impact||'')}</p></div>
-      <div class="strat win"><div class="sh"><span class="sl">${t('r.opportunity')}</span></div><p>${esc(ex.opportunity||'')}</p></div>
-      <div class="strat full"><div class="sh"><span class="sl">${t('r.prescription')}</span></div><ol style="margin:6px 0 0;padding-left:18px;color:var(--ink-soft);line-height:1.75">${(ex.prescription||[]).map(p=>`<li style="margin:3px 0">${esc(p)}</li>`).join('')}</ol></div>
+
+    <div class="execsum">
+      <div class="es-eyebrow">Executive summary</div>
+      <div class="tiny" style="margin-top:18px">Current growth position</div>
+      <div style="font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.025em;margin-top:6px">${esc(quad)}</div>
+      <div class="muted" style="margin-top:9px;max-width:560px;line-height:1.6">${esc(POSSUB[quad]||'')}</div>
+      <div style="display:flex;gap:30px;margin-top:24px;flex-wrap:wrap">${esNum('Growth maturity',ds.maturity?ds.maturity.total:null)}${esNum('Growth potential',ds.potential?ds.potential.total:null)}</div>
+      <div class="es-divider"></div>
+      <div class="tiny">Why we are here</div>
+      <p style="margin-top:8px;color:var(--ink-soft);line-height:1.7">${esc(ex.diagnosis||'')}</p>
+      <div class="es-divider"></div>
+      <div class="tiny">Top three priorities</div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:13px">${(ex.prescription||[]).slice(0,3).map((p,i)=>`<div style="display:flex;gap:13px"><div style="font-size:15px;font-weight:800;color:var(--accent);flex:0 0 auto;line-height:1.4">${String(i+1).padStart(2,'0')}</div><div style="font-size:14.5px;color:var(--ink);font-weight:600;padding-top:1px">${esc(p)}</div></div>`).join('')||'<div class="muted small">See strategic priorities.</div>'}</div>
+      ${ex.opportunity?`<div class="es-outcome"><div class="tiny" style="color:var(--accent-ink)">Expected outcome</div><p style="margin-top:7px;color:var(--ink-soft);line-height:1.65">${esc(ex.opportunity)}</p></div>`:''}
     </div>
-    ${s.business_reality?`<div class="callout"><div class="ttl">${t('r.reality')}</div><p>${esc(s.business_reality)}</p></div>`:''}
-    ${sh(t('r.scores'),'📊')}<div class="row wrap" style="gap:30px">${scoreCol(t('db.maturity'),ds.maturity?ds.maturity.total:null,ds.maturity&&ds.maturity.grade,ds.maturity&&ds.maturity.categories)}${scoreCol(t('db.potential'),ds.potential?ds.potential.total:null,ds.potential&&ds.potential.grade,ds.potential&&ds.potential.categories)}</div>
+
+    ${sh('Current growth position')}<div class="row wrap" style="gap:30px">${scoreCol(t('db.maturity'),ds.maturity?ds.maturity.total:null,ds.maturity&&ds.maturity.grade,ds.maturity&&ds.maturity.categories)}${scoreCol(t('db.potential'),ds.potential?ds.potential.total:null,ds.potential&&ds.potential.grade,ds.potential&&ds.potential.categories)}</div>
     <div class="radarwrap">
       <div style="text-align:center"><div class="tiny" style="margin-bottom:2px">${t('db.maturity')} · category profile</div>${radarChart(ds.maturity&&ds.maturity.categories)}</div>
       <div style="text-align:center"><div class="tiny" style="margin-bottom:2px">${t('db.potential')} · category profile</div>${radarChart(ds.potential&&ds.potential.categories)}</div>
     </div>
-    ${sh(t('r.magic'),'🧭')}${miniMatrix(s.magic_matrix||{})}
-    ${sh(t('r.sw'),'⚖️')}<div class="row wrap"><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">${t('r.strengths')}</div><div style="margin-top:8px">${(sw.strengths||[]).map(c=>`<span class="pill green" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">${t('r.weaknesses')}</div><div style="margin-top:8px">${(sw.weaknesses||[]).map(c=>`<span class="pill red" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div></div>
-    ${sh(t('r.findings'),'🔍')}<div class="findings">${findings.map((f,i)=>`<div class="finding"><div class="f-head"><div class="f-title"><span class="f-no">${i+1}</span><span class="f-area">${esc(f.area||'Finding '+(i+1))}</span></div><span class="sev ${f.severity||'medium'}">${t('f.priority')}: ${t('sev.'+(f.severity||'medium'))}</span></div><div class="f-body">
+    <div style="margin-top:8px">${miniMatrix(s.magic_matrix||{})}</div>
+    <div class="row wrap" style="margin-top:18px"><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">${t('r.strengths')}</div><div style="margin-top:8px">${(sw.strengths||[]).map(c=>`<span class="pill green" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">${t('r.weaknesses')}</div><div style="margin-top:8px">${(sw.weaknesses||[]).map(c=>`<span class="pill red" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div></div>
+
+    ${sh('Root cause analysis')}<div class="findings">${findings.map((f,i)=>`<div class="finding"><div class="f-head"><div class="f-title"><span class="f-no">${i+1}</span><span class="f-area">${esc(f.area||'Finding '+(i+1))}</span></div><span class="sev ${f.severity||'medium'}">${t('f.priority')}: ${t('sev.'+(f.severity||'medium'))}</span></div><div class="f-body">
       <div class="frow"><div class="fk"><span class="fdot"></span>${t('f.observation')}</div><div class="fv">${esc(f.observation||'')}</div></div>
       ${f.root_cause?`<div class="frow"><div class="fk"><span class="fdot"></span>${t('f.rootcause')}</div><div class="fv">${esc(f.root_cause)}</div></div>`:''}
       <div class="frow impact"><div class="fk"><span class="fdot"></span>${t('f.impact')}</div><div class="fv">${esc(f.business_impact||'')}</div></div>
       ${f.action?`<div class="frow action"><div class="fk"><span class="fdot"></span>${t('f.action')}</div><div class="fv">${esc(f.action)}</div></div>`:''}
-      ${f.opportunity?`<div class="frow benefit"><div class="fk"><span class="fdot"></span>${t('f.benefit')}</div><div class="fv">${esc(f.opportunity)}</div></div>`:''}
     </div></div>`).join('')||'<div class="muted small">No findings recorded.</div>'}</div>
-    ${sh(t('r.opp'),'💡')}<div class="oppgrid">${oqV2('qw',t('r.quickwins'),t('r.qwsub'),oppV2.quick_win)}${oqV2('si',t('r.strategic'),t('r.sisub'),oppV2.strategic)}${oqV2('lt',t('r.longterm'),t('r.ltsub'),oppV2.long_term)}${oqV2('tr',t('r.transformation'),t('r.trsub'),oppV2.transformation)}</div>
-    ${sh(t('r.revexp'),'💰')}<div class="muted small" style="margin:-6px 0 8px">${t('r.revexpsub')}${rev.industry?` · <b style="color:var(--accent-ink)">${esc(rev.industry)}</b>`:''}</div>${(rev.items||[]).map(r=>`<div class="revrow"><div class="rvmeta"><div class="rvn">${esc(r.name)}</div><div class="rvw">${esc(r.why)}</div></div><div class="rvtags"><span class="tag ${String(r.difficulty||'').toLowerCase()}"><span class="tl">${t('r.difficulty')}</span>${esc(r.difficulty)}</span><span class="tag impact"><span class="tl">${t('r.impact2')}</span>${esc(r.impact)}</span><span class="tag time"><span class="tl">${t('r.timeline')}</span>${esc(r.timeline)}</span></div></div>`).join('')}
-    ${sh(t('r.bets'),'🚀')}<div class="muted small" style="margin:-6px 0 8px">${t('r.betssub')}</div><div class="bets">${(bets.items||[]).map(b=>`<div class="bet"><span class="bx">★</span><div><div class="bn">${esc(b.name)}</div><div class="bw">${esc(b.why)}</div></div></div>`).join('')}</div>
-    ${sh(t('r.focusignore'),'🎯')}<div class="fi"><div class="fi-col focus"><div class="fih">✓ ${t('r.focus')}</div>${(fi.focus||[]).map(f=>`<div class="fi-item"><span class="fic">→</span><div><div class="fii">${esc(f.item)}</div>${f.why?`<div class="fiw">${esc(f.why)}</div>`:''}</div></div>`).join('')||'<div class="muted small">—</div>'}</div><div class="fi-col ignore"><div class="fih">⏸ ${t('r.ignore')}</div>${(fi.ignore||[]).map(x=>`<div class="fi-item"><span class="fic">✕</span><div class="fii">${esc(x)}</div></div>`).join('')||'<div class="muted small">—</div>'}</div></div>
-    ${sh(t('r.rec'),'✅')}<div class="reclist">${recs.map((r,i)=>{const m=String(r).split(/ — (.+)/s);const area=m.length>1?m[0]:(t('r.rec')+' '+(i+1));const txt=m.length>1?m[1]:String(r);const sev=(findings[i]&&findings[i].severity)||'medium';return `<div class="initiative"><span class="inum">${i+1}</span><div class="ibody"><div class="ihead"><span class="iarea">${esc(area)}</span><span class="prio ${sev}">${t('f.priority')}: ${t('sev.'+sev)}</span></div><div class="itext">${esc(txt)}</div></div></div>`;}).join('')||'<div class="muted small">—</div>'}</div>
-    ${sh(t('r.plan'),'⚡')}<div class="planblocks">${plan.map(p=>`<div class="planblock"><div class="pw">${esc(p.weeks)}</div><ul>${(p.items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div>
-    ${sh(t('r.roadmap'),'🗺️')}<div class="timeline">${road.map(q=>`<div class="tl"><div class="tq"><div class="qbadge">${esc(q.quarter)}</div></div><div class="tc"><b>${esc(q.objective)}</b><div class="ti2">${(q.initiatives||[]).map(esc).join(' · ')}</div></div></div>`).join('')}</div>
-    ${sh(t('r.kpi'),'📈')}<div class="kpigrid">${kpis.map(k=>`<div class="kpiq2"><div class="kh"><span class="kn">${esc(k.layer)}</span></div><div class="kw">${esc(KPIWHY[k.layer]||'Key metrics to track for this layer.')}</div><div class="km"><span class="kdir">↗</span> ${(k.items||[]).map(esc).join(' · ')}</div></div>`).join('')}</div>
+
+    ${sh('Strategic priorities')}<div class="reclist">${recs.map((r,i)=>{const m=String(r).split(/ — (.+)/s);const area=m.length>1?m[0]:(t('r.rec')+' '+(i+1));const txt=m.length>1?m[1]:String(r);const sev=(findings[i]&&findings[i].severity)||'medium';return `<div class="initiative"><span class="inum">${i+1}</span><div class="ibody"><div class="ihead"><span class="iarea">${esc(area)}</span><span class="prio ${sev}">${t('f.priority')}: ${t('sev.'+sev)}</span></div><div class="itext">${esc(txt)}</div></div></div>`;}).join('')||'<div class="muted small">—</div>'}</div>
+
+    ${sh('Growth opportunities')}<div class="oppgrid">${oqV2('qw',t('r.quickwins'),t('r.qwsub'),oppV2.quick_win)}${oqV2('si',t('r.strategic'),t('r.sisub'),oppV2.strategic)}${oqV2('lt',t('r.longterm'),t('r.ltsub'),oppV2.long_term)}${oqV2('tr',t('r.transformation'),t('r.trsub'),oppV2.transformation)}</div>
+    <div class="muted small" style="margin:16px 0 8px">${t('r.revexpsub')}${rev.industry?` · <b style="color:var(--accent-ink)">${esc(rev.industry)}</b>`:''}</div>${(rev.items||[]).map(r=>`<div class="revrow"><div class="rvmeta"><div class="rvn">${esc(r.name)}</div><div class="rvw">${esc(r.why)}</div></div><div class="rvtags"><span class="tag ${String(r.difficulty||'').toLowerCase()}"><span class="tl">${t('r.difficulty')}</span>${esc(r.difficulty)}</span><span class="tag impact"><span class="tl">${t('r.impact2')}</span>${esc(r.impact)}</span><span class="tag time"><span class="tl">${t('r.timeline')}</span>${esc(r.timeline)}</span></div></div>`).join('')}
+    ${(bets.items&&bets.items.length)?`<div class="tiny" style="margin:18px 0 8px">${t('r.bets')}</div><div class="bets">${bets.items.map(b=>`<div class="bet"><span class="bx">★</span><div><div class="bn">${esc(b.name)}</div><div class="bw">${esc(b.why)}</div></div></div>`).join('')}</div>`:''}
+    <div class="fi">${(fi.focus&&fi.focus.length)?`<div class="fi-col focus"><div class="fih">${t('r.focus')}</div>${fi.focus.map(f=>`<div class="fi-item"><span class="fic">→</span><div><div class="fii">${esc(f.item)}</div>${f.why?`<div class="fiw">${esc(f.why)}</div>`:''}</div></div>`).join('')}</div>`:''}${(fi.ignore&&fi.ignore.length)?`<div class="fi-col ignore"><div class="fih">${t('r.ignore')}</div>${fi.ignore.map(x=>`<div class="fi-item"><span class="fic">—</span><div class="fii">${esc(x)}</div></div>`).join('')}</div>`:''}</div>
+
+    ${sh('The next 12 months')}<div class="tiny" style="margin-bottom:8px">${t('r.plan')}</div><div class="planblocks">${plan.map(p=>`<div class="planblock"><div class="pw">${esc(p.weeks)}</div><ul>${(p.items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div>
+    <div class="tiny" style="margin:20px 0 8px">${t('r.roadmap')}</div><div class="timeline">${road.map(q=>`<div class="tl"><div class="tq"><div class="qbadge">${esc(q.quarter)}</div></div><div class="tc"><b>${esc(q.objective)}</b><div class="ti2">${(q.initiatives||[]).map(esc).join(' · ')}</div></div></div>`).join('')}</div>
+    <div class="tiny" style="margin:20px 0 8px">${t('r.kpi')}</div><div class="kpigrid">${kpis.map(k=>`<div class="kpiq2"><div class="kh"><span class="kn">${esc(k.layer)}</span></div><div class="kw">${esc(KPIWHY[k.layer]||'Key metrics to track for this layer.')}</div><div class="km"><span class="kdir">↗</span> ${(k.items||[]).map(esc).join(' · ')}</div></div>`).join('')}</div>
     <div style="margin-top:20px"><div class="tiny" style="margin-bottom:8px">${t('r.budget')}</div><div class="budgetbar">${budget.map(x=>`<div class="bb"><div class="bn">${esc(x.area)}</div><b>${x.pct}%</b><div class="bt"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div></div>
+
+    ${sh('Appendix — methodology & evidence')}${s.business_reality?`<div class="callout"><div class="ttl">${t('r.reality')}</div><p>${esc(s.business_reality)}</p></div>`:''}
+    <p class="muted small" style="line-height:1.7;margin-top:12px">This diagnostic scores Growth Maturity (how built-out the business is today) and Growth Potential (the upside available) across weighted categories, drawn from a structured discovery interview and supporting evidence, and validated by a Scale9X analyst. The Growth Position Matrix plots maturity against potential to set the strategic priority. No figures are generated without analyst review.</p>
+
     <div class="divider"></div><div class="between"><div class="brand" style="padding:0"><div class="mark" style="width:26px;height:26px;font-size:11px">S9</div><div class="logo" style="font-size:14px">Scale<span class="t">9X</span> <span class="muted" style="font-weight:600">Growth Leadership</span></div></div><div class="muted small">${t('r.confidential')}</div></div>
     </div></div>`;
 }

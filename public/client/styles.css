@@ -186,6 +186,10 @@ h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
    ========================================================================== */
 .report{background:#fff;border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow-md);max-width:920px;margin:0 auto;overflow:hidden}
 .report-body{padding:18px 52px 50px}
+.execsum{padding:8px 0 4px}
+.es-eyebrow{font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;color:var(--accent-ink)}
+.es-divider{height:0.5px;background:var(--line);margin:24px 0}
+.es-outcome{background:var(--bg-soft);border-radius:10px;padding:18px 20px;margin-top:24px}
 .report h2{font-size:21px;font-weight:800;letter-spacing:-.02em;margin:38px 0 14px;padding-top:22px;border-top:1px solid var(--line);display:flex;align-items:center;gap:10px}
 .report h2 .h2num{font-size:12px;font-weight:800;color:#fff;background:var(--grad);width:24px;height:24px;border-radius:7px;display:grid;place-items:center;flex:0 0 auto}
 .report h2:first-of-type{border-top:none}
