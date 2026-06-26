@@ -70,8 +70,8 @@ function vLogin(signup){return `<div class="landing"><div class="left">
     <h1>${t('auth.lead')}</h1><div class="sub">${t('auth.leadsub')}</div>
     <div class="proof">
       <div class="pf"><span class="ic">✓</span><span>${t('auth.p1')}</span></div>
-      <div class="pf"><span class="ic">◆</span><span>${t('auth.p2')}</span></div>
-      <div class="pf"><span class="ic">★</span><span>${t('auth.p3')}</span></div>
+      <div class="pf"><span class="ic">✓</span><span>${t('auth.p2')}</span></div>
+      <div class="pf"><span class="ic">✓</span><span>${t('auth.p3')}</span></div>
     </div>
     <div class="mini-score">
       <div class="small" style="opacity:.85;font-weight:600">Sample growth scorecard</div>

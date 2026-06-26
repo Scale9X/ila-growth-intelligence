@@ -46,6 +46,7 @@ h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
 .brand .mark{width:34px;height:34px;border-radius:9px;background:var(--grad-brand);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;box-shadow:0 2px 6px rgba(0,31,63,.18);letter-spacing:-.02em}
 .brand .logo{font-size:16px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
 .brand .logo .t{color:var(--accent)}
+.brand .logo span{display:inline;font-size:inherit;letter-spacing:inherit;text-transform:none;margin:0}
 .brand span{display:block;font-size:9.5px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;font-weight:700;margin-top:1px}
 .navitem{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-radius:11px;color:var(--ink-soft);font-size:14px;font-weight:550;transition:background .15s,color .15s}
 .navitem:hover{background:var(--bg-soft)}
@@ -103,6 +104,7 @@ h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
 .landing .left>*{position:relative;z-index:1}
 .landing .tagline{font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:rgba(255,255,255,.82);font-weight:700}
 .landing h1{font-size:38px;line-height:1.12;letter-spacing:-.03em;margin:20px 0;font-weight:850}
+.landing .left h1{color:#fff}
 .landing .sub{color:rgba(255,255,255,.9);font-size:16px;max-width:440px;line-height:1.6}
 .landing .proof{display:flex;flex-direction:column;gap:14px;margin-top:30px}
 .landing .proof .pf{display:flex;gap:11px;align-items:flex-start;font-size:14px;color:rgba(255,255,255,.94)}
