@@ -283,13 +283,13 @@ h1,h2,h3{margin:0;font-weight:800;letter-spacing:-.025em;color:var(--ink)}
 
 /* roadmap timeline */
 .timeline{position:relative;margin-top:14px;padding-left:8px}
-.tl{display:grid;grid-template-columns:74px 1fr;gap:16px;position:relative;padding-bottom:18px}
-.tl:before{content:"";position:absolute;left:36px;top:26px;bottom:-4px;width:2px;background:var(--line)}
-.tl:last-child:before{display:none}
-.tl .tq{position:relative;z-index:1}
-.tl .tq .qbadge{width:54px;height:54px;border-radius:13px;background:var(--grad-soft);border:1px solid #E2D5C3;display:grid;place-items:center;font-weight:850;font-size:15px;color:var(--accent-ink)}
-.tl .tc{padding-top:4px}.tl .tc b{font-size:14.5px}
-.tl .tc .ti2{color:var(--muted);font-size:13.5px;margin-top:3px}
+.timeline .tl{display:grid;grid-template-columns:74px 1fr;gap:16px;position:relative;padding-bottom:18px}
+.timeline .tl:before{content:"";position:absolute;left:36px;top:26px;bottom:-4px;width:2px;background:var(--line)}
+.timeline .tl:last-child:before{display:none}
+.timeline .tl .tq{position:relative;z-index:1}
+.timeline .tl .tq .qbadge{width:54px;height:54px;border-radius:13px;background:var(--grad-soft);border:1px solid #E2D5C3;display:grid;place-items:center;font-weight:850;font-size:15px;color:var(--accent-ink)}
+.timeline .tl .tc{padding-top:4px}.timeline .tl .tc b{font-size:14.5px}
+.timeline .tl .tc .ti2{color:var(--muted);font-size:13.5px;margin-top:3px}
 
 /* 90-day plan blocks */
 .planblocks{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:10px}
