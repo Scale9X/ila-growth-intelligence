@@ -81,7 +81,7 @@ function vLogin(signup){return `<div class="landing"><div class="left">
       <div class="pf"><span class="ic">✓</span><span>${t('auth.p3')}</span></div>
     </div>
     <div class="mini-score">
-      <div class="small" style="opacity:.85;font-weight:600">Sample growth scorecard</div>
+      <div class="small" style="opacity:.85;font-weight:600">Illustrative 9X profile</div>
       <div class="small" style="display:flex;justify-content:space-between;margin-top:8px"><span>Sales Excellence</span><b>72</b></div><div class="bar"><i style="width:72%"></i></div>
       <div class="small" style="display:flex;justify-content:space-between"><span>Funnel Performance</span><b>41</b></div><div class="bar"><i style="width:41%"></i></div>
       <div class="small" style="display:flex;justify-content:space-between"><span>Technology &amp; Data</span><b>58</b></div><div class="bar" style="margin-bottom:0"><i style="width:58%"></i></div>
