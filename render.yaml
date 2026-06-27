@@ -1,8 +1,8 @@
-# ILAtech Growth Intelligence — Render deployment (one always-on web service + a persistent disk).
+# Scale9X — Render deployment (one always-on web service + a persistent disk).
 # The persistent disk is REQUIRED: the SQLite database and uploads live on it and must survive redeploys.
 services:
   - type: web
-    name: ila-growth-intelligence
+    name: scale9x-diagnostic
     runtime: node
     plan: starter              # Starter ($7/mo) or higher — the free plan has NO persistent disk
     region: singapore          # closest to SEA; change if you prefer
@@ -19,6 +19,6 @@ services:
       # - key: AI_MODEL        # optional; defaults to claude-opus-4-8
       #   value: claude-haiku-4-5
     disk:
-      name: ila-data
+      name: scale9x-data
       mountPath: /data
       sizeGB: 1
