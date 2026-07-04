@@ -1,6 +1,13 @@
 # Scale9X Design System
 
-One coherent system for every screen. Enterprise, analytical, executive — McKinsey / Palantir / Linear / Stripe Dashboard / clean-Bloomberg. **Never** AI-startup, marketing-agency, crypto, neon, glassmorphism, or oversized illustration.
+> **UPDATED 2026-07-05 — now "The Growth Instrument," matching scale9x.com.**
+> The diagnostic identity was migrated from the old Navy & Copper enterprise look to the website's **board-paper** system so website → diagnostic feels like ONE product. Source of truth = the website's `gi.css`.
+> **Palette:** paper `#F5F2EB` (bg) · ink `#232420` (headings/dark panels) · ink-soft `#5E5D54` · slate `#8F8C82` · **bronze `#A96C2E` = accent only** (was copper) · line `#E4DFD3`. Status green/amber/red unchanged.
+> **Type (3 roles):** SERIF **Newsreader** for headlines + marquee figures · SANS **Inter** for body · MONO **IBM Plex Mono** for labels/eyebrows/refs. (Was Inter-only.)
+> **Geometry:** near-flat board-paper — `--radius` 4px, hairline shadows, flat ink dark-panels (no navy gradient). Bronze stays a small, deliberate accent.
+> The token NAMES below are preserved (`--navy`,`--copper`,`--cream`) but their VALUES are remapped to the above. The legacy Navy & Copper description that follows is historical.
+
+One coherent system for every screen. Analytical, executive, board-document — calm, evidence-first, lots of whitespace. **Never** AI-startup, marketing-agency, crypto, neon, glassmorphism, or oversized illustration.
 
 All values live as CSS variables in `public/client/styles.css` (`:root`) and are mirrored in the marketing homepage `public/index.html`. **Always use the tokens — never hardcode a hex.**
 

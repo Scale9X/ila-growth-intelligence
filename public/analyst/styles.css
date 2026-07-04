@@ -7,4 +7,4 @@
 .scorecat{border:1px solid var(--line);border-radius:13px;padding:14px 16px;background:#fff;margin-bottom:10px}
 .scorearea{display:grid;grid-template-columns:1fr 120px;gap:12px;align-items:center;padding:9px 0;border-bottom:1px solid var(--line-soft)}
 .scorearea:last-child{border:none}
-.aibadge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#8A5524;background:var(--violet-soft);border-radius:999px;padding:4px 10px}
+.aibadge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.04em;text-transform:uppercase;color:#8a561f;background:var(--violet-soft);border-radius:999px;padding:4px 10px}

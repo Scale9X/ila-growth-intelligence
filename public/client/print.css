@@ -7,15 +7,15 @@
 @page{
   size:A4;
   margin:18mm 16mm 16mm;
-  @bottom-left{ content:"Scale9X — Growth Diagnostic"; font-family:"Inter",system-ui,sans-serif; font-size:8pt; color:#9aa3b0; }
-  @bottom-right{ content:"Strictly Confidential · Page " counter(page) " of " counter(pages); font-family:"Inter",system-ui,sans-serif; font-size:8pt; color:#9aa3b0; }
+  @bottom-left{ content:"Scale9X · Growth Intelligence Brief"; font-family:"Inter",system-ui,sans-serif; font-size:8pt; color:#a8a59b; }
+  @bottom-right{ content:"Strictly Confidential · Page " counter(page) " of " counter(pages); font-family:"Inter",system-ui,sans-serif; font-size:8pt; color:#a8a59b; }
 }
 /* Cover = full-bleed first page, no footer */
 @page :first{ margin:0; }
 @page :first{ @bottom-left{ content:none } @bottom-right{ content:none } }
 
 html,body{ background:#fff; }
-body.pagedreport{ margin:0; font-size:10.6pt; line-height:1.55; color:#1f2733; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+body.pagedreport{ margin:0; font-size:10.6pt; line-height:1.55; color:#232420; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
 .pagedreport *{ -webkit-print-color-adjust:exact !important; print-color-adjust:exact !important; }
 
 .pagedreport .report{ border:none !important; box-shadow:none !important; max-width:100% !important; border-radius:0 !important; margin:0 !important; background:#fff; overflow:visible !important; }
@@ -64,6 +64,13 @@ body.pagedreport{ margin:0; font-size:10.6pt; line-height:1.55; color:#1f2733; -
 .pagedreport .bw,
 .pagedreport .ti2,
 .pagedreport .kw,
-.pagedreport .small{ color:#566070 !important; }
+.pagedreport .small{ color:#5e5d54 !important; }
 
 .pagedreport img,.pagedreport svg{ max-width:100%; }
+
+/* Growth Intelligence Brief panel — keep whole, sized for paper */
+.pagedreport .gib,.pagedreport .gib-body,.pagedreport .gib-score,.pagedreport .gib-state{ break-inside:avoid; }
+.pagedreport .gib-score .n{ font-size:40pt; }
+.pagedreport .gib-t{ font-size:15pt; }
+/* measurement-rule section heads survive on paper */
+.pagedreport .report h2:before{ -webkit-print-color-adjust:exact; print-color-adjust:exact; }

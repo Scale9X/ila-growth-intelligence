@@ -23,7 +23,7 @@ async function downloadDoc(id,name){
   }catch(e){ toast(e.message); }
 }
 function shell(body,title){
-  return `<div class="app"><aside class="rail"><div class="brand"><div class="mark">S9</div><div><div class="logo">Scale<span class="t">9X</span></div><span>Analyst Workspace</span></div></div>
+  return `<div class="app"><aside class="rail"><div class="brand"><div class="mark">9X</div><div><div class="logo">Scale<span class="t">9X</span></div><span>Analyst Workspace</span></div></div>
     <a class="navitem ${location.hash.includes('queue')||!location.hash?'active':''}" href="#/queue">Engagements</a>
     ${S.isAdmin?`<a class="navitem ${location.hash.includes('admin')?'active':''}" href="#/admin">Team &amp; Admin</a>`:''}
     <div style="margin-top:auto"><div class="small muted">${t('signedin')} · ${esc(S.user?S.user.full_name:'')}</div><a href="#/logout" class="btn ghost" style="margin-top:8px;width:100%;justify-content:center;padding:9px">${t('signout')}</a></div></aside>
@@ -33,11 +33,11 @@ function shell(body,title){
 
 function vLogin(signup){
   return `<div class="landing"><div class="left"><div>
-   <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">S9</div><div class="logo" style="color:#fff;font-size:17px">Scale<span style="color:#dbe6ff">9X</span></div></div>
+   <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">9X</div><div class="logo" style="color:#fff;font-size:17px">Scale<span style="color:#ede9de">9X</span></div></div>
    <div class="tagline">Internal · Analyst Workspace</div>
    <h1>Scale9X Analyst Workspace</h1><div class="sub">Review client submissions, run the diagnostic, and deliver the growth report — all from the shared platform.</div></div>
    <div class="small" style="color:rgba(255,255,255,.7)">Confidential · Staff only</div></div>
-   <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div><div class="authbox"><div class="ab-mark"><div class="mark">S9</div><div class="logo">Scale<span class="t">9X</span></div></div><h2 style="font-size:23px">${signup?'Create analyst account':'Staff sign in'}</h2>
+   <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div><div class="authbox"><div class="ab-mark"><div class="mark">9X</div><div class="logo">Scale<span class="t">9X</span></div></div><h2 style="font-size:23px">${signup?'Create analyst account':'Staff sign in'}</h2>
    ${signup?`<div class="field"><label>Your name</label><input class="input" id="f_name"></div>`:''}
    <div class="field"><label>Email</label><input class="input" id="f_email" ${signup?'':'value="analyst@1xl.co"'}></div>
    <div class="field"><label>Password</label><input class="input" type="password" id="f_pass" ${signup?'':'value="changeme"'}></div>
@@ -84,7 +84,7 @@ function stepper(stages,labels,cur,visited,id){
     if(i===ci) return `<span class="step cur">${esc(labels[s]||s)}</span>`;
     const done=i<ci&&(delivered||!visited||visited.has(s));   // green ✓ only if actually passed through (or delivered = terminal)
     const skipped=i<ci&&!done;                                 // before current but never visited → genuinely incomplete
-    const sty=skipped?'cursor:pointer;background:#FEF3C7;color:#92400E;border:1px solid #FCD34D':'cursor:pointer';
+    const sty=skipped?'cursor:pointer;background:#FEF3C7;color:#92670f;border:1px solid #FCD34D':'cursor:pointer';
     const tip=skipped?'Skipped — click to go back and complete this stage':('Click to set status to '+(labels[s]||s));
     return `<span class="step ${done?'done':''}" style="${sty}" title="${esc(tip)}" onclick="setStatus('${id}','${s}')">${done?'✓ ':skipped?'⚠ ':''}${esc(labels[s]||s)}</span>`;
   }).join('')}</div>`;
@@ -110,7 +110,7 @@ async function vEngagement(id){
   const teamHtml=`<div class="card pad" style="margin-bottom:12px"><b>Contributors</b>${d.members.map(m=>`<div class="checkrow"><div><b>${esc(m.name)}</b> <span class="pill ${m.role==='owner'?'accent':''}">${esc(m.role)}</span></div><span class="muted small">${(m.sections||[]).map(s=>(SECTIONS.find(x=>x.key===s)||{}).sub).filter(Boolean).join(', ')||'—'}</span></div>`).join('')}</div>`;
   const visited=(d.events&&d.events.length)?new Set(d.events.flatMap(ev=>[ev.from_status,ev.to_status])):null;
   const skipped=(visited&&cur!=='delivered')?d.stages.slice(0,ci).filter(s=>!visited.has(s)):[];
-  const statusCtrl=`<div class="card pad" style="margin-bottom:16px"><div class="between"><div><div class="tiny">Engagement status</div>${stepper(d.stages,d.stageLabels,cur,visited,id)}${skipped.length?`<div class="muted small" style="margin-top:6px;color:#92400E">⚠ ${skipped.map(s=>esc(d.stageLabels[s])).join(', ')} ${skipped.length>1?'were':'was'} skipped — click that stage to go back and complete it.</div>`:''}</div>
+  const statusCtrl=`<div class="card pad" style="margin-bottom:16px"><div class="between"><div><div class="tiny">Engagement status</div>${stepper(d.stages,d.stageLabels,cur,visited,id)}${skipped.length?`<div class="muted small" style="margin-top:6px;color:#92670f">⚠ ${skipped.map(s=>esc(d.stageLabels[s])).join(', ')} ${skipped.length>1?'were':'was'} skipped — click that stage to go back and complete it.</div>`:''}</div>
     <div style="display:flex;gap:8px;align-items:center">
       <select class="sel" id="st_sel" style="width:200px;padding:8px">${d.stages.map(s=>`<option value="${s}" ${s===cur?'selected':''}>${esc(d.stageLabels[s])}</option>`).join('')}</select>
       <button class="btn ghost" onclick="setStatus('${id}',document.getElementById('st_sel').value)">Update</button>
@@ -121,7 +121,7 @@ async function vEngagement(id){
     <div class="card pad" style="margin-bottom:16px"><div class="between"><div><div class="tiny">Assigned analyst</div><b>${esc(d.assignedAnalyst||'Unassigned')}</b></div>
       ${d.isAdmin?`<div style="display:flex;gap:8px;align-items:center"><select class="sel" id="asg" style="width:210px;padding:7px">${(d.analysts||[]).map(a=>`<option value="${a.id}" ${a.id===d.assigned_analyst_id?'selected':''}>${esc(a.full_name)}</option>`).join('')}</select><button class="btn ghost" onclick="assignAnalyst('${id}')">Assign</button></div>`:'<span class="muted small">Only an admin can reassign.</span>'}</div></div>
     ${statusCtrl}
-    ${(d.discovery&&!d.discovery.complete)?`<div class="card pad" style="margin-bottom:16px;border:1px solid var(--red);background:#FEF2F2"><b style="color:var(--red)">⚠ Discovery incomplete — ${d.discovery.answered}/${d.discovery.required} questions answered.</b><div class="muted small" style="margin-top:4px">Scoring, findings, and report generation are locked until the client completes the interview. Ask the client to finish the remaining ${d.discovery.required-d.discovery.answered} questions in their portal.</div></div>`:''}
+    ${(d.discovery&&!d.discovery.complete)?`<div class="card pad" style="margin-bottom:16px;border:1px solid var(--red);background:#f4e3e1"><b style="color:var(--red)">⚠ Discovery incomplete — ${d.discovery.answered}/${d.discovery.required} questions answered.</b><div class="muted small" style="margin-top:4px">Scoring, findings, and report generation are locked until the client completes the interview. Ask the client to finish the remaining ${d.discovery.required-d.discovery.answered} questions in their portal.</div></div>`:''}
     ${(()=>{ const dv=d.discovery||{}, sc=d.scoring||{maturity:{},potential:{}};
       if(!dv.complete) return `<div class="card pad" style="margin-bottom:16px"><div class="between"><div><div class="tiny">Diagnostic Engine</div><b>Locked until discovery is complete</b></div><span class="pill amber">🔒 ${dv.answered}/${dv.required} answered</span></div></div>`;
       const scoredOk=sc.complete;
@@ -190,7 +190,7 @@ async function suggestScores(id,type){
   if(btn){btn.disabled=true;btn.textContent='Scoring… ('+(fast?'~20s':'up to ~2 min')+')';}
   try{
     const d=await api('POST','/api/analyst/engagement/'+id+'/scores/'+type+'/suggest',{model});
-    if(d.available===false){ if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid #FCD34D;background:#FEF3C7;color:#92400E;margin-bottom:12px">'+esc(d.error||'AI scoring is not configured.')+'</div>'; return; }
+    if(d.available===false){ if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid #FCD34D;background:#FEF3C7;color:#92670f;margin-bottom:12px">'+esc(d.error||'AI scoring is not configured.')+'</div>'; return; }
     if(d.error){ if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--red);margin-bottom:12px">AI scoring failed: '+esc(d.error)+'</div>'; return; }
     let applied=0;
     (d.suggestions||[]).forEach(s=>{
@@ -199,7 +199,7 @@ async function suggestScores(id,type){
       const cf=document.getElementById('cf_'+s.area_id); if(cf) cf.value=s.confidence;
       const ev=document.getElementById('ev_'+s.area_id); if(ev) ev.value=s.evidence_note||'';
     });
-    if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--accent);background:#F4E9DB;margin-bottom:12px"><b>AI drafted '+applied+' of '+d.total+' scores</b> from the client’s submission ('+esc(d.model)+'). Nothing is saved yet — review every area, adjust anything that’s off, then click <b>Save scores</b>.</div>';
+    if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--accent);background:#efe4d3;margin-bottom:12px"><b>AI drafted '+applied+' of '+d.total+' scores</b> from the client’s submission ('+esc(d.model)+'). Nothing is saved yet — review every area, adjust anything that’s off, then click <b>Save scores</b>.</div>';
     window.scrollTo(0,0);
   }catch(e){ if(bn)bn.innerHTML='<div class="card pad" style="border:1px solid var(--red);margin-bottom:12px">AI scoring failed: '+esc(e.message)+'</div>'; }
   finally{ if(btn){btn.disabled=false;btn.textContent='Suggest with AI';} }
@@ -213,7 +213,7 @@ async function saveScore(id,type){
 function miniMatrix(mx){
   if(mx.quadrant==null) return `<div class="muted">Score both Maturity and Potential to place on the Growth Position Matrix.</div>`;
   return `<div style="display:flex;gap:12px;align-items:stretch"><div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;color:var(--muted);font-weight:600;text-align:center">GROWTH MATURITY →</div>
-    <div style="flex:1"><div style="position:relative;width:100%;max-width:440px;aspect-ratio:1;border:1px solid var(--line);border-radius:14px;background:#fafafa">
+    <div style="flex:1"><div style="position:relative;width:100%;max-width:440px;aspect-ratio:1;border:1px solid var(--line);border-radius:14px;background:#faf8f2">
       <div style="position:absolute;left:60%;top:0;bottom:0;border-left:1px dashed var(--line)"></div><div style="position:absolute;top:40%;left:0;right:0;border-top:1px dashed var(--line)"></div>
       <div style="position:absolute;top:8px;left:10px;font-size:10.5px;color:var(--muted);font-weight:700">Mature · Limited</div>
       <div style="position:absolute;top:8px;right:10px;font-size:10.5px;color:var(--accent);font-weight:700">Scale Ready</div>
@@ -238,7 +238,7 @@ async function vResults(id){
     <div class="row wrap" style="margin-top:14px"><div class="card pad" style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">Strengths</div>${list(d.strengths)}</div><div class="card pad" style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">Priority weaknesses</div>${list(d.weaknesses)}</div></div>
     <h2 style="font-size:18px;margin:22px 0 8px">Growth Position Matrix</h2><div class="card pad">${miniMatrix(d.matrix)}</div>
     <h2 style="font-size:18px;margin:22px 0 8px">Opportunity Matrix <span class="muted" style="font-size:13px;font-weight:400">· auto-generated from weak areas</span></h2>
-    <div class="grid" style="grid-template-columns:1fr 1fr">${quad('Quick Wins','var(--green)',oq.quick_win)}${quad('Strategic Initiatives','var(--accent)',oq.strategic)}${quad('Long-Term','var(--amber)',oq.long_term)}${quad('Transformation','#0E7490',oq.transformation)}</div>`,'Diagnostic Results');
+    <div class="grid" style="grid-template-columns:1fr 1fr">${quad('Quick Wins','var(--green)',oq.quick_win)}${quad('Strategic Initiatives','var(--accent)',oq.strategic)}${quad('Long-Term','var(--amber)',oq.long_term)}${quad('Transformation','#5e5d54',oq.transformation)}</div>`,'Diagnostic Results');
 }
 
 async function vHistory(id){
@@ -265,9 +265,9 @@ async function vFindings(id){
   return shell(`<a href="#/e/${id}" class="muted small" style="color:var(--accent)">← Engagement</a>
     <div class="between" style="margin:6px 0;flex-wrap:wrap;gap:8px"><div><div class="eyebrow">Findings Builder</div><h1 class="h-title">Findings</h1></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn" id="fd_ai_btn" onclick="draftFindingsAI('${id}')">Draft findings with AI</button><button class="btn ghost" onclick="genDrafts('${id}')">Quick drafts (no AI)</button></div></div>
-    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#F4E9DB;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
+    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#efe4d3;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
     ${list}
-    ${fs.length?`<div class="card pad" style="margin-top:14px;background:var(--grad-soft);border-color:#E2D5C3;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><div><b>✓ ${fs.length} finding${fs.length>1?'s':''} saved automatically.</b><div class="muted small" style="margin-top:3px">Review them above — remove any with ✕, or add your own below. When you're happy, build the report.</div></div><a class="btn lg" href="#/e/${id}/report">Continue → Build Report →</a></div>`:''}
+    ${fs.length?`<div class="card pad" style="margin-top:14px;background:var(--grad-soft);border-color:#e4dfd3;display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap"><div><b>✓ ${fs.length} finding${fs.length>1?'s':''} saved automatically.</b><div class="muted small" style="margin-top:3px">Review them above — remove any with ✕, or add your own below. When you're happy, build the report.</div></div><a class="btn lg" href="#/e/${id}/report">Continue → Build Report →</a></div>`:''}
     <div class="card pad" style="margin-top:14px"><b>Add a finding</b>
       ${fld('fd_area','Area','e.g. Sales Excellence')}
       <div class="field"><label>Observation</label><textarea class="ta" id="fd_obs" style="min-height:60px"></textarea></div>
@@ -333,7 +333,7 @@ async function vReport(id){
   return shell(`<a href="#/e/${id}" class="muted small" style="color:var(--accent)">← Engagement</a>
     <div class="eyebrow" style="margin-top:6px">Diagnostic Report</div><h1 class="h-title">Report</h1>
     ${ctrl}
-    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#F4E9DB;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
+    ${aiMsg?`<div class="card pad" style="border:1px solid var(--accent);background:#efe4d3;margin-bottom:12px">${esc(aiMsg)}</div>`:''}
     <div class="card pad" style="margin-bottom:12px"><b>Executive Summary</b> ${ed('executive_summary')?'<span class="muted small">(editable)</span>':''}
       ${['situation','diagnosis','impact','opportunity'].map(k=>`<div class="field"><label>${k[0].toUpperCase()+k.slice(1)}</label><textarea class="ta" id="ex_${k}" style="min-height:54px" ${ed('executive_summary')?'':'readonly'}>${esc(ex[k]||'')}</textarea></div>`).join('')}
       <div class="field"><label>Prescription (one per line)</label><textarea class="ta" id="ex_presc" style="min-height:60px" ${ed('executive_summary')?'':'readonly'}>${esc((ex.prescription||[]).join('\n'))}</textarea></div>

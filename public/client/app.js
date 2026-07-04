@@ -59,7 +59,7 @@ function overall(){ return Math.round(100*(profileDone()*.15+ivFraction()*.45+(s
 /* shell */
 function rail(active){
   const item=(h,label,done)=>`<a class="navitem ${active===h?'active':''}" href="#/${h}">${label}${done?'<span class="tick">✓</span>':''}</a>`;
-  return `<aside class="rail"><div class="brand"><div class="mark">S9</div><div><div class="logo">Scale<span class="t">9X</span></div><span>${t('brand.tag')}</span></div></div>
+  return `<aside class="rail"><div class="brand"><div class="mark">9X</div><div><div class="logo">Scale<span class="t">9X</span></div><span>${t('brand.tag')}</span></div></div>
     ${item('dashboard',t('nav.dashboard'),false)}${item('profile',t('nav.profile'),profileDone())}${item('interview',t('nav.interview'),ivDone())}
     ${item('team',t('nav.team'),(S.members&&S.members.length>1))}${item('smart',t('nav.smart'),smartDone())}${item('documents',t('nav.documents'),docCats()>0)}${item('review',t('nav.review'),S.submitted)}${item('reports',t('nav.reports'),!!S.report)}
     <div style="margin-top:auto"><div class="small muted">${t('signedin')} · ${esc(S.company?S.company.name:'')}</div><a href="#/logout" class="btn ghost" style="margin-top:8px;width:100%;justify-content:center;padding:9px">${t('signout')}</a></div></aside>`;
@@ -72,7 +72,7 @@ function ring(pct){const r=52,c=2*Math.PI*r,off=c*(1-pct/100);return `<div class
 /* auth */
 function vLogin(signup){return `<div class="landing"><div class="left">
   <div>
-    <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">S9</div><div class="logo" style="color:#fff;font-size:17px">Scale<span style="color:#C9A77E">9X</span></div></div>
+    <div class="brand" style="padding:0 0 28px"><div class="mark" style="background:rgba(255,255,255,.18);box-shadow:none">9X</div><div class="logo" style="color:#fff;font-size:17px">Scale<span style="color:#c08a4a">9X</span></div></div>
     <div class="tagline">Research · Audit · Diagnose · Grow</div>
     <h1>${t('auth.lead')}</h1><div class="sub">${t('auth.leadsub')}</div>
     <div class="proof">
@@ -90,7 +90,7 @@ function vLogin(signup){return `<div class="landing"><div class="left">
   <div class="small" style="color:rgba(255,255,255,.7)">${t('auth.confidential')}</div></div>
   <div class="right" style="position:relative"><div style="position:absolute;top:22px;right:26px">${langSelect()}</div>
   <div class="authbox">
-  <div class="ab-mark"><div class="mark">S9</div><div class="logo">Scale<span class="t">9X</span></div></div>
+  <div class="ab-mark"><div class="mark">9X</div><div class="logo">Scale<span class="t">9X</span></div></div>
   <h2 style="font-size:23px">${signup?t('auth.create'):t('auth.welcome')}</h2>
   <div class="muted small" style="margin-top:4px">${signup?t('auth.signup_sub'):t('auth.signin_sub')}</div>
   ${signup?`<div class="field"><label>${t('auth.name')}</label><input class="input" id="f_name"></div><div class="field"><label>${t('auth.company')}</label><input class="input" id="f_company"></div>`:''}
@@ -173,7 +173,7 @@ async function ivSaveDraft(code,val){
   try{
     await api('PUT','/api/portal/answer',{code,section:p?p.sec:null,value:v,by});
     S.answers[code]=v; S.answeredBy[code]=by;
-    const i2=$('iv_save'); if(i2){i2.textContent='✓ Saved';i2.style.color='var(--green,#16a34a)';}
+    const i2=$('iv_save'); if(i2){i2.textContent='✓ Saved';i2.style.color='var(--green,#3e7c5a)';}
   }catch(e){ const i2=$('iv_save'); if(i2){i2.textContent='Saving…';} clearTimeout(_ivTimer); _ivTimer=setTimeout(()=>ivSaveDraft(code,val),2500); }  // keep retrying — never silently lose work
 }
 function ivFlush(){ clearTimeout(_ivTimer); const el=$('iv_input'); const cur=PROMPTS[S.idx]; if(el&&cur) ivSaveDraft(cur.id,el.value); }
@@ -224,7 +224,7 @@ async function smartConfirm(){const b={confirmed:true};SMART_MAP.forEach(c=>b[c.
 /* documents */
 function vDocuments(){
   return shell('documents',`<div class="eyebrow">Supporting Documents</div><h1 class="h-title">Share supporting evidence</h1><p class="muted">Our analysts review your real data as part of the audit. Upload what you have — it makes your diagnostic far more accurate.</p>
-   <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">${DOC_CATS.map(cat=>{const files=(S.docs&&S.docs[cat.key])||[];return `<div class="card pad"><div class="between"><b>${esc(cat.title)}</b><div style="display:flex;gap:8px;align-items:center">${files.length?'<span class="pill green">✓ '+files.length+'</span>':'<span class="pill amber">Recommended</span>'}<label class="addbtn">+ Add files<input type="file" multiple style="display:none" onchange="docAdd('${cat.key}',this)"></label></div></div><div class="muted small" style="margin:8px 0 0">${cat.recs.map(r=>esc(r)).join(' · ')}</div>${files.length?`<div class="droom">${files.map(f=>{const x=(f.name.split('.').pop()||'FILE').toUpperCase().slice(0,4);const col={PDF:'#B87333',XLS:'#2C3E50',XLSX:'#2C3E50',CSV:'#2C3E50',DOC:'#001F3F',DOCX:'#001F3F',PPT:'#A86A2E',PPTX:'#A86A2E',PNG:'#64748B',JPG:'#64748B',JPEG:'#64748B',ZIP:'#94A3B8'}[x]||'#94A3B8';return `<div class="drow"><div class="dext" style="background:${col}">${x}</div><div class="dmeta" style="cursor:pointer" title="Download ${esc(f.name)}" onclick="downloadDoc('${f.id}','${esc(f.name).replace(/'/g,"\\'")}')"><div class="dname">${esc(f.name)}</div><div class="dsub">${x} file · click to download</div></div><span class="dstatus">✓ Uploaded</span><span style="cursor:pointer;color:var(--muted);font-size:13px" title="Remove" onclick="docRemove('${f.id}')">✕</span></div>`;}).join('')}</div>`:''}</div>`;}).join('')}</div>
+   <div class="grid" style="grid-template-columns:1fr 1fr;margin-top:14px">${DOC_CATS.map(cat=>{const files=(S.docs&&S.docs[cat.key])||[];return `<div class="card pad"><div class="between"><b>${esc(cat.title)}</b><div style="display:flex;gap:8px;align-items:center">${files.length?'<span class="pill green">✓ '+files.length+'</span>':'<span class="pill amber">Recommended</span>'}<label class="addbtn">+ Add files<input type="file" multiple style="display:none" onchange="docAdd('${cat.key}',this)"></label></div></div><div class="muted small" style="margin:8px 0 0">${cat.recs.map(r=>esc(r)).join(' · ')}</div>${files.length?`<div class="droom">${files.map(f=>{const x=(f.name.split('.').pop()||'FILE').toUpperCase().slice(0,4);const col={PDF:'#a96c2e',XLS:'#1a1b1c',XLSX:'#1a1b1c',CSV:'#1a1b1c',DOC:'#232420',DOCX:'#232420',PPT:'#a96c2e',PPTX:'#a96c2e',PNG:'#8f8c82',JPG:'#8f8c82',JPEG:'#8f8c82',ZIP:'#a8a59b'}[x]||'#a8a59b';return `<div class="drow"><div class="dext" style="background:${col}">${x}</div><div class="dmeta" style="cursor:pointer" title="Download ${esc(f.name)}" onclick="downloadDoc('${f.id}','${esc(f.name).replace(/'/g,"\\'")}')"><div class="dname">${esc(f.name)}</div><div class="dsub">${x} file · click to download</div></div><span class="dstatus">✓ Uploaded</span><span style="cursor:pointer;color:var(--muted);font-size:13px" title="Remove" onclick="docRemove('${f.id}')">✕</span></div>`;}).join('')}</div>`:''}</div>`;}).join('')}</div>
    <button class="btn lg" style="margin-top:18px" onclick="go('#/review')">Continue to review →</button>`,'Supporting Documents');
 }
 function readAsBase64(file){ return new Promise((res,rej)=>{ const r=new FileReader(); r.onload=()=>res(String(r.result).split(',')[1]||''); r.onerror=()=>rej(new Error('Could not read file')); r.readAsDataURL(file); }); }
@@ -273,12 +273,12 @@ function vDeliveredDashboard(){
     'Reposition Required':'Both market position and organisational maturity need rebuilding before scaling.'};
   const mat=ds.maturity?ds.maturity.total:'—', pot=ds.potential?ds.potential.total:'—';
   const prio=(ex.prescription&&ex.prescription.length)||(sec.key_findings&&sec.key_findings.length)||0;
-  const num=(v,suf)=>`<div style="font-size:32px;font-weight:800;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:9px">${v}${suf?`<span style="font-size:14px;color:var(--muted);font-weight:400">${suf}</span>`:''}</div>`;
+  const num=(v,suf)=>`<div style="font-size:32px;font-family:var(--serif);font-weight:500;color:var(--ink);letter-spacing:-.03em;line-height:1;margin-top:9px">${v}${suf?`<span style="font-size:14px;color:var(--muted);font-weight:400">${suf}</span>`:''}</div>`;
   const jstep=(mark,markStyle,title,titleColor,body,link)=>`<div style="position:relative;display:flex;gap:15px;padding-bottom:20px"><div style="width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:0 0 auto;z-index:1;font-size:13px;font-weight:700;${markStyle}">${mark}</div><div style="padding-top:3px"><div style="font-size:14px;font-weight:600;color:${titleColor}">${title}</div><div class="muted small" style="margin-top:2px;line-height:1.5">${body}</div>${link||''}</div></div>`;
   return shell('dashboard',`
    <div class="eyebrow">${t('db.yourdiag')} · ${date}</div>
    <h1 class="h-title" style="margin-top:8px">${company}</h1>
-   <div style="margin-top:26px"><div class="tiny">Current growth position</div><div style="font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.025em;margin-top:7px">${esc(pos)}</div><div class="muted" style="margin-top:9px;max-width:540px;line-height:1.6">${esc(POSSUB[pos]||'')}</div></div>
+   <div style="margin-top:26px"><div class="tiny">Current growth position</div><div style="font-size:27px;font-family:var(--serif);font-weight:500;color:var(--ink);letter-spacing:-.025em;margin-top:7px">${esc(pos)}</div><div class="muted" style="margin-top:9px;max-width:540px;line-height:1.6">${esc(POSSUB[pos]||'')}</div></div>
    <div style="display:flex;margin-top:30px;flex-wrap:wrap;gap:18px 0">
      <div style="flex:1;min-width:120px"><div class="tiny">Growth maturity</div>${num(mat,' / 100')}</div>
      <div style="flex:1;min-width:120px;border-left:0.5px solid var(--line);padding-left:26px"><div class="tiny">Growth potential</div>${num(pot,' / 100')}</div>
@@ -306,14 +306,14 @@ function miniMatrix(mx){
     'Reposition Required':'both maturity and potential are low today — reposition the model before scaling.'};
   const q=(name,sub,pos)=>{const on=name===active;return `<div style="position:absolute;${pos};display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;text-align:center;padding:10px;${on?'background:var(--grad-soft);':''}">
     <div style="font-size:12.5px;font-weight:800;color:${on?'var(--accent-ink)':'var(--ink-soft)'}">${name}</div>
-    <div style="font-size:10px;color:${on?'#2C3E50':'#aab2c2'};font-weight:600;text-transform:uppercase;letter-spacing:.04em">${sub}</div></div>`;};
+    <div style="font-size:10px;color:${on?'#1a1b1c':'#b8b5ab'};font-weight:600;text-transform:uppercase;letter-spacing:.04em">${sub}</div></div>`;};
   return `<div style="display:flex;gap:14px;align-items:stretch">
     <div style="writing-mode:vertical-rl;transform:rotate(180deg);font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.04em;display:flex;align-items:center;justify-content:center">GROWTH MATURITY →</div>
     <div style="flex:1;max-width:440px">
       <div style="position:relative;width:100%;aspect-ratio:1;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff">
-        ${q('Mature — Limited Headroom','Solid, less upside','top:0;left:0;width:60%;height:40%;border-right:1.5px dashed #E6DDD0;border-bottom:1.5px dashed #E6DDD0')}
-        ${q('Scale Ready','Strong all-round','top:0;left:60%;width:40%;height:40%;border-bottom:1.5px dashed #E6DDD0')}
-        ${q('Reposition Required','Reposition first','top:40%;left:0;width:60%;height:60%;border-right:1.5px dashed #E6DDD0')}
+        ${q('Mature — Limited Headroom','Solid, less upside','top:0;left:0;width:60%;height:40%;border-right:1.5px dashed #e4dfd3;border-bottom:1.5px dashed #e4dfd3')}
+        ${q('Scale Ready','Strong all-round','top:0;left:60%;width:40%;height:40%;border-bottom:1.5px dashed #e4dfd3')}
+        ${q('Reposition Required','Reposition first','top:40%;left:0;width:60%;height:60%;border-right:1.5px dashed #e4dfd3')}
         ${q('High Growth Potential','Highest upside','top:40%;left:60%;width:40%;height:60%')}
         <div style="position:absolute;left:${x}%;bottom:${y}%;width:20px;height:20px;border-radius:50%;background:var(--accent);border:3px solid #fff;transform:translate(-50%,50%);box-shadow:0 2px 10px rgba(184,115,51,.55);z-index:3"></div>
       </div>
@@ -322,7 +322,7 @@ function miniMatrix(mx){
     </div></div>`;
 }
 function donut(val){const v=Math.max(0,Math.min(100,Math.round(val||0)));const r=40,c=2*Math.PI*r,off=c*(1-v/100);
-  return `<div class="donut"><svg width="96" height="96"><circle cx="48" cy="48" r="${r}" fill="none" stroke="#eef0f4" stroke-width="9"/><circle cx="48" cy="48" r="${r}" fill="none" stroke="#B87333" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><div class="dv">${val==null?'—':v}</div></div>`;}
+  return `<div class="donut"><svg width="96" height="96"><circle cx="48" cy="48" r="${r}" fill="none" stroke="#ede9de" stroke-width="9"/><circle cx="48" cy="48" r="${r}" fill="none" stroke="#a96c2e" stroke-width="9" stroke-linecap="round" stroke-dasharray="${c}" stroke-dashoffset="${off}"/></svg><div class="dv">${val==null?'—':v}</div></div>`;}
 function scoreCol(label,total,grade,cats){
   return `<div style="flex:1;min-width:268px">
     <div class="row" style="align-items:center;gap:16px"><div>${donut(total)}</div><div><div class="tiny">${label}</div><div class="scorehead"><span class="big">${total==null?'—':total}<small>/100</small></span></div><span class="pill accent">${esc(grade||'—')}</span></div></div>
@@ -334,21 +334,39 @@ function radarChart(cats){
   const N=cats.length, cx=140, cy=140, R=100;
   const ang=i=>(-Math.PI/2)+(i*2*Math.PI/N);
   const pt=(i,r)=>[cx+Math.cos(ang(i))*r, cy+Math.sin(ang(i))*r];
-  let rings=''; [0.25,0.5,0.75,1].forEach(g=>{ rings+=`<polygon points="${cats.map((c,i)=>pt(i,R*g).map(n=>n.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="#e7ecf4" stroke-width="1"/>`; });
+  let rings=''; [0.25,0.5,0.75,1].forEach(g=>{ rings+=`<polygon points="${cats.map((c,i)=>pt(i,R*g).map(n=>n.toFixed(1)).join(',')).join(' ')}" fill="none" stroke="#ede9de" stroke-width="1"/>`; });
   let axes='',labels='';
-  cats.forEach((c,i)=>{ const [x,y]=pt(i,R); axes+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#eef0f4" stroke-width="1"/>`;
+  cats.forEach((c,i)=>{ const [x,y]=pt(i,R); axes+=`<line x1="${cx}" y1="${cy}" x2="${x.toFixed(1)}" y2="${y.toFixed(1)}" stroke="#ede9de" stroke-width="1"/>`;
     const [lx,ly]=pt(i,R+15); const anchor=Math.abs(lx-cx)<10?'middle':(lx>cx?'start':'end');
     const nm=c.name.length>15?c.name.slice(0,14)+'…':c.name;
-    labels+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" font-size="8.5" font-weight="600" fill="#697587" text-anchor="${anchor}" dominant-baseline="middle">${esc(nm)}</text>`; });
+    labels+=`<text x="${lx.toFixed(1)}" y="${ly.toFixed(1)}" font-size="8.5" font-weight="600" fill="#6e6c62" text-anchor="${anchor}" dominant-baseline="middle">${esc(nm)}</text>`; });
   const dpts=cats.map((c,i)=>{const p=Math.max(0,Math.min(1,c.score/c.weight));return pt(i,R*p).map(n=>n.toFixed(1)).join(',');}).join(' ');
-  const dots=cats.map((c,i)=>{const p=Math.max(0,Math.min(1,c.score/c.weight));const[x,y]=pt(i,R*p);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="#B87333"/>`;}).join('');
-  return `<svg class="radar" viewBox="-80 -8 440 296" style="width:330px;max-width:100%;height:auto">${rings}${axes}<polygon points="${dpts}" fill="rgba(184,115,51,.16)" stroke="#B87333" stroke-width="2"/>${dots}${labels}</svg>`;
+  const dots=cats.map((c,i)=>{const p=Math.max(0,Math.min(1,c.score/c.weight));const[x,y]=pt(i,R*p);return `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="2.6" fill="#a96c2e"/>`;}).join('');
+  return `<svg class="radar" viewBox="-80 -8 440 296" style="width:330px;max-width:100%;height:auto">${rings}${axes}<polygon points="${dpts}" fill="rgba(184,115,51,.16)" stroke="#a96c2e" stroke-width="2"/>${dots}${labels}</svg>`;
+}
+function giBrief(d){
+  var s=d.sections||{},ds=s.diagnostic_scores||{},sw=s.strengths_weaknesses||{},M=ds.maturity||{},cats=M.categories||[];
+  var score=(M.total!=null)?M.total:null;
+  var company=esc((d.report&&d.report.company)||(S.company&&S.company.name)||'');
+  var date=esc(((d.report&&d.report.published_at)||'').slice(0,10));
+  var ref='GIB-'+(((date||'').replace(/-/g,'').slice(4,8))||'0000');
+  var pct=function(c){var sc=Number(c.score||c.value||0),w=Number(c.weight||c.max||0);if(w>0)return Math.round(sc/w*100);return Math.round(sc<=5?sc/5*100:sc<=10?sc/10*100:sc);};
+  var rate=function(p){return p>=70?'Strong':p>=45?'Moderate':'Weak';};
+  var rows=cats.slice(0,6).map(function(c){var p=pct(c),r=rate(p);return '<div class="gib-row '+(r==='Weak'?'con':'')+'"><span class="nm">'+esc(c.name)+'</span><span class="ld"></span><span class="rt">'+r+'</span></div>';}).join('')||'<div class="muted small">See category profile below.</div>';
+  var constraint=(sw.weaknesses&&sw.weaknesses[0]&&sw.weaknesses[0].name)||((cats.slice().sort(function(a,b){return pct(a)-pct(b);})[0]||{}).name)||'—';
+  var assess=score==null?'':(score>=70?'A strong foundation with focused, high-leverage upside.':score>=45?'A workable base with clear, addressable constraints on growth.':'Foundational gaps are capping growth and must be fixed first.');
+  return '<div class="gib"><div class="gib-h"><div><div class="gib-t">Growth Intelligence Brief</div><div class="gib-s">Confidential board briefing</div></div><div class="gib-ref">Ref. '+esc(ref)+'<br>'+(date||'')+'</div></div>'
+    +'<div class="gib-body"><div class="gib-score"><div class="cap">Growth Intelligence Score</div><div class="n">'+(score==null?'—':score)+'<small>/ 100</small></div><p class="assess">'+assess+'</p></div>'
+    +'<div class="gib-state"><div class="h">Current state</div>'+rows+'</div>'
+    +'<div class="gib-sum"><div class="r con"><span class="k">Binding constraint</span><span class="v">'+esc(constraint)+'</span></div><div class="r"><span class="k">Company</span><span class="v">'+(company||'—')+'</span></div></div></div>'
+    +'<div class="gib-foot"><span>Assessed against the 9X Growth Model</span><span>'+t('r.confidential')+'</span></div></div>';
 }
 function renderReport(d){
   const s=d.sections||{}, ex=s.executive_summary||{}, ds=s.diagnostic_scores||{}, sw=s.strengths_weaknesses||{}, kf=s.key_findings||[], nar=s.diagnostic_narrative||[], recs=s.strategic_recommendations||[], plan=s.ninety_day_plan||[], road=s.twelve_month_roadmap||[], kpis=s.kpi_framework||[], budget=s.budget_allocation||[];
   const oppV2=s.opportunity_matrix_v2||{}, rev=s.revenue_expansion||{}, bets=s.strategic_bets||{}, fi=s.focus_ignore||{};
   const company=esc((d.report&&d.report.company)||(S.company&&S.company.name)||'');
   const date=esc(((d.report&&d.report.published_at)||'').slice(0,10));
+  const ref='GIB-'+(((date||'').replace(/-/g,'').slice(4,8))||'0000');
   let _sn=0; const sh=(title)=>`<h2><span class="h2num">${String(++_sn).padStart(2,'0')}</span>${title}</h2>`;
   const scrubLegacy=(x)=>String(x||'').replace(/Magic Matrix/gi,'Growth Position Matrix').replace(/Best Client \(Huge Opportunity\)/gi,'High Growth Potential').replace(/Best Client/gi,'High Growth Potential');
   const KPIWHY={Business:'The headline numbers that prove the business is growing.',Marketing:'Whether demand generation is efficient and attributable.',Sales:'How reliably pipeline converts into revenue.',Customer:'Whether customers stay, expand and refer.',Operations:'Whether delivery keeps pace with growth.',Finance:'Whether growth is profitable and well-funded.'};
@@ -356,22 +374,22 @@ function renderReport(d){
   const oqV2=(cls,label,sub,items)=>`<div class="oppq ${cls}"><div class="oh"><span class="od"></span>${label}</div><div class="small muted" style="margin:-2px 0 7px">${sub}</div>${(items&&items.length)?items.map(o=>`<div class="oi">• ${esc(o.title)}</div>`).join(''):'<div class="oi muted">—</div>'}</div>`;
   const quad=normPos((s.magic_matrix||{}).quadrant);
   const POSSUB={'High Growth Potential':'Strong market opportunity, currently constrained by organisational maturity.','Scale Ready':'Built and positioned to scale; the priority is disciplined acceleration.','Mature — Limited Headroom':'Well-run, with limited upside in the current model; growth requires new vectors.','Reposition Required':'Both market position and organisational maturity need rebuilding before scaling.'};
-  const BP=85, bench=(v)=>{v=Math.max(0,Math.min(100,v||0));return `<div style="position:relative;height:7px;background:#EDE7DD;border-radius:999px;margin-top:12px"><div style="position:absolute;left:0;top:0;bottom:0;width:${v}%;background:var(--navy);border-radius:999px"></div><div style="position:absolute;left:${BP}%;top:-3px;bottom:-3px;width:1.5px;background:var(--copper)"></div></div><div style="font-size:11.5px;margin-top:8px;color:var(--muted)">Best practice <span style="color:var(--accent-ink)">${BP}</span> · Gap ${Math.max(0,BP-v)}</div>`;};
-  const esNum=(label,val)=>`<div style="flex:1;min-width:150px"><div class="tiny">${label}</div><div style="font-size:30px;font-weight:800;color:var(--ink);letter-spacing:-.03em;margin-top:6px;line-height:1">${val==null?'—':val}<span style="font-size:14px;color:var(--muted);font-weight:400"> / 100</span></div>${bench(val)}</div>`;
+  const BP=85, bench=(v)=>{v=Math.max(0,Math.min(100,v||0));return `<div style="position:relative;height:7px;background:#ede9de;border-radius:999px;margin-top:12px"><div style="position:absolute;left:0;top:0;bottom:0;width:${v}%;background:var(--navy);border-radius:999px"></div><div style="position:absolute;left:${BP}%;top:-3px;bottom:-3px;width:1.5px;background:var(--copper)"></div></div><div style="font-size:11.5px;margin-top:8px;color:var(--muted)">Best practice <span style="color:var(--accent-ink)">${BP}</span> · Gap ${Math.max(0,BP-v)}</div>`;};
+  const esNum=(label,val)=>`<div style="flex:1;min-width:150px"><div class="tiny">${label}</div><div style="font-size:30px;font-family:var(--serif);font-weight:500;color:var(--ink);letter-spacing:-.03em;margin-top:6px;line-height:1">${val==null?'—':val}<span style="font-size:14px;color:var(--muted);font-weight:400"> / 100</span></div>${bench(val)}</div>`;
   return `<div class="report">
     <div class="rcover">
-      <div class="rc-brand"><div class="mark">S9</div><div class="logo" style="color:#fff;font-weight:800;font-size:15px">Scale<span style="color:#C9A77E">9X</span></div></div>
+      <div class="rc-brand"><div class="mark">9X</div><div class="logo" style="color:#fff;font-weight:800;font-size:15px">Scale<span style="color:#c08a4a">9X</span></div></div>
       <div class="rc-kicker">${t('r.kicker')}</div>
       <h1>${company}</h1>
-      <div style="font-size:16px;color:rgba(255,255,255,.92);font-weight:600;margin-top:2px">${t('r.growthdiag')}</div>
-      <div class="rc-meta">${t('r.delivered')} ${date}<span class="dot">•</span>${t('r.confidential')}</div>
+      <div style="font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:10px">Growth Intelligence Brief</div>
+      <div class="rc-meta">Ref. ${ref}<span class="dot">•</span>${t('r.delivered')} ${date}<span class="dot">•</span>${t('r.confidential')}</div>
     </div>
     <div class="report-body">
-
+    ${giBrief(d)}
     <div class="execsum">
       <div class="es-eyebrow">Executive summary</div>
       <div class="tiny" style="margin-top:18px">Current growth position</div>
-      <div style="font-size:27px;font-weight:800;color:var(--ink);letter-spacing:-.025em;margin-top:6px">${esc(quad)}</div>
+      <div style="font-size:27px;font-family:var(--serif);font-weight:500;color:var(--ink);letter-spacing:-.025em;margin-top:6px">${esc(quad)}</div>
       <div class="muted" style="margin-top:9px;max-width:560px;line-height:1.6">${esc(POSSUB[quad]||'')}</div>
       <div style="display:flex;gap:30px;margin-top:24px;flex-wrap:wrap">${esNum('Growth maturity',ds.maturity?ds.maturity.total:null)}${esNum('Growth potential',ds.potential?ds.potential.total:null)}</div>
       <div class="es-divider"></div>
@@ -391,7 +409,7 @@ function renderReport(d){
     <div style="margin-top:8px">${miniMatrix(s.magic_matrix||{})}</div>
     <div class="row wrap" style="margin-top:18px"><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">${t('r.strengths')}</div><div style="margin-top:8px">${(sw.strengths||[]).map(c=>`<span class="pill green" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">${t('r.weaknesses')}</div><div style="margin-top:8px">${(sw.weaknesses||[]).map(c=>`<span class="pill red" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div></div>
 
-    ${sh('Root cause analysis')}<div class="findings">${findings.map((f,i)=>`<div class="finding"><div class="f-head"><div class="f-title"><span class="f-no">${i+1}</span><span class="f-area">${esc(f.area||'Finding '+(i+1))}</span></div><span class="sev ${f.severity||'medium'}">${t('f.priority')}: ${t('sev.'+(f.severity||'medium'))}</span></div><div class="f-body">
+    ${sh('Executive observations')}<div class="findings">${findings.map((f,i)=>`<div class="finding"><div class="f-head"><div class="f-title"><span class="f-no">${i+1}</span><span class="f-area">${esc(f.area||'Finding '+(i+1))}</span></div><span class="sev ${f.severity||'medium'}">${t('f.priority')}: ${t('sev.'+(f.severity||'medium'))}</span></div><div class="f-body">
       <div class="frow"><div class="fk"><span class="fdot"></span>${t('f.observation')}</div><div class="fv">${esc(f.observation||'')}</div></div>
       ${f.root_cause?`<div class="frow"><div class="fk"><span class="fdot"></span>${t('f.rootcause')}</div><div class="fv">${esc(f.root_cause)}</div></div>`:''}
       <div class="frow impact"><div class="fk"><span class="fdot"></span>${t('f.impact')}</div><div class="fv">${esc(f.business_impact||'')}</div></div>
@@ -412,7 +430,7 @@ function renderReport(d){
     ${sh('Appendix — methodology & evidence')}${s.business_reality?`<div class="callout"><div class="ttl">${t('r.reality')}</div><p>${esc(scrubLegacy(s.business_reality))}</p></div>`:''}
     <p class="muted small" style="line-height:1.7;margin-top:12px">This diagnostic scores Growth Maturity (how built-out the business is today) and Growth Potential (the upside available) across weighted categories, drawn from a structured discovery interview and supporting evidence, and validated by a Scale9X analyst. The Growth Position Matrix plots maturity against potential to set the strategic priority. No figures are generated without analyst review.</p>
 
-    <div class="divider"></div><div class="between"><div class="brand" style="padding:0"><div class="mark" style="width:26px;height:26px;font-size:11px">S9</div><div class="logo" style="font-size:14px">Scale<span class="t">9X</span> <span class="muted" style="font-weight:600">Growth Leadership</span></div></div><div class="muted small">${t('r.confidential')}</div></div>
+    <div class="divider"></div><div class="between"><div class="brand" style="padding:0"><div class="mark" style="width:26px;height:26px;font-size:11px">9X</div><div class="logo" style="font-size:14px">Scale<span class="t">9X</span> <span class="muted" style="font-weight:600">Growth Leadership</span></div></div><div class="muted small">${t('r.confidential')}</div></div>
     </div></div>`;
 }
 function printReport(id){
@@ -425,11 +443,11 @@ function printReport(id){
   if(!w){ try{toast('Please allow pop-ups so the report can open for download.');}catch(e){} return; }
   w.document.open();
   w.document.write('<!doctype html><html lang="'+lang+'"><head><meta charset="utf-8">'
-    +'<title>Scale9X — '+esc(company)+' Growth Diagnostic Report</title>'
+    +'<title>Scale9X — '+esc(company)+' Growth Intelligence Brief</title>'
     +'<meta name="viewport" content="width=device-width, initial-scale=1">'
     +'<link rel="preconnect" href="https://fonts.googleapis.com">'
     +'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
-    +'<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">'
+    +'<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Inter:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">'
     +'<link rel="stylesheet" href="'+O+'/client/styles.css">'
     +'<link rel="stylesheet" href="'+O+'/client/print.css">'
     +'<scr'+'ipt>window.PagedConfig={auto:true,after:function(){setTimeout(function(){try{window.focus();window.print();}catch(e){}},400);}};</scr'+'ipt>'
@@ -440,7 +458,7 @@ function printReport(id){
 function vReport(id){ const d=S.reportSections[id]; if(!d) return shell('reports',`<p class="muted">This report isn't available. <a href="#/reports" style="color:var(--accent)">Back to Report Center</a></p>`,'Report');
   // Name the page so the browser's "Save as PDF" filename = client + report type.
   const company=(d.report&&d.report.company)||(S.company&&S.company.name)||'Client';
-  document.title='Scale9X — '+company+' Growth Diagnostic Report';
+  document.title='Scale9X — '+company+' Growth Intelligence Brief';
   return shell('reports',`<div class="noprint between" style="margin-bottom:12px"><a href="#/reports" class="muted small" style="color:var(--accent)">← ${t('r.reportcenter')}</a><button class="btn ghost" onclick="printReport('${id}')">⤓ ${t('r.download')}</button></div>${renderReport(d)}<div class="noprint" style="margin-top:24px;display:flex;justify-content:center"><button class="btn" onclick="printReport('${id}')">⤓ ${t('r.download')}</button></div>`,t('nav.reports')); }
 function vReports(){ const rs=S.reports||[];
   return shell('reports',`<div class="eyebrow">${t('r.reportcenter')}</div><h1 class="h-title">${t('r.yourreports')}</h1><p class="muted">${t('r.reportsub')}</p>
