@@ -4,6 +4,7 @@
 const { uid, now, get, all, run } = require('./db');
 const engine = require('./engine');
 const playbooks = require('./industry_playbooks');
+const levers = require('./growth_levers');
 
 const EDITABLE = ['executive_summary','business_reality','diagnostic_narrative','strategic_recommendations'];
 
@@ -216,6 +217,7 @@ function buildSections(engagementId) {
     ['business_reality', genBusinessReality(d, c.name)],
     ['growth_blueprint', genGrowthBlueprint(d, findings)],
     ['diagnostic_scores', { maturity:{ total:d.maturity.total, grade:d.maturity.grade, label:d.maturity.label, categories:d.maturity.categories.map(x=>({name:x.name,score:x.score,weight:x.weight})) }, potential:{ total:d.potential.total, grade:d.potential.grade, label:d.potential.label, categories:d.potential.categories.map(x=>({name:x.name,score:x.score,weight:x.weight})) } }],
+    ['lever_assessment', levers.computeLevers(d)],
     ['magic_matrix', d.matrix],
     ['strengths_weaknesses', { strengths:d.strengths, weaknesses:d.weaknesses }],
     ['key_findings', findings.map(f=>({ area:f.area, observation:f.observation, business_impact:f.business_impact, severity:f.severity, evidence:f.evidence }))],

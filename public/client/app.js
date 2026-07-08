@@ -345,20 +345,20 @@ function radarChart(cats){
   return `<svg class="radar" viewBox="-80 -8 440 296" style="width:330px;max-width:100%;height:auto">${rings}${axes}<polygon points="${dpts}" fill="rgba(184,115,51,.16)" stroke="#a96c2e" stroke-width="2"/>${dots}${labels}</svg>`;
 }
 function giBrief(d){
-  var s=d.sections||{},ds=s.diagnostic_scores||{},sw=s.strengths_weaknesses||{},M=ds.maturity||{},cats=M.categories||[];
-  var score=(M.total!=null)?M.total:null;
+  var s=d.sections||{},ds=s.diagnostic_scores||{},sw=s.strengths_weaknesses||{},M=ds.maturity||{},cats=M.categories||[],LA=s.lever_assessment||null;
+  var score=(LA&&LA.overall!=null)?LA.overall:((M.total!=null)?M.total:null);
   var company=esc((d.report&&d.report.company)||(S.company&&S.company.name)||'');
   var date=esc(((d.report&&d.report.published_at)||'').slice(0,10));
-  var ref='GIB-'+(((date||'').replace(/-/g,'').slice(4,8))||'0000');
+  var ref='GDB-'+(((date||'').replace(/-/g,'').slice(4,8))||'0000');
   var pct=function(c){var sc=Number(c.score||c.value||0),w=Number(c.weight||c.max||0);if(w>0)return Math.round(sc/w*100);return Math.round(sc<=5?sc/5*100:sc<=10?sc/10*100:sc);};
   var rate=function(p){return p>=70?'Strong':p>=45?'Moderate':'Weak';};
   var rows=cats.slice(0,6).map(function(c){var p=pct(c),r=rate(p);return '<div class="gib-row '+(r==='Weak'?'con':'')+'"><span class="nm">'+esc(c.name)+'</span><span class="ld"></span><span class="rt">'+r+'</span></div>';}).join('')||'<div class="muted small">See category profile below.</div>';
-  var constraint=(sw.weaknesses&&sw.weaknesses[0]&&sw.weaknesses[0].name)||((cats.slice().sort(function(a,b){return pct(a)-pct(b);})[0]||{}).name)||'—';
+  var constraint=(LA&&LA.constraints&&LA.constraints[0]&&LA.constraints[0].name)||(sw.weaknesses&&sw.weaknesses[0]&&sw.weaknesses[0].name)||((cats.slice().sort(function(a,b){return pct(a)-pct(b);})[0]||{}).name)||'—';
   var assess=score==null?'':(score>=70?'A strong foundation with focused, high-leverage upside.':score>=45?'A workable base with clear, addressable constraints on growth.':'Foundational gaps are capping growth and must be fixed first.');
-  return '<div class="gib"><div class="gib-h"><div><div class="gib-t">Growth Intelligence Brief</div><div class="gib-s">Confidential board briefing</div></div><div class="gib-ref">Ref. '+esc(ref)+'<br>'+(date||'')+'</div></div>'
-    +'<div class="gib-body"><div class="gib-score"><div class="cap">Growth Intelligence Score</div><div class="n">'+(score==null?'—':score)+'<small>/ 100</small></div><p class="assess">'+assess+'</p></div>'
+  return '<div class="gib"><div class="gib-h"><div><div class="gib-t">Executive Growth Diagnostic Report</div><div class="gib-s">Confidential board assessment</div></div><div class="gib-ref">Ref. '+esc(ref)+'<br>'+(date||'')+'</div></div>'
+    +'<div class="gib-body"><div class="gib-score"><div class="cap">9X Growth Score</div><div class="n">'+(score==null?'—':score)+'<small>/ 100</small></div><p class="assess">'+assess+'</p></div>'
     +'<div class="gib-state"><div class="h">Current state</div>'+rows+'</div>'
-    +'<div class="gib-sum"><div class="r con"><span class="k">Binding constraint</span><span class="v">'+esc(constraint)+'</span></div><div class="r"><span class="k">Company</span><span class="v">'+(company||'—')+'</span></div></div></div>'
+    +'<div class="gib-sum"><div class="r con"><span class="k">Primary growth priority</span><span class="v">'+esc(constraint)+'</span></div><div class="r"><span class="k">Company</span><span class="v">'+(company||'—')+'</span></div></div></div>'
     +'<div class="gib-foot"><span>Assessed against the 9X Growth Model</span><span>'+t('r.confidential')+'</span></div></div>';
 }
 function renderReport(d){
@@ -366,9 +366,10 @@ function renderReport(d){
   const oppV2=s.opportunity_matrix_v2||{}, rev=s.revenue_expansion||{}, bets=s.strategic_bets||{}, fi=s.focus_ignore||{};
   const company=esc((d.report&&d.report.company)||(S.company&&S.company.name)||'');
   const date=esc(((d.report&&d.report.published_at)||'').slice(0,10));
-  const ref='GIB-'+(((date||'').replace(/-/g,'').slice(4,8))||'0000');
+  const ref='GDB-'+(((date||'').replace(/-/g,'').slice(4,8))||'0000');
   let _sn=0; const sh=(title)=>`<h2><span class="h2num">${String(++_sn).padStart(2,'0')}</span>${title}</h2>`;
   const scrubLegacy=(x)=>String(x||'').replace(/Magic Matrix/gi,'Growth Position Matrix').replace(/Best Client \(Huge Opportunity\)/gi,'High Growth Potential').replace(/Best Client/gi,'High Growth Potential');
+  const EXECQ_FALLBACK=['Have we outgrown our current go-to-market model?','Are we investing in the right channels for where growth actually is?','What would happen to revenue if we doubled marketing?','Should we strengthen the core before expanding, or expand now?','Are we measuring the KPIs that actually predict growth?','Which priority areas deserve investment first — and which can wait?'];
   const KPIWHY={Business:'The headline numbers that prove the business is growing.',Marketing:'Whether demand generation is efficient and attributable.',Sales:'How reliably pipeline converts into revenue.',Customer:'Whether customers stay, expand and refer.',Operations:'Whether delivery keeps pace with growth.',Finance:'Whether growth is profitable and well-funded.'};
   const findings=kf.map((f,i)=>Object.assign({},nar[i]||{},f));
   const oqV2=(cls,label,sub,items)=>`<div class="oppq ${cls}"><div class="oh"><span class="od"></span>${label}</div><div class="small muted" style="margin:-2px 0 7px">${sub}</div>${(items&&items.length)?items.map(o=>`<div class="oi">• ${esc(o.title)}</div>`).join(''):'<div class="oi muted">—</div>'}</div>`;
@@ -381,7 +382,7 @@ function renderReport(d){
       <div class="rc-brand"><div class="mark">9X</div><div class="logo" style="color:#fff;font-weight:800;font-size:15px">Scale<span style="color:#c08a4a">9X</span></div></div>
       <div class="rc-kicker">${t('r.kicker')}</div>
       <h1>${company}</h1>
-      <div style="font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:10px">Growth Intelligence Brief</div>
+      <div style="font-family:var(--mono);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.82);margin-top:10px">Executive Growth Diagnostic Report</div>
       <div class="rc-meta">Ref. ${ref}<span class="dot">•</span>${t('r.delivered')} ${date}<span class="dot">•</span>${t('r.confidential')}</div>
     </div>
     <div class="report-body">
@@ -397,7 +398,7 @@ function renderReport(d){
       <p style="margin-top:8px;color:var(--ink-soft);line-height:1.7">${esc(scrubLegacy(ex.diagnosis))}</p>
       <div class="es-divider"></div>
       <div class="tiny">Top three priorities</div>
-      <div style="margin-top:12px;display:flex;flex-direction:column;gap:13px">${(ex.prescription||[]).slice(0,3).map((p,i)=>`<div style="display:flex;gap:13px"><div style="font-size:15px;font-weight:800;color:var(--accent);flex:0 0 auto;line-height:1.4">${String(i+1).padStart(2,'0')}</div><div style="font-size:14.5px;color:var(--ink);font-weight:600;padding-top:1px">${esc(p)}</div></div>`).join('')||'<div class="muted small">See strategic priorities.</div>'}</div>
+      <div style="margin-top:12px;display:flex;flex-direction:column;gap:13px">${(ex.prescription||[]).slice(0,3).map((p,i)=>`<div style="display:flex;gap:13px"><div style="font-size:15px;font-weight:800;color:var(--accent);flex:0 0 auto;line-height:1.4">${String(i+1).padStart(2,'0')}</div><div style="font-size:14.5px;color:var(--ink);font-weight:600;padding-top:1px">${esc(p)}</div></div>`).join('')||'<div class="muted small">See priority areas.</div>'}</div>
       ${ex.opportunity?`<div class="es-outcome"><div class="tiny" style="color:var(--accent-ink)">Expected outcome</div><p style="margin-top:7px;color:var(--ink-soft);line-height:1.65">${esc(scrubLegacy(ex.opportunity))}</p></div>`:''}
     </div>
 
@@ -409,23 +410,27 @@ function renderReport(d){
     <div style="margin-top:8px">${miniMatrix(s.magic_matrix||{})}</div>
     <div class="row wrap" style="margin-top:18px"><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">${t('r.strengths')}</div><div style="margin-top:8px">${(sw.strengths||[]).map(c=>`<span class="pill green" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">${t('r.weaknesses')}</div><div style="margin-top:8px">${(sw.weaknesses||[]).map(c=>`<span class="pill red" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}/${c.weight}</span>`).join('')||'<span class="muted small">—</span>'}</div></div></div>
 
-    ${sh('Executive observations')}<div class="findings">${findings.map((f,i)=>`<div class="finding"><div class="f-head"><div class="f-title"><span class="f-no">${i+1}</span><span class="f-area">${esc(f.area||'Finding '+(i+1))}</span></div><span class="sev ${f.severity||'medium'}">${t('f.priority')}: ${t('sev.'+(f.severity||'medium'))}</span></div><div class="f-body">
-      <div class="frow"><div class="fk"><span class="fdot"></span>${t('f.observation')}</div><div class="fv">${esc(f.observation||'')}</div></div>
-      ${f.root_cause?`<div class="frow"><div class="fk"><span class="fdot"></span>${t('f.rootcause')}</div><div class="fv">${esc(f.root_cause)}</div></div>`:''}
+    ${s.lever_assessment?`${sh('The 9 Growth Levers')}<div class="muted small" style="margin:8px 0 14px">Your business scored across the nine levers of the Scale9X Growth Model, grouped into three pillars.${s.lever_assessment.anyFlagged?' Levers marked ~ are indicative, based on available diagnostic inputs; an expanded assessment is available in future versions.':''}</div>
+    <div class="row wrap" style="gap:20px;align-items:stretch">${(s.lever_assessment.pillars||[]).map(p=>`<div style="flex:1;min-width:210px;border:1px solid var(--line);border-radius:14px;padding:18px 18px 14px;background:#fff"><div class="between" style="align-items:baseline"><div style="font-size:14.5px;font-weight:800;color:var(--navy)">${esc(p.name)}</div><div style="font-family:var(--serif);font-size:21px;color:var(--accent);line-height:1">${p.score==null?'—':p.score}</div></div><div style="margin-top:12px;display:flex;flex-direction:column;gap:10px">${(p.levers||[]).map(l=>`<div><div class="between" style="font-size:12.5px"><span style="color:var(--ink)">${esc(l.name)}${l.flagged?' <span style="color:var(--muted)">~</span>':''}</span><span style="font-weight:700;color:var(--ink)">${l.score==null?'—':l.score}</span></div><div style="height:5px;background:#ede9de;border-radius:999px;margin-top:5px;overflow:hidden"><i style="display:block;height:100%;border-radius:999px;width:${l.score==null?0:l.score}%;background:${l.score==null?'#ccc':l.score>=70?'var(--green)':l.score>=45?'var(--accent)':'var(--red)'}"></i></div></div>`).join('')}</div></div>`).join('')}</div>
+    <div class="row wrap" style="gap:22px;margin-top:18px"><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--red)">Growth constraints — attend to these first</div><div style="margin-top:8px">${(s.lever_assessment.constraints||[]).slice(0,3).map(c=>`<span class="pill red" style="margin:0 6px 6px 0">${esc(c.name)} · ${c.score}</span>`).join('')||'<span class="muted small">—</span>'}</div></div><div style="flex:1;min-width:240px"><div class="tiny" style="color:var(--green)">Growth advantages — build on these</div><div style="margin-top:8px">${(s.lever_assessment.advantages||[]).slice(0,3).map(a=>`<span class="pill green" style="margin:0 6px 6px 0">${esc(a.name)} · ${a.score}</span>`).join('')||'<span class="muted small">—</span>'}</div></div></div>`:''}
+
+    ${sh('Executive observations')}<div class="findings">${findings.map((f,i)=>`<div class="finding"><div class="f-head"><div class="f-title"><span class="f-no">${i+1}</span><span class="f-area">${esc(f.area||f.finding||'Finding '+(i+1))}</span></div><span class="sev ${f.severity||'medium'}">${t('f.priority')}: ${t('sev.'+(f.severity||'medium'))}</span></div><div class="f-body">
+      ${f.finding?`<div class="frow"><div class="fk"><span class="fdot"></span>${t('f.finding')}</div><div class="fv">${esc(f.finding)}</div></div>`:''}
+      <div class="frow"><div class="fk"><span class="fdot"></span>${t('f.evidence')}</div><div class="fv">${esc(f.evidence||f.observation||'')}</div></div>
       <div class="frow impact"><div class="fk"><span class="fdot"></span>${t('f.impact')}</div><div class="fv">${esc(f.business_impact||'')}</div></div>
-      ${f.action?`<div class="frow action"><div class="fk"><span class="fdot"></span>${t('f.action')}</div><div class="fv">${esc(f.action)}</div></div>`:''}
+      ${(f.diagnostic_insight||f.root_cause)?`<div class="frow"><div class="fk"><span class="fdot"></span>${t('f.insight')}</div><div class="fv">${esc(f.diagnostic_insight||f.root_cause)}</div></div>`:''}
+      ${(f.immediate_consideration||f.action)?`<div class="frow action"><div class="fk"><span class="fdot"></span>${t('f.consideration')}</div><div class="fv">${esc(f.immediate_consideration||f.action)}</div></div>`:''}
     </div></div>`).join('')||'<div class="muted small">No findings recorded.</div>'}</div>
 
-    ${sh('Strategic priorities')}<div class="reclist">${recs.map((r,i)=>{const m=String(r).split(/ — (.+)/s);const area=m.length>1?m[0]:(t('r.rec')+' '+(i+1));const txt=m.length>1?m[1]:String(r);const sev=(findings[i]&&findings[i].severity)||'medium';return `<div class="initiative"><span class="inum">${i+1}</span><div class="ibody"><div class="ihead"><span class="iarea">${esc(area)}</span><span class="prio ${sev}">${t('f.priority')}: ${t('sev.'+sev)}</span></div><div class="itext">${esc(txt)}</div></div></div>`;}).join('')||'<div class="muted small">—</div>'}</div>
+    ${sh('Priority areas')}<div class="muted small" style="margin:8px 0 10px">The areas that most deserve leadership attention now. The detailed strategy, sequence and plan for each is delivered in the Growth Intelligence Platform.</div><div class="reclist">${recs.map((r,i)=>{const m=String(r).split(/ — (.+)/s);const area=m.length>1?m[0]:(t('r.rec')+' '+(i+1));const txt=m.length>1?m[1]:String(r);const sev=(findings[i]&&findings[i].severity)||'medium';return `<div class="initiative"><span class="inum">${i+1}</span><div class="ibody"><div class="ihead"><span class="iarea">${esc(area)}</span><span class="prio ${sev}">${t('f.priority')}: ${t('sev.'+sev)}</span></div><div class="itext">${esc(txt)}</div></div></div>`;}).join('')||'<div class="muted small">—</div>'}</div>
 
     ${sh('Growth opportunities')}<div class="muted small" style="margin:8px 0 8px">${t('r.revexpsub')}${rev.industry?` · <b style="color:var(--accent-ink)">${esc(rev.industry)}</b>`:''}</div>${(rev.items||[]).map(r=>`<div class="revrow"><div class="rvmeta"><div class="rvn">${esc(r.name)}</div><div class="rvw">${esc(r.why)}</div></div><div class="rvtags"><span class="tag ${String(r.difficulty||'').toLowerCase()}"><span class="tl">${t('r.difficulty')}</span>${esc(r.difficulty)}</span><span class="tag impact"><span class="tl">${t('r.impact2')}</span>${esc(r.impact)}</span><span class="tag time"><span class="tl">${t('r.timeline')}</span>${esc(r.timeline)}</span></div></div>`).join('')}
     ${(bets.items&&bets.items.length)?`<div class="tiny" style="margin:18px 0 8px">${t('r.bets')}</div><div class="bets">${bets.items.map(b=>`<div class="bet"><div><div class="bn">${esc(b.name)}</div><div class="bw">${esc(b.why)}</div></div></div>`).join('')}</div>`:''}
     <div class="fi">${(fi.focus&&fi.focus.length)?`<div class="fi-col focus"><div class="fih">${t('r.focus')}</div>${fi.focus.map(f=>`<div class="fi-item"><span class="fic">→</span><div><div class="fii">${esc(f.item)}</div>${f.why?`<div class="fiw">${esc(f.why)}</div>`:''}</div></div>`).join('')}</div>`:''}${(fi.ignore&&fi.ignore.length)?`<div class="fi-col ignore"><div class="fih">${t('r.ignore')}</div>${fi.ignore.map(x=>`<div class="fi-item"><span class="fic">—</span><div class="fii">${esc(x)}</div></div>`).join('')}</div>`:''}</div>
 
-    ${sh('The next 12 months')}<div class="tiny" style="margin-bottom:8px">${t('r.plan')}</div><div class="planblocks">${plan.map(p=>`<div class="planblock"><div class="pw">${esc(p.weeks)}</div><ul>${(p.items||[]).map(x=>`<li>${esc(x)}</li>`).join('')}</ul></div>`).join('')}</div>
-    <div class="tiny" style="margin:20px 0 8px">${t('r.roadmap')}</div><div class="timeline">${road.map(q=>`<div class="tl"><div class="tq"><div class="qbadge">${esc(q.quarter)}</div></div><div class="tc"><b>${esc(q.objective)}</b><div class="ti2">${(q.initiatives||[]).map(esc).join(' · ')}</div></div></div>`).join('')}</div>
-    <div class="tiny" style="margin:20px 0 8px">${t('r.kpi')}</div><div class="kpigrid">${kpis.map(k=>`<div class="kpiq2"><div class="kh"><span class="kn">${esc(k.layer)}</span></div><div class="kw">${esc(KPIWHY[k.layer]||'Key metrics to track for this layer.')}</div><div class="km"><span class="kdir">↗</span> ${(k.items||[]).map(esc).join(' · ')}</div></div>`).join('')}</div>
-    <div style="margin-top:20px"><div class="tiny" style="margin-bottom:8px">${t('r.budget')}</div><div class="budgetbar">${budget.map(x=>`<div class="bb"><div class="bn">${esc(x.area)}</div><b>${x.pct}%</b><div class="bt"><i style="width:${x.pct}%"></i></div></div>`).join('')}</div></div>
+    ${sh('Executive questions')}<div class="muted small" style="margin:8px 0 12px">The strategic questions this diagnosis raises for your leadership team. Designing the answers is the work of the Growth Intelligence Platform.</div><div class="execq">${((s.executive_questions&&s.executive_questions.length)?s.executive_questions:EXECQ_FALLBACK).map((q,i)=>`<div class="eq" style="display:flex;gap:16px;padding:14px 0;border-bottom:1px solid var(--line-soft)"><span style="font-family:var(--serif);font-size:19px;color:var(--accent);flex:0 0 auto;line-height:1.15">${String(i+1).padStart(2,'0')}</span><div style="font-size:15.5px;color:var(--ink);font-weight:600;line-height:1.5">${esc(q)}</div></div>`).join('')}</div>
+
+    ${sh('Executive recommendation')}<div class="callout"><div class="ttl">Recommended next step</div><p>Based on these findings, Scale9X recommends commissioning a complete <b>Growth Blueprint</b> through the Growth Intelligence Platform — a full growth strategy with a 90-day and 12-month roadmap, KPI framework, budget allocation and owner-level sequencing that answers every question above.</p></div>
 
     ${sh('Appendix — methodology & evidence')}${s.business_reality?`<div class="callout"><div class="ttl">${t('r.reality')}</div><p>${esc(scrubLegacy(s.business_reality))}</p></div>`:''}
     <p class="muted small" style="line-height:1.7;margin-top:12px">This diagnostic scores Growth Maturity (how built-out the business is today) and Growth Potential (the upside available) across weighted categories, drawn from a structured discovery interview and supporting evidence, and validated by a Scale9X analyst. The Growth Position Matrix plots maturity against potential to set the strategic priority. No figures are generated without analyst review.</p>
@@ -443,7 +448,7 @@ function printReport(id){
   if(!w){ try{toast('Please allow pop-ups so the report can open for download.');}catch(e){} return; }
   w.document.open();
   w.document.write('<!doctype html><html lang="'+lang+'"><head><meta charset="utf-8">'
-    +'<title>Scale9X — '+esc(company)+' Growth Intelligence Brief</title>'
+    +'<title>Scale9X — '+esc(company)+' Executive Growth Diagnostic Report</title>'
     +'<meta name="viewport" content="width=device-width, initial-scale=1">'
     +'<link rel="preconnect" href="https://fonts.googleapis.com">'
     +'<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
@@ -458,7 +463,7 @@ function printReport(id){
 function vReport(id){ const d=S.reportSections[id]; if(!d) return shell('reports',`<p class="muted">This report isn't available. <a href="#/reports" style="color:var(--accent)">Back to Report Center</a></p>`,'Report');
   // Name the page so the browser's "Save as PDF" filename = client + report type.
   const company=(d.report&&d.report.company)||(S.company&&S.company.name)||'Client';
-  document.title='Scale9X — '+company+' Growth Intelligence Brief';
+  document.title='Scale9X — '+company+' Executive Growth Diagnostic Report';
   return shell('reports',`<div class="noprint between" style="margin-bottom:12px"><a href="#/reports" class="muted small" style="color:var(--accent)">← ${t('r.reportcenter')}</a><button class="btn ghost" onclick="printReport('${id}')">⤓ ${t('r.download')}</button></div>${renderReport(d)}<div class="noprint" style="margin-top:24px;display:flex;justify-content:center"><button class="btn" onclick="printReport('${id}')">⤓ ${t('r.download')}</button></div>`,t('nav.reports')); }
 function vReports(){ const rs=S.reports||[];
   return shell('reports',`<div class="eyebrow">${t('r.reportcenter')}</div><h1 class="h-title">${t('r.yourreports')}</h1><p class="muted">${t('r.reportsub')}</p>

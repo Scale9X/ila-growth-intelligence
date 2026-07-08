@@ -52,6 +52,7 @@
       // finding labels
       'f.observation':'Observation','f.rootcause':'Root Cause','f.impact':'Business Impact',
       'f.action':'Recommended Action','f.priority':'Priority','f.benefit':'Potential Benefit',
+      'f.finding':'Finding','f.evidence':'Evidence','f.insight':'Diagnostic Insight','f.consideration':'Immediate Consideration',
       'sev.high':'High','sev.medium':'Medium','sev.low':'Low',
       'r.blueprint':'Growth Blueprint','r.blueprintsub':'If you read one page, read this — the whole diagnostic distilled into an action plan.',
       'r.next30':'NEXT 30 DAYS','r.next90':'NEXT 90 DAYS','r.next12':'NEXT 12 MONTHS',
@@ -106,6 +107,7 @@
       'r.quickwins':'Kemenangan Cepat','r.strategic':'Inisiatif Strategis','r.longterm':'Jangka Panjang','r.transformation':'Transformasi',
       'f.observation':'Observasi','f.rootcause':'Akar Masalah','f.impact':'Dampak Bisnis',
       'f.action':'Tindakan yang Disarankan','f.priority':'Prioritas','f.benefit':'Potensi Manfaat',
+      'f.finding':'Temuan','f.evidence':'Bukti','f.insight':'Wawasan Diagnostik','f.consideration':'Pertimbangan Segera',
       'sev.high':'Tinggi','sev.medium':'Sedang','sev.low':'Rendah',
       'r.blueprint':'Cetak Biru Pertumbuhan','r.blueprintsub':'Jika Anda hanya membaca satu halaman, baca ini — seluruh diagnostik diringkas menjadi rencana aksi.',
       'r.next30':'30 HARI KE DEPAN','r.next90':'90 HARI KE DEPAN','r.next12':'12 BULAN KE DEPAN',

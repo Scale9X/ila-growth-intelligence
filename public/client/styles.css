@@ -43,7 +43,7 @@ h3{font-weight:700;letter-spacing:-.01em}
 .tiny{font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:500}
 .eyebrow{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted)}
 .h-title{font-family:var(--serif);font-size:32px;letter-spacing:-.01em;font-weight:500;line-height:1.15}
-/* marquee figures — serif, tabular, like the Growth Intelligence Brief */
+/* marquee figures — serif, tabular, like the Executive Growth Diagnostic Report */
 .stat .num,.ring .val,.scorehead .big{font-family:var(--serif);font-weight:500;font-variant-numeric:tabular-nums}
 .grad-text{background:var(--grad);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 
@@ -490,7 +490,7 @@ h3{font-weight:700;letter-spacing:-.01em}
 @media(max-width:860px){.report-body{padding:16px 22px 36px}.rcover{padding:30px 24px}.rcover h1{font-size:28px}.execrow{grid-template-columns:1fr}.frow{grid-template-columns:1fr}.oppgrid,.execgrid{grid-template-columns:1fr}}
 
 /* ============================================================================
-   BOARD-PAPER OUTPUT — "Growth Intelligence Brief" (matches scale9x.com).
+   BOARD-PAPER OUTPUT — "Executive Growth Diagnostic Report" (matches scale9x.com).
    Turns the dashboard-style report into a confidential board document.
    Loaded on screen AND inside the paged.js PDF window.
    ========================================================================== */
@@ -530,7 +530,7 @@ h3{font-weight:700;letter-spacing:-.01em}
 .fi-col.ignore .fih,.fi-col.ignore .fic{color:var(--muted)!important}
 .oppq .oh .od{display:none}
 
-/* ---- Growth Intelligence Brief panel (signature board asset) ---- */
+/* ---- Executive Growth Diagnostic Report panel (signature board asset) ---- */
 .gib{border:1px solid var(--line);background:#fff;margin:4px 0 10px}
 .gib-h{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:18px 24px;border-bottom:1px solid var(--line)}
 .gib-t{font-family:var(--serif);font-size:20px;font-weight:500;color:var(--ink);line-height:1.1}

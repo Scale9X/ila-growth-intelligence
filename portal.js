@@ -157,7 +157,7 @@ function handle(pathname, method, body, user) {
   if ((m = pathname.match(/^\/api\/portal\/report\/([^/]+)$/)) && method === 'GET') {
     const r = get('SELECT r.*, e.company_id FROM reports r JOIN engagements e ON e.id=r.engagement_id WHERE r.id=?', m[1]);
     if (!r || r.company_id !== cid || r.status !== 'published') return { status: 404, data: { error: 'Report not available' } };
-    const order = ['executive_summary','business_reality','growth_blueprint','diagnostic_scores','magic_matrix','strengths_weaknesses','key_findings','diagnostic_narrative','opportunity_matrix','opportunity_matrix_v2','revenue_expansion','strategic_bets','focus_ignore','strategic_recommendations','ninety_day_plan','twelve_month_roadmap','kpi_framework','budget_allocation','industry_context'];
+    const order = ['executive_summary','business_reality','growth_blueprint','diagnostic_scores','lever_assessment','magic_matrix','strengths_weaknesses','key_findings','diagnostic_narrative','opportunity_matrix','opportunity_matrix_v2','revenue_expansion','strategic_bets','focus_ignore','strategic_recommendations','executive_questions','ninety_day_plan','twelve_month_roadmap','kpi_framework','budget_allocation','industry_context'];
     const sections = {};
     all('SELECT key,content FROM report_sections WHERE report_id=?', r.id).forEach(s => { if (order.includes(s.key)) sections[s.key] = JSON.parse(s.content); });
     return { status: 200, data: { report: { id: r.id, version: r.version, published_at: r.published_at, company: c.name }, sections, order } };
